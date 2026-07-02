@@ -1,25 +1,9 @@
 """
-BIST Ceyreklik Mali Tablo Cekici
----------------------------------
-Is Yatirim'in acik MaliTablo endpoint'inden her hisse icin son ~10 ceyregin
-gelir tablosu ve bilanco verilerini ceker, docs/financials/<KOD>.json olarak
-kaydeder. Ayrica docs/financials/_index.json'a tum hisse kodlarini yazar
-(arama otomatik tamamlama icin).
-
-Mali tablolar 3 ayda bir aciklandigi icin bu script haftada bir calisir.
-
-financialGroup=XI_29 -> TMS 29 (enflasyon muhasebesi) konsolide/solo UFRS.
-Her API cagrisi 4 donem dondurur; birden fazla cagri ile son 10 ceyregi
-toplariz.
-
-Kalem eslestirmesi ISIM bazli yapilir (itemDescTr), cunku itemCode
-sirketten sirkete (banka/sigorta/holding/sinai) degisebilir. Bulunamayan
-kalemler null kalir; site tarafinda "-" gosterilir.
+BIST Ceyreklik Mali Tablo Cekici (v2 - kod bazli, ceyreklik donusumlu)
 """
 
 import json
 import os
-import re
 import time
 from datetime import datetime
 
@@ -38,40 +22,24 @@ HEADERS = {
     "Referer": "https://www.isyatirim.com.tr/",
 }
 
-# --- Kalem isim eslestirme kaliplari (kucuk harfe cevrilmis metinde aranir) ---
-# Liste sirasi onemli: ilk eslesen kazanir. Daha spesifik kaliplar once gelmeli.
-PATTERNS = {
-    "satislar": [
-        "hasılat", "satis gelirleri", "satış gelirleri", "faiz, kar payı ve benzeri gelirler",
-        "esas faaliyet gelirleri",
-    ],
-    "brut_kar": [
-        "brüt kar", "brüt kâr", "brüt esas faaliyet kar",
-    ],
-    "esas_faaliyet_kari": [
-        "esas faaliyet kar", "faaliyet kârı", "faaliyet karı",
-    ],
-    "favok": [
-        "favök", "favök", "favok", "faiz amortisman vergi öncesi kar",
-    ],
-    "net_kar": [
-        "dönem net kar", "dönem net kâr", "net dönem kar", "net dönem kâr",
-        "ana ortaklık payları", "net kar", "net kâr",
-    ],
-    "donen_varliklar": ["dönen varlıklar"],
-    "duran_varliklar": ["duran varlıklar"],
-    "nakit": [
-        "nakit ve nakit benzerleri",
-    ],
-    "finansal_yatirimlar": [
-        "finansal yatırımlar",
-    ],
-    "finansal_borclar_kv": [
-        "kısa vadeli borçlanmalar", "finansal borçlar",
-    ],
-    "ozkaynaklar": [
-        "özkaynaklar", "ana ortaklığa ait özkaynaklar", "toplam özkaynaklar",
-    ],
+INCOME_CODES = {
+    "satislar": "3C",
+    "brut_kar": "3CB",
+    "esas_faaliyet_kari": "3H",
+    "amortisman": "4B",
+    "net_kar": "3L",
+}
+BALANCE_CODES = {
+    "donen_varliklar": "1A",
+    "duran_varliklar": "1K",
+    "nakit": "1AA",
+    "finansal_yatirimlar": "1AB",
+    "finansal_borclar_kv": "2AA",
+    "ozkaynaklar": "2N",
+}
+ALT_INCOME = {
+    "satislar": ["3C", "4C"],
+    "net_kar": ["3L", "3Z"],
 }
 
 
@@ -80,10 +48,8 @@ def load_tickers():
         return [l.strip() for l in f if l.strip()]
 
 
-def quarters_back(n):
-    """Bugunden geriye dogru n ceyregi (year, period) olarak dondurur."""
+def year_quarters_back(n):
     now = datetime.now()
-    # Son yayinlanmis ceyregi kabaca tahmin et (aciklama gecikmesi ~2.5 ay)
     y, m = now.year, now.month
     if m <= 3:
         y, p = y - 1, 9
@@ -106,32 +72,17 @@ def quarters_back(n):
 
 
 def fetch_group(code, periods4):
-    """4 donemlik tek API cagrisi. periods4: [(year,period), x4]"""
-    params = {
-        "companyCode": code,
-        "exchange": "TRY",
-        "financialGroup": "XI_29",
-    }
+    params = {"companyCode": code, "exchange": "TRY", "financialGroup": "XI_29"}
     for i, (y, p) in enumerate(periods4, start=1):
         params[f"year{i}"] = y
         params[f"period{i}"] = p
     try:
         r = requests.get(API, params=params, headers=HEADERS, timeout=25)
         r.raise_for_status()
-        data = r.json()
-        return data.get("value", []) or []
+        return (r.json() or {}).get("value", []) or []
     except Exception as e:
         print(f"  [{code}] {periods4[0]} hata: {e}")
         return []
-
-
-def match_key(desc):
-    d = desc.strip().lower()
-    for key, pats in PATTERNS.items():
-        for pat in pats:
-            if pat in d:
-                return key
-    return None
 
 
 def to_float(v):
@@ -148,71 +99,113 @@ def to_float(v):
         return None
 
 
-def build_company(code, want_quarters=10):
-    periods = quarters_back(want_quarters)
-    # Donemleri 4'erli gruplara bol
-    period_map = {}  # (year,period) -> {key: value}
+def fetch_all_periods(code, periods):
+    result = {}
     for i in range(0, len(periods), 4):
         chunk = periods[i:i + 4]
-        while len(chunk) < 4:  # API her zaman 4 ister; tekrarla doldur
+        while len(chunk) < 4:
             chunk.append(chunk[-1])
         rows = fetch_group(code, chunk)
         for row in rows:
-            desc = row.get("itemDescTr") or row.get("itemDescEng") or ""
-            key = match_key(desc)
-            if not key:
+            ic = (row.get("itemCode") or "").strip()
+            if not ic:
                 continue
             for j, (y, p) in enumerate(chunk, start=1):
                 val = to_float(row.get(f"value{j}"))
                 if val is None:
                     continue
-                pm = period_map.setdefault((y, p), {})
-                # Ilk (en spesifik) eslesme kalsin, ustune yazma
-                pm.setdefault(key, val)
+                result.setdefault((y, p), {})[ic] = val
         time.sleep(0.4)
+    return result
 
-    # Ceyrekleri yeniden eskiye sirala, marjlari hesapla
+
+def resolve_code(pd, key, code_map, alt_map=None):
+    """pd icinde bulunan gercek kodu dondurur (alternatiflerden ilk bulunan)."""
+    candidates = [code_map[key]]
+    if alt_map and key in alt_map:
+        candidates = alt_map[key]
+    for c in candidates:
+        if c in pd and pd[c] is not None:
+            return c
+    return None
+
+
+def cumulative_to_quarterly(y, p, code, all_data):
+    pd = all_data.get((y, p), {})
+    cum = pd.get(code)
+    if cum is None:
+        return None
+    if p == 3:
+        return cum
+    prev = all_data.get((y, p - 3), {})
+    prev_val = prev.get(code)
+    if prev_val is None:
+        return None
+    return cum - prev_val
+
+
+def build_company(code, want_quarters=10):
+    periods = year_quarters_back(want_quarters + 4)
+    all_data = fetch_all_periods(code, periods)
+    display_periods = year_quarters_back(want_quarters)
+
     quarters = []
-    for (y, p) in periods:
-        vals = period_map.get((y, p), {})
-        sat = vals.get("satislar")
-        brut = vals.get("brut_kar")
-        favok = vals.get("favok")
-        netk = vals.get("net_kar")
+    for (y, p) in display_periods:
+        pd = all_data.get((y, p), {})
+
+        def income_q(key):
+            c = resolve_code(pd, key, INCOME_CODES, ALT_INCOME)
+            if c is None:
+                return None
+            return cumulative_to_quarterly(y, p, c, all_data)
+
+        sat = income_q("satislar")
+        brut = income_q("brut_kar")
+        efk = income_q("esas_faaliyet_kari")
+        amort = income_q("amortisman")
+        netk = income_q("net_kar")
+
+        favok = None
+        if efk is not None:
+            favok = efk + (abs(amort) if amort is not None else 0)
 
         def margin(x):
             if x is not None and sat not in (None, 0):
                 return round(x / sat * 100, 1)
             return None
 
+        def bal(key):
+            c = resolve_code(pd, key, BALANCE_CODES)
+            return pd.get(c) if c else None
+
+        nakit = bal("nakit")
+        finyat = bal("finansal_yatirimlar")
+        nakit_fy = None
+        if nakit is not None or finyat is not None:
+            nakit_fy = (nakit or 0) + (finyat or 0)
+
         quarters.append({
             "period": f"{y}/{p:02d}",
             "satislar": sat,
             "brut_kar": brut,
-            "esas_faaliyet_kari": vals.get("esas_faaliyet_kari"),
+            "esas_faaliyet_kari": efk,
             "favok": favok,
             "net_kar": netk,
             "brut_marj": margin(brut),
             "favok_marj": margin(favok),
             "net_marj": margin(netk),
-            "donen_varliklar": vals.get("donen_varliklar"),
-            "duran_varliklar": vals.get("duran_varliklar"),
-            "nakit_finansal_yatirim": _sum_opt(vals.get("nakit"), vals.get("finansal_yatirimlar")),
-            "finansal_borclar_kv": vals.get("finansal_borclar_kv"),
-            "ozkaynaklar": vals.get("ozkaynaklar"),
+            "donen_varliklar": bal("donen_varliklar"),
+            "duran_varliklar": bal("duran_varliklar"),
+            "nakit_finansal_yatirim": nakit_fy,
+            "finansal_borclar_kv": bal("finansal_borclar_kv"),
+            "ozkaynaklar": bal("ozkaynaklar"),
         })
 
     return {
         "code": code,
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "quarters": quarters,  # [0] en yeni
+        "quarters": quarters,
     }
-
-
-def _sum_opt(a, b):
-    if a is None and b is None:
-        return None
-    return (a or 0) + (b or 0)
 
 
 def main():
@@ -236,14 +229,14 @@ def main():
             print(f"  ... {i}/{len(tickers)} islendi ({ok} basarili)")
         time.sleep(0.3)
 
-    # Arama indeksi
     codes_with_data = sorted(
-        f[:-5] for f in os.listdir(OUT_DIR) if f.endswith(".json") and f != "_index.json"
+        f[:-5] for f in os.listdir(OUT_DIR)
+        if f.endswith(".json") and f != "_index.json"
     )
     with open(os.path.join(OUT_DIR, "_index.json"), "w", encoding="utf-8") as f:
         json.dump(codes_with_data, f, ensure_ascii=False)
 
-    print(f"Bitti. {ok} hisse icin veri kaydedildi. Indeks: {len(codes_with_data)} kod.")
+    print(f"Bitti. {ok} hisse. Indeks: {len(codes_with_data)} kod.")
 
 
 if __name__ == "__main__":
