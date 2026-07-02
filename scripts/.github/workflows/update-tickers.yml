@@ -1,0 +1,36 @@
+name: BIST Ticker List Updater
+
+on:
+  schedule:
+    # UTC 04:30 = Istanbul 07:30 (piyasa acilmadan once), hafta ici
+    - cron: "30 4 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-tickers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Update ticker list
+        run: python scripts/update_tickers.py
+
+      - name: Commit and push updated ticker list
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tickers.txt
+          git diff --staged --quiet || git commit -m "Ticker list update $(date -u '+%Y-%m-%d')"
+          git push
