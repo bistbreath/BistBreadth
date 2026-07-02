@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIST Market Breadth</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #262a33;
+    --text: #e8e9ec;
+    --muted: #8b8f9a;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --accent: #4d9de0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+  }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .card .value { font-size: 28px; font-weight: 700; margin-top: 6px; }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .chart-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .chart-title { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+  canvas { max-height: 320px; }
+  .empty { color: var(--muted); padding: 40px; text-align: center; }
+  .refresh-note { color: var(--muted); font-size: 12px; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<h1>BIST Market Breadth</h1>
+<div class="subtitle" id="subtitle">Yükleniyor...</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="chart-box">
+  <div class="chart-title">Pozitif / Negatif Hisse Sayısı (önceki kapanışa göre)</div>
+  <canvas id="posNegChart"></canvas>
+</div>
+
+<div class="chart-box">
+  <div class="chart-title">%4+ Yükselen / %4- Düşen Hisse Sayısı</div>
+  <canvas id="strongMoveChart"></canvas>
+</div>
+
+<div class="chart-box">
+  <div class="chart-title">Açılışa Göre Pozitif / Negatif (sabah vs gün içi trend)</div>
+  <canvas id="openChart"></canvas>
+</div>
+
+<div class="refresh-note">Veri her 30 dakikada bir GitHub Actions ile otomatik güncellenir. Sayfa yüklendiğinde en güncel veri gösterilir (yenilemek için sayfayı yeniden yükle).</div>
+
+<script>
+async function loadData() {
+  try {
+    const res = await fetch('data.json?_=' + Date.now());
+    const history = await res.json();
+    if (!history || history.length === 0) {
+      document.getElementById('subtitle').textContent = 'Henüz veri yok. İlk GitHub Actions çalıştırmasını bekle.';
+      return;
+    }
+    render(history);
+  } catch (e) {
+    document.getElementById('subtitle').textContent = 'Veri yüklenemedi: ' + e.message;
+  }
+}
+
+function render(history) {
+  const latest = history[history.length - 1];
+  document.getElementById('subtitle').textContent =
+    `Son güncelleme: ${latest.timestamp}  ·  ${latest.total_tracked} hisse takip ediliyor`;
+
+  const cards = [
+    { label: 'Pozitif', value: latest.positive, cls: 'green' },
+    { label: 'Negatif', value: latest.negative, cls: 'red' },
+    { label: '%4+ Yükselen', value: latest.up_4pct, cls: 'green' },
+    { label: '%4- Düşen', value: latest.down_4pct, cls: 'red' },
+    { label: 'Açılıştan Pozitif', value: latest.positive_vs_open, cls: 'green' },
+    { label: 'Açılıştan Negatif', value: latest.negative_vs_open, cls: 'red' },
+  ];
+  document.getElementById('cards').innerHTML = cards.map(c => `
+    <div class="card">
+      <div class="label">${c.label}</div>
+      <div class="value ${c.cls}">${c.value}</div>
+    </div>
+  `).join('');
+
+  const labels = history.map(h => h.timestamp.slice(5, 16)); // MM-DD HH:MM
+  const commonOpts = {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      x: { ticks: { color: '#8b8f9a', maxRotation: 60, minRotation: 60 }, grid: { color: '#262a33' } },
+      y: { ticks: { color: '#8b8f9a' }, grid: { color: '#262a33' }, beginAtZero: true }
+    },
+    plugins: { legend: { labels: { color: '#e8e9ec' } } }
+  };
+
+  new Chart(document.getElementById('posNegChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Pozitif', data: history.map(h => h.positive), borderColor: '#2ecc71', backgroundColor: '#2ecc7133', tension: 0.25 },
+        { label: 'Negatif', data: history.map(h => h.negative), borderColor: '#e74c3c', backgroundColor: '#e74c3c33', tension: 0.25 },
+      ]
+    },
+    options: commonOpts
+  });
+
+  new Chart(document.getElementById('strongMoveChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '%4+ Yükselen', data: history.map(h => h.up_4pct), borderColor: '#4d9de0', backgroundColor: '#4d9de033', tension: 0.25 },
+        { label: '%4- Düşen', data: history.map(h => h.down_4pct), borderColor: '#f39c12', backgroundColor: '#f39c1233', tension: 0.25 },
+      ]
+    },
+    options: commonOpts
+  });
+
+  new Chart(document.getElementById('openChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Açılıştan Pozitif', data: history.map(h => h.positive_vs_open), borderColor: '#2ecc71', backgroundColor: '#2ecc7133', tension: 0.25 },
+        { label: 'Açılıştan Negatif', data: history.map(h => h.negative_vs_open), borderColor: '#e74c3c', backgroundColor: '#e74c3c33', tension: 0.25 },
+      ]
+    },
+    options: commonOpts
+  });
+}
+
+loadData();
+</script>
+
+</body>
+</html>
