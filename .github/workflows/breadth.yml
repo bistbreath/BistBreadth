@@ -2,7 +2,7 @@ name: BIST Breadth Tracker
 
 on:
   schedule:
-    - cron: "*/30 7-15 * * 1-5"
+    - cron: "*/15 7-15 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
