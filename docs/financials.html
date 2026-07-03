@@ -214,6 +214,8 @@ function render(data) {
     ["Duran Varlıklar", "duran_varliklar", false],
     ["Nakit + Fin. Yatırım", "nakit_finansal_yatirim", false],
     ["Finansal Borçlar (KV)", "finansal_borclar_kv", false],
+    ["Net Borç", "net_borc", false],
+    ["Net Borç / FAVÖK", "net_borc_favok", "ratio"],
     ["Özkaynaklar", "ozkaynaklar", false],
   ];
   buildTable("balanceTable", last5, balanceRows, q);
@@ -240,12 +242,14 @@ function buildTable(id, last5, rows, allQ) {
   head += "<th>YoY</th></tr></thead>";
 
   let body = "<tbody>";
-  rows.forEach(([label, key]) => {
+  rows.forEach(([label, key, type]) => {
     body += `<tr><td>${label}</td>`;
     last5.forEach(x => {
       const v = x[key];
-      if (isMargin(key)) {
+      if (type === true) {  // marj (yuzde)
         body += `<td>${v === null || v === undefined ? "-" : "% " + v}</td>`;
+      } else if (type === "ratio") {  // rasyo (x)
+        body += `<td>${v === null || v === undefined ? "-" : v + "x"}</td>`;
       } else {
         body += `<td>${fmt(v)}</td>`;
       }
@@ -253,14 +257,15 @@ function buildTable(id, last5, rows, allQ) {
     // YoY: en yeni ceyrek (index 0) vs bir yil oncesi (index 4)
     const cur = allQ[0] ? allQ[0][key] : null;
     const prev = allQ[4] ? allQ[4][key] : null;
-    if (isMargin(key)) {
-      // marjda YoY = puan farki
+    if (type === true) {
       if (cur === null || prev === null) body += '<td>-</td>';
       else {
         const diff = Math.round((cur - prev) * 10) / 10;
         const cls = diff >= 0 ? "pos" : "neg";
         body += `<td class="${cls}">${diff >= 0 ? "+" : ""}${diff} p</td>`;
       }
+    } else if (type === "ratio") {
+      body += '<td>-</td>';  // rasyoda YoY gostermeye gerek yok
     } else {
       body += pctCell(pct(cur, prev));
     }
