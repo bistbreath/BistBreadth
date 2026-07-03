@@ -1,5 +1,5 @@
 """
-BIST Ceyreklik Mali Tablo Cekici (v3 - brut kar duzeltmesi + ROE/ROIC + net borc)
+BIST Ceyreklik Mali Tablo Cekici (v4 - sinai + banka/finans)
 """
 
 import json
@@ -41,6 +41,35 @@ BALANCE_CODES = {
     "finansal_borclar_uv": "2BA",   # Uzun Vadeli Finansal Borclar (ROIC icin)
     "ozkaynaklar": "2N",
 }
+# --- BANKA / FINANSAL KURULUS KODLARI (UFRS_K grubu) ---
+# senin gosterdigin ham veriden alindi (GARAN + KTLEV)
+BANK_INCOME_CODES = {
+    "faiz_geliri": "3",       # I. FAIZ GELIRLERI (finansal kurulusta: finansman geliri)
+    "faiz_gideri": "3B",      # II. FAIZ GIDERLERI
+    "net_faiz_geliri": "3C",  # III. NET FAIZ GELIRI/GIDERI
+    "faaliyet_geliri": "3CE", # VIII. FAALIYET GELIRLERI/GIDERLERI TOPLAMI
+    "kredi_karsilik": "3CF",  # IX. KREDI VE DIGER ALACAKLAR DEGER DUSUS KARSILIGI
+    "net_faaliyet_kari": "3CH", # XI. NET FAALIYET KARI/ZARARI
+    "net_kar": "3ZA",         # 23.1 Grubun Kari (ana ortaklik)
+}
+BANK_INCOME_ALT = {
+    "net_kar": ["3ZA", "3D", "3NJA", "3JNA"],  # farkli kuruluslarda degisebilir
+}
+BANK_BALANCE_CODES = {
+    "toplam_aktif": "1Z",        # AKTIF TOPLAMI
+    "krediler": "1AF",           # VI. KREDILER (banka)
+    "mevduat": "2A",             # I. MEVDUAT (banka)
+    "ozkaynaklar": "20",         # XVI. OZKAYNAKLAR (banka - dikkat: sinaide 2N)
+    "takipteki": "1AFD",         # 6.2 Takipteki Krediler
+}
+# Finansal kuruluslarda (KTLEV gibi) krediler/mevduat farkli kodlarda olabilir;
+# alternatifler:
+BANK_BALANCE_ALT = {
+    "krediler": ["1AF", "1AG", "1C"],   # kredi/faktoring/finansman alacaklari
+    "mevduat": ["2A", "2H"],
+    "ozkaynaklar": ["20", "2N"],
+}
+
 ALT_INCOME = {
     "satislar": ["3C", "4C"],
     "net_kar": ["3L", "3Z"],
@@ -76,8 +105,8 @@ def year_quarters_back(n):
     return out
 
 
-def fetch_group(code, periods4):
-    params = {"companyCode": code, "exchange": "TRY", "financialGroup": "XI_29"}
+def fetch_group(code, periods4, group="XI_29"):
+    params = {"companyCode": code, "exchange": "TRY", "financialGroup": group}
     for i, (y, p) in enumerate(periods4, start=1):
         params[f"year{i}"] = y
         params[f"period{i}"] = p
@@ -104,13 +133,13 @@ def to_float(v):
         return None
 
 
-def fetch_all_periods(code, periods):
+def fetch_all_periods(code, periods, group="XI_29"):
     result = {}
     for i in range(0, len(periods), 4):
         chunk = periods[i:i + 4]
         while len(chunk) < 4:
             chunk.append(chunk[-1])
-        rows = fetch_group(code, chunk)
+        rows = fetch_group(code, chunk, group)
         for row in rows:
             ic = (row.get("itemCode") or "").strip()
             if not ic:
@@ -148,7 +177,7 @@ def cumulative_to_quarterly(y, p, code, all_data):
     return cum - prev_val
 
 
-def build_company(code, want_quarters=10):
+def build_company_sinai(code, want_quarters=10):
     periods = year_quarters_back(want_quarters + 5)
     all_data = fetch_all_periods(code, periods)
     display_periods = year_quarters_back(want_quarters)
@@ -288,9 +317,159 @@ def build_company(code, want_quarters=10):
 
     return {
         "code": code,
+        "type": "sinai",
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "quarters": quarters,
     }
+
+
+def build_company_bank(code, want_quarters=10):
+    """Banka / finansal kurulus (UFRS_K). Gelir kalemleri KUMULATIF -> ceyreklik."""
+    periods = year_quarters_back(want_quarters + 5)
+    all_data = fetch_all_periods(code, periods, group="UFRS_K")
+    if not all_data:
+        return None
+
+    display_periods = year_quarters_back(want_quarters)
+    all_disp = year_quarters_back(want_quarters + 4)
+
+    def resolve_b(pd, key, cmap, amap=None):
+        cands = [cmap[key]]
+        if amap and key in amap:
+            cands = amap[key]
+        for c in cands:
+            if c in pd and pd[c] is not None:
+                return c
+        return None
+
+    def cum_to_q(y, p, c):
+        pd = all_data.get((y, p), {})
+        cum = pd.get(c)
+        if cum is None:
+            return None
+        if p == 3:
+            return cum
+        prev = all_data.get((y, p - 3), {})
+        pv = prev.get(c)
+        if pv is None:
+            return None
+        return cum - pv
+
+    # ceyreklik gelir kalemleri
+    q_inc = {}
+    for (y, p) in all_disp:
+        pd = all_data.get((y, p), {})
+        def iq(key):
+            c = resolve_b(pd, key, BANK_INCOME_CODES, BANK_INCOME_ALT)
+            return cum_to_q(y, p, c) if c else None
+        q_inc[(y, p)] = {
+            "faiz_geliri": iq("faiz_geliri"),
+            "net_faiz_geliri": iq("net_faiz_geliri"),
+            "faaliyet_geliri": iq("faaliyet_geliri"),
+            "net_faaliyet_kari": iq("net_faaliyet_kari"),
+            "net_kar": iq("net_kar"),
+        }
+
+    def bal(y, p, key):
+        pd = all_data.get((y, p), {})
+        c = resolve_b(pd, key, BANK_BALANCE_CODES, BANK_BALANCE_ALT)
+        return pd.get(c) if c else None
+
+    def ttm(y, p, field):
+        tot, found = 0.0, False
+        yy, pp = y, p
+        for _ in range(4):
+            v = q_inc.get((yy, pp), {}).get(field)
+            if v is not None:
+                tot += v; found = True
+            pp -= 3
+            if pp == 0:
+                pp = 12; yy -= 1
+        return tot if found else None
+
+    # veri var mi kontrol (net kar veya faiz geliri gelmisse banka verisi var)
+    has = any(q_inc.get((y, p), {}).get("net_kar") is not None
+              or q_inc.get((y, p), {}).get("faiz_geliri") is not None
+              for (y, p) in display_periods)
+    if not has:
+        return None
+
+    quarters = []
+    for (y, p) in display_periods:
+        inc = q_inc.get((y, p), {})
+        netk = inc.get("net_kar")
+        ozk = bal(y, p, "ozkaynaklar")
+        aktif = bal(y, p, "toplam_aktif")
+
+        # ROE (TTM) = net kar / ortalama ozkaynak
+        roe = None
+        netk_ttm = ttm(y, p, "net_kar")
+        py, pp = y, p
+        for _ in range(4):
+            pp -= 3
+            if pp == 0:
+                pp = 12; py -= 1
+        ozk_prev = bal(py, pp, "ozkaynaklar")
+        if netk_ttm is not None and ozk is not None:
+            avg = (ozk + ozk_prev) / 2 if ozk_prev is not None else ozk
+            if avg:
+                roe = round(netk_ttm / avg * 100, 1)
+
+        # ROA (TTM) = net kar / ortalama aktif
+        roa = None
+        aktif_prev = bal(py, pp, "toplam_aktif")
+        if netk_ttm is not None and aktif is not None:
+            avg_a = (aktif + aktif_prev) / 2 if aktif_prev is not None else aktif
+            if avg_a:
+                roa = round(netk_ttm / avg_a * 100, 2)
+
+        krediler = bal(y, p, "krediler")
+        takip = bal(y, p, "takipteki")
+        npl = None
+        if takip is not None and krediler not in (None, 0):
+            npl = round(takip / krediler * 100, 2)
+
+        quarters.append({
+            "period": f"{y}/{p:02d}",
+            "faiz_geliri": inc.get("faiz_geliri"),
+            "net_faiz_geliri": inc.get("net_faiz_geliri"),
+            "faaliyet_geliri": inc.get("faaliyet_geliri"),
+            "net_faaliyet_kari": inc.get("net_faaliyet_kari"),
+            "net_kar": netk,
+            "roe": roe,
+            "roa": roa,
+            "npl": npl,
+            "toplam_aktif": aktif,
+            "krediler": krediler,
+            "mevduat": bal(y, p, "mevduat"),
+            "ozkaynaklar": ozk,
+        })
+
+    return {
+        "code": code,
+        "type": "banka",
+        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "quarters": quarters,
+    }
+
+
+def build_company(code, want_quarters=10):
+    """Dispatcher: once sinai dene, olmazsa banka/finans dene."""
+    # 1) SINAI (mevcut, dokunulmadi)
+    try:
+        comp = build_company_sinai(code, want_quarters)
+        if comp and any(q["satislar"] is not None for q in comp["quarters"]):
+            return comp
+    except Exception as e:
+        print(f"  [{code}] sinai hata: {e}")
+    # 2) BANKA / FINANS
+    try:
+        comp = build_company_bank(code, want_quarters)
+        if comp:
+            return comp
+    except Exception as e:
+        print(f"  [{code}] banka hata: {e}")
+    return None
 
 
 def main():
@@ -302,7 +481,7 @@ def main():
     for i, code in enumerate(tickers, start=1):
         try:
             company = build_company(code, want_quarters=10)
-            has_data = any(q["satislar"] is not None for q in company["quarters"])
+            has_data = company is not None and len(company.get("quarters", [])) > 0
             if has_data:
                 with open(os.path.join(OUT_DIR, f"{code}.json"), "w",
                           encoding="utf-8") as f:
