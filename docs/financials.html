@@ -187,6 +187,14 @@ function render(data) {
   const q = data.quarters; // [0] en yeni
   const last5 = q.slice(0, 5);
 
+  // YoY: her ceyregi 4 sonraki (bir yil onceki ayni ceyrek) ile karsilastir
+  const yoy = (idx, field) => {
+    const cur = q[idx] ? q[idx][field] : null;
+    const prev = q[idx + 4] ? q[idx + 4][field] : null;
+    return pct(cur, prev);
+  };
+
+  // ---- Gelir Tablosu ----
   const incomeRows = [
     ["Satışlar", "satislar", false],
     ["Esas Faaliyet Karı", "esas_faaliyet_kari", false],
@@ -195,9 +203,12 @@ function render(data) {
     ["Brüt Kar Marjı", "brut_marj", true],
     ["FAVÖK Marjı", "favok_marj", true],
     ["Net Kar Marjı", "net_marj", true],
+    ["ROE (TTM)", "roe", true],
+    ["ROIC (TTM)", "roic", true],
   ];
   buildTable("incomeTable", last5, incomeRows, q);
 
+  // ---- Bilanço ----
   const balanceRows = [
     ["Dönen Varlıklar", "donen_varliklar", false],
     ["Duran Varlıklar", "duran_varliklar", false],
@@ -207,11 +218,19 @@ function render(data) {
   ];
   buildTable("balanceTable", last5, balanceRows, q);
 
+  // ---- Grafikler (son 10 ceyrek, eskiden yeniye) ----
   const chartQuarters = q.slice(0, 10).reverse();
   const labels = chartQuarters.map(x => x.period);
-  drawBar("salesChart", "sales", labels, chartQuarters.map(x => x.satislar), "#4d9de0");
-  drawBar("favokChart", "favok", labels, chartQuarters.map(x => x.favok), "#34d17f");
-  drawBar("netChart", "net", labels, chartQuarters.map(x => x.net_kar), "#e0a94d");
+  // YoY icin: her ceyregin degeri ile 4 ceyrek oncekinin (bir yil onceki ayni ceyrek) degeri
+  const yoySeries = (field) => chartQuarters.map((x, idx) => {
+    // chartQuarters eskiden yeniye sirali; 4 geri = bir yil once
+    const prev = chartQuarters[idx - 4];
+    if (!prev) return null;
+    return pct(x[field], prev[field]);
+  });
+  drawBar("salesChart", "sales", labels, chartQuarters.map(x => x.satislar), "#4d9de0", yoySeries("satislar"));
+  drawBar("favokChart", "favok", labels, chartQuarters.map(x => x.favok), "#34d17f", yoySeries("favok"));
+  drawBar("netChart", "net", labels, chartQuarters.map(x => x.net_kar), "#e0a94d", yoySeries("net_kar"));
 }
 
 function buildTable(id, last5, rows, allQ) {
@@ -231,9 +250,11 @@ function buildTable(id, last5, rows, allQ) {
         body += `<td>${fmt(v)}</td>`;
       }
     });
+    // YoY: en yeni ceyrek (index 0) vs bir yil oncesi (index 4)
     const cur = allQ[0] ? allQ[0][key] : null;
     const prev = allQ[4] ? allQ[4][key] : null;
     if (isMargin(key)) {
+      // marjda YoY = puan farki
       if (cur === null || prev === null) body += '<td>-</td>';
       else {
         const diff = Math.round((cur - prev) * 10) / 10;
@@ -249,14 +270,36 @@ function buildTable(id, last5, rows, allQ) {
   document.getElementById(id).innerHTML = head + body;
 }
 
-function drawBar(canvasId, key, labels, values, color) {
+function drawBar(canvasId, key, labels, values, color, yoy) {
   if (charts[key]) charts[key].destroy();
   charts[key] = new Chart(document.getElementById(canvasId), {
     type: 'bar',
     data: { labels, datasets: [{ data: values, backgroundColor: color, borderRadius: 3 }] },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              const val = ctx.parsed.y;
+              const lines = [Math.round(val).toLocaleString("tr-TR") + " bin TRY"];
+              if (yoy && yoy[ctx.dataIndex] !== null && yoy[ctx.dataIndex] !== undefined) {
+                const p = yoy[ctx.dataIndex];
+                const sign = p >= 0 ? "▲ +" : "▼ ";
+                lines.push("YoY: " + sign + Math.round(p) + "%");
+              }
+              return lines;
+            },
+            labelTextColor: function(ctx) {
+              if (yoy && yoy[ctx.dataIndex] !== null && yoy[ctx.dataIndex] !== undefined) {
+                return yoy[ctx.dataIndex] >= 0 ? "#34d17f" : "#ef5f5f";
+              }
+              return "#e8e9ec";
+            }
+          }
+        }
+      },
       scales: {
         x: { ticks: { color: '#8b90a0', font: { size: 9 }, maxRotation: 60, minRotation: 60 }, grid: { display: false } },
         y: { ticks: { color: '#8b90a0', font: { size: 10 } }, grid: { color: '#232833' } }
