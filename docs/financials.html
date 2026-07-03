@@ -181,11 +181,18 @@ async function loadCompany(code) {
 function render(data) {
   document.getElementById('placeholder').classList.add('hidden');
   document.getElementById('content').classList.remove('hidden');
+  const tipEtiket = data.type === "banka" ? " · Banka/Finans" : "";
   document.getElementById('updated').textContent =
-    `${data.code} · Son güncelleme: ${data.updated}`;
+    `${data.code}${tipEtiket} · Son güncelleme: ${data.updated}`;
 
   const q = data.quarters; // [0] en yeni
   const last5 = q.slice(0, 5);
+
+  // BANKA / FINANS tipi ise ayri render
+  if (data.type === "banka") {
+    renderBank(data, q, last5);
+    return;
+  }
 
   // YoY: her ceyregi 4 sonraki (bir yil onceki ayni ceyrek) ile karsilastir
   const yoy = (idx, field) => {
@@ -221,6 +228,11 @@ function render(data) {
   buildTable("balanceTable", last5, balanceRows, q);
 
   // ---- Grafikler (son 10 ceyrek, eskiden yeniye) ----
+  // baslik reset (banka'dan gelinmis olabilir)
+  const _h = document.querySelectorAll('.chart-panel h3');
+  _h[0].textContent = "Çeyreklik Satışlar";
+  _h[1].textContent = "Çeyreklik FAVÖK";
+  _h[2].textContent = "Çeyreklik Net Kar";
   const chartQuarters = q.slice(0, 10).reverse();
   const labels = chartQuarters.map(x => x.period);
   // YoY icin: her ceyregin degeri ile 4 ceyrek oncekinin (bir yil onceki ayni ceyrek) degeri
@@ -232,6 +244,44 @@ function render(data) {
   });
   drawBar("salesChart", "sales", labels, chartQuarters.map(x => x.satislar), "#4d9de0", yoySeries("satislar"));
   drawBar("favokChart", "favok", labels, chartQuarters.map(x => x.favok), "#34d17f", yoySeries("favok"));
+  drawBar("netChart", "net", labels, chartQuarters.map(x => x.net_kar), "#e0a94d", yoySeries("net_kar"));
+}
+
+function renderBank(data, q, last5) {
+  const incomeRows = [
+    ["Faiz/Finansman Geliri", "faiz_geliri", false],
+    ["Net Faiz Geliri", "net_faiz_geliri", false],
+    ["Faaliyet Geliri", "faaliyet_geliri", false],
+    ["Net Faaliyet Karı", "net_faaliyet_kari", false],
+    ["Net Kar", "net_kar", false],
+    ["ROE (TTM)", "roe", true],
+    ["ROA (TTM)", "roa", true],
+    ["Takipteki Kredi Oranı", "npl", true],
+  ];
+  buildTable("incomeTable", last5, incomeRows, q);
+
+  const balanceRows = [
+    ["Toplam Aktif", "toplam_aktif", false],
+    ["Krediler / Alacaklar", "krediler", false],
+    ["Mevduat / Fon", "mevduat", false],
+    ["Özkaynaklar", "ozkaynaklar", false],
+  ];
+  buildTable("balanceTable", last5, balanceRows, q);
+
+  // grafikler: faiz geliri / net faaliyet kari / net kar
+  const chartQuarters = q.slice(0, 10).reverse();
+  const labels = chartQuarters.map(x => x.period);
+  const yoySeries = (field) => chartQuarters.map((x, idx) => {
+    const prev = chartQuarters[idx - 4];
+    if (!prev) return null;
+    return pct(x[field], prev[field]);
+  });
+  // grafik basliklarini banka icin degistir
+  document.querySelectorAll('.chart-panel h3')[0].textContent = "Çeyreklik Faiz/Finansman Geliri";
+  document.querySelectorAll('.chart-panel h3')[1].textContent = "Çeyreklik Net Faaliyet Karı";
+  document.querySelectorAll('.chart-panel h3')[2].textContent = "Çeyreklik Net Kar";
+  drawBar("salesChart", "sales", labels, chartQuarters.map(x => x.faiz_geliri), "#4d9de0", yoySeries("faiz_geliri"));
+  drawBar("favokChart", "favok", labels, chartQuarters.map(x => x.net_faaliyet_kari), "#34d17f", yoySeries("net_faaliyet_kari"));
   drawBar("netChart", "net", labels, chartQuarters.map(x => x.net_kar), "#e0a94d", yoySeries("net_kar"));
 }
 
