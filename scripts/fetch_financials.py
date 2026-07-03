@@ -1,5 +1,5 @@
 """
-BIST Ceyreklik Mali Tablo Cekici (v3 - brut kar duzeltmesi + ROE/ROIC)
+BIST Ceyreklik Mali Tablo Cekici (v3 - brut kar duzeltmesi + ROE/ROIC + net borc)
 """
 
 import json
@@ -34,7 +34,7 @@ INCOME_CODES = {
 }
 BALANCE_CODES = {
     "donen_varliklar": "1A",
-    "duran_varliklar": "1K",
+    "duran_varliklar": "1AK",
     "nakit": "1AA",
     "finansal_yatirimlar": "1AB",
     "finansal_borclar_kv": "2AA",   # Kisa Vadeli Finansal Borclar
@@ -249,6 +249,22 @@ def build_company(code, want_quarters=10):
         if nakit is not None or finyat is not None:
             nakit_fy = (nakit or 0) + (finyat or 0)
 
+        # Net Borc = toplam finansal borc - (nakit + finansal yatirim)
+        net_borc = None
+        toplam_fb = (fb_kv or 0) + (fb_uv or 0)
+        if fb_kv is not None or fb_uv is not None or nakit_fy is not None:
+            net_borc = toplam_fb - (nakit_fy or 0)
+
+        # Net Borc / FAVOK (TTM FAVOK ile)
+        net_borc_favok = None
+        favok_ttm = None
+        efk_ttm_f = ttm_sum(y, p, "esas_faaliyet_kari")
+        amort_ttm_f = ttm_sum(y, p, "amortisman")
+        if efk_ttm_f is not None:
+            favok_ttm = efk_ttm_f + (abs(amort_ttm_f) if amort_ttm_f is not None else 0)
+        if net_borc is not None and favok_ttm not in (None, 0):
+            net_borc_favok = round(net_borc / favok_ttm, 2)
+
         quarters.append({
             "period": f"{y}/{p:02d}",
             "satislar": sat,
@@ -265,6 +281,8 @@ def build_company(code, want_quarters=10):
             "duran_varliklar": bal_at(y, p, "duran_varliklar"),
             "nakit_finansal_yatirim": nakit_fy,
             "finansal_borclar_kv": fb_kv,
+            "net_borc": net_borc,
+            "net_borc_favok": net_borc_favok,
             "ozkaynaklar": ozk,
         })
 
