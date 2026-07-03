@@ -1,5 +1,5 @@
 """
-BIST Ceyreklik Mali Tablo Cekici (v2 - kod bazli, ceyreklik donusumlu)
+BIST Ceyreklik Mali Tablo Cekici (v3 - brut kar duzeltmesi + ROE/ROIC)
 """
 
 import json
@@ -22,24 +22,29 @@ HEADERS = {
     "Referer": "https://www.isyatirim.com.tr/",
 }
 
+TAX_RATE = 0.25  # ROIC icin varsayilan kurumlar vergisi
+
+# Gelir tablosu (kumulatif -> ceyreklige cevrilecek)
 INCOME_CODES = {
     "satislar": "3C",
-    "brut_kar": "3CB",
-    "esas_faaliyet_kari": "3H",
-    "amortisman": "4B",
-    "net_kar": "3L",
+    "brut_kar": "3D",            # BRUT KAR (ZARAR) - toplam
+    "esas_faaliyet_kari": "3H",  # Net Faaliyet Kar/Zarari
+    "amortisman": "4B",          # Amortisman Giderleri
+    "net_kar": "3L",             # DONEM KARI (ZARARI)
 }
 BALANCE_CODES = {
     "donen_varliklar": "1A",
     "duran_varliklar": "1K",
     "nakit": "1AA",
     "finansal_yatirimlar": "1AB",
-    "finansal_borclar_kv": "2AA",
+    "finansal_borclar_kv": "2AA",   # Kisa Vadeli Finansal Borclar
+    "finansal_borclar_uv": "2BA",   # Uzun Vadeli Finansal Borclar (ROIC icin)
     "ozkaynaklar": "2N",
 }
 ALT_INCOME = {
     "satislar": ["3C", "4C"],
     "net_kar": ["3L", "3Z"],
+    "brut_kar": ["3D", "3CAB"],
 }
 
 
@@ -120,7 +125,6 @@ def fetch_all_periods(code, periods):
 
 
 def resolve_code(pd, key, code_map, alt_map=None):
-    """pd icinde bulunan gercek kodu dondurur (alternatiflerden ilk bulunan)."""
     candidates = [code_map[key]]
     if alt_map and key in alt_map:
         candidates = alt_map[key]
@@ -145,25 +149,59 @@ def cumulative_to_quarterly(y, p, code, all_data):
 
 
 def build_company(code, want_quarters=10):
-    periods = year_quarters_back(want_quarters + 4)
+    periods = year_quarters_back(want_quarters + 5)
     all_data = fetch_all_periods(code, periods)
     display_periods = year_quarters_back(want_quarters)
 
-    quarters = []
-    for (y, p) in display_periods:
+    # Once tum ceyrekler icin temel degerleri hesapla (ROE/ROIC TTM icin lazim)
+    all_disp = year_quarters_back(want_quarters + 4)
+    q_income = {}  # (y,p) -> {net_kar, efk, ...}
+    for (y, p) in all_disp:
         pd = all_data.get((y, p), {})
 
-        def income_q(key):
+        def iq(key):
             c = resolve_code(pd, key, INCOME_CODES, ALT_INCOME)
             if c is None:
                 return None
             return cumulative_to_quarterly(y, p, c, all_data)
 
-        sat = income_q("satislar")
-        brut = income_q("brut_kar")
-        efk = income_q("esas_faaliyet_kari")
-        amort = income_q("amortisman")
-        netk = income_q("net_kar")
+        q_income[(y, p)] = {
+            "satislar": iq("satislar"),
+            "brut_kar": iq("brut_kar"),
+            "esas_faaliyet_kari": iq("esas_faaliyet_kari"),
+            "amortisman": iq("amortisman"),
+            "net_kar": iq("net_kar"),
+        }
+
+    def bal_at(y, p, key):
+        pd = all_data.get((y, p), {})
+        c = resolve_code(pd, key, BALANCE_CODES)
+        return pd.get(c) if c else None
+
+    def ttm_sum(y, p, field):
+        """Son 4 ceyregin (bu dahil) toplami."""
+        total = 0.0
+        found = False
+        yy, pp = y, p
+        for _ in range(4):
+            v = q_income.get((yy, pp), {}).get(field)
+            if v is not None:
+                total += v
+                found = True
+            pp -= 3
+            if pp == 0:
+                pp = 12
+                yy -= 1
+        return total if found else None
+
+    quarters = []
+    for (y, p) in display_periods:
+        inc = q_income.get((y, p), {})
+        sat = inc.get("satislar")
+        brut = inc.get("brut_kar")
+        efk = inc.get("esas_faaliyet_kari")
+        amort = inc.get("amortisman")
+        netk = inc.get("net_kar")
 
         favok = None
         if efk is not None:
@@ -174,12 +212,39 @@ def build_company(code, want_quarters=10):
                 return round(x / sat * 100, 1)
             return None
 
-        def bal(key):
-            c = resolve_code(pd, key, BALANCE_CODES)
-            return pd.get(c) if c else None
+        ozk = bal_at(y, p, "ozkaynaklar")
+        fb_kv = bal_at(y, p, "finansal_borclar_kv")
+        fb_uv = bal_at(y, p, "finansal_borclar_uv")
 
-        nakit = bal("nakit")
-        finyat = bal("finansal_yatirimlar")
+        # ROE (TTM) = son 4 ceyrek net kar / ortalama ozkaynak
+        roe = None
+        netk_ttm = ttm_sum(y, p, "net_kar")
+        # bir yil onceki ozkaynak
+        py, pp = y, p
+        for _ in range(4):
+            pp -= 3
+            if pp == 0:
+                pp = 12
+                py -= 1
+        ozk_prev = bal_at(py, pp, "ozkaynaklar")
+        if netk_ttm is not None and ozk is not None:
+            avg_ozk = (ozk + ozk_prev) / 2 if ozk_prev is not None else ozk
+            if avg_ozk and avg_ozk != 0:
+                roe = round(netk_ttm / avg_ozk * 100, 1)
+
+        # ROIC (TTM) = NOPAT / yatirilan sermaye
+        # NOPAT = son 4 ceyrek net faaliyet kari * (1 - vergi)
+        # yatirilan sermaye = kisa+uzun finansal borc + ozkaynak
+        roic = None
+        efk_ttm = ttm_sum(y, p, "esas_faaliyet_kari")
+        if efk_ttm is not None and ozk is not None:
+            invested = ozk + (fb_kv or 0) + (fb_uv or 0)
+            if invested and invested != 0:
+                nopat = efk_ttm * (1 - TAX_RATE)
+                roic = round(nopat / invested * 100, 1)
+
+        nakit = bal_at(y, p, "nakit")
+        finyat = bal_at(y, p, "finansal_yatirimlar")
         nakit_fy = None
         if nakit is not None or finyat is not None:
             nakit_fy = (nakit or 0) + (finyat or 0)
@@ -194,11 +259,13 @@ def build_company(code, want_quarters=10):
             "brut_marj": margin(brut),
             "favok_marj": margin(favok),
             "net_marj": margin(netk),
-            "donen_varliklar": bal("donen_varliklar"),
-            "duran_varliklar": bal("duran_varliklar"),
+            "roe": roe,
+            "roic": roic,
+            "donen_varliklar": bal_at(y, p, "donen_varliklar"),
+            "duran_varliklar": bal_at(y, p, "duran_varliklar"),
             "nakit_finansal_yatirim": nakit_fy,
-            "finansal_borclar_kv": bal("finansal_borclar_kv"),
-            "ozkaynaklar": bal("ozkaynaklar"),
+            "finansal_borclar_kv": fb_kv,
+            "ozkaynaklar": ozk,
         })
 
     return {
