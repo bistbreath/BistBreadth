@@ -42,9 +42,8 @@ BALANCE_CODES = {
     "ozkaynaklar": "2N",
 }
 # --- BANKA / FINANSAL KURULUS KODLARI (UFRS_K grubu) ---
-# senin gosterdigin ham veriden alindi (GARAN + KTLEV)
 BANK_INCOME_CODES = {
-    "faiz_geliri": "3",       # I. FAIZ GELIRLERI (finansal kurulusta: finansman geliri)
+    "faiz_geliri": "3A",      # I. FAIZ GELIRLERI
     "faiz_gideri": "3B",      # II. FAIZ GIDERLERI
     "net_faiz_geliri": "3C",  # III. NET FAIZ GELIRI/GIDERI
     "faaliyet_geliri": "3CE", # VIII. FAALIYET GELIRLERI/GIDERLERI TOPLAMI
@@ -53,21 +52,19 @@ BANK_INCOME_CODES = {
     "net_kar": "3ZA",         # 23.1 Grubun Kari (ana ortaklik)
 }
 BANK_INCOME_ALT = {
-    "net_kar": ["3ZA", "3D", "3NJA", "3JNA"],  # farkli kuruluslarda degisebilir
+    "net_kar": ["3ZA", "3D", "3NJA", "3JNA"],
 }
 BANK_BALANCE_CODES = {
     "toplam_aktif": "1Z",        # AKTIF TOPLAMI
-    "krediler": "1AF",           # VI. KREDILER (banka)
-    "mevduat": "2A",             # I. MEVDUAT (banka)
-    "ozkaynaklar": "20",         # XVI. OZKAYNAKLAR (banka - dikkat: sinaide 2N)
+    "krediler": "1AF",           # VI. KREDILER
+    "mevduat": "2A",             # I. MEVDUAT
+    "ozkaynaklar": "20",         # XVI. OZKAYNAKLAR
     "takipteki": "1AFD",         # 6.2 Takipteki Krediler
 }
-# Finansal kuruluslarda (KTLEV gibi) krediler/mevduat farkli kodlarda olabilir;
-# alternatifler:
 BANK_BALANCE_ALT = {
-    "krediler": ["1AF", "1AG", "1C"],   # kredi/faktoring/finansman alacaklari
+    "krediler": ["1AF", "1AG", "1C"],
     "mevduat": ["2A", "2H"],
-    "ozkaynaklar": ["20", "2N"],
+    "ozkaynaklar": ["20"],
 }
 
 ALT_INCOME = {
@@ -182,9 +179,8 @@ def build_company_sinai(code, want_quarters=10):
     all_data = fetch_all_periods(code, periods)
     display_periods = year_quarters_back(want_quarters)
 
-    # Once tum ceyrekler icin temel degerleri hesapla (ROE/ROIC TTM icin lazim)
     all_disp = year_quarters_back(want_quarters + 4)
-    q_income = {}  # (y,p) -> {net_kar, efk, ...}
+    q_income = {}
     for (y, p) in all_disp:
         pd = all_data.get((y, p), {})
 
@@ -208,7 +204,6 @@ def build_company_sinai(code, want_quarters=10):
         return pd.get(c) if c else None
 
     def ttm_sum(y, p, field):
-        """Son 4 ceyregin (bu dahil) toplami."""
         total = 0.0
         found = False
         yy, pp = y, p
@@ -245,10 +240,8 @@ def build_company_sinai(code, want_quarters=10):
         fb_kv = bal_at(y, p, "finansal_borclar_kv")
         fb_uv = bal_at(y, p, "finansal_borclar_uv")
 
-        # ROE (TTM) = son 4 ceyrek net kar / ortalama ozkaynak
         roe = None
         netk_ttm = ttm_sum(y, p, "net_kar")
-        # bir yil onceki ozkaynak
         py, pp = y, p
         for _ in range(4):
             pp -= 3
@@ -261,9 +254,6 @@ def build_company_sinai(code, want_quarters=10):
             if avg_ozk and avg_ozk != 0:
                 roe = round(netk_ttm / avg_ozk * 100, 1)
 
-        # ROIC (TTM) = NOPAT / yatirilan sermaye
-        # NOPAT = son 4 ceyrek net faaliyet kari * (1 - vergi)
-        # yatirilan sermaye = kisa+uzun finansal borc + ozkaynak
         roic = None
         efk_ttm = ttm_sum(y, p, "esas_faaliyet_kari")
         if efk_ttm is not None and ozk is not None:
@@ -278,13 +268,11 @@ def build_company_sinai(code, want_quarters=10):
         if nakit is not None or finyat is not None:
             nakit_fy = (nakit or 0) + (finyat or 0)
 
-        # Net Borc = toplam finansal borc - (nakit + finansal yatirim)
         net_borc = None
         toplam_fb = (fb_kv or 0) + (fb_uv or 0)
         if fb_kv is not None or fb_uv is not None or nakit_fy is not None:
             net_borc = toplam_fb - (nakit_fy or 0)
 
-        # Net Borc / FAVOK (TTM FAVOK ile)
         net_borc_favok = None
         favok_ttm = None
         efk_ttm_f = ttm_sum(y, p, "esas_faaliyet_kari")
@@ -355,7 +343,6 @@ def build_company_bank(code, want_quarters=10):
             return None
         return cum - pv
 
-    # ceyreklik gelir kalemleri
     q_inc = {}
     for (y, p) in all_disp:
         pd = all_data.get((y, p), {})
@@ -387,7 +374,6 @@ def build_company_bank(code, want_quarters=10):
                 pp = 12; yy -= 1
         return tot if found else None
 
-    # veri var mi kontrol (net kar veya faiz geliri gelmisse banka verisi var)
     has = any(q_inc.get((y, p), {}).get("net_kar") is not None
               or q_inc.get((y, p), {}).get("faiz_geliri") is not None
               for (y, p) in display_periods)
@@ -401,7 +387,6 @@ def build_company_bank(code, want_quarters=10):
         ozk = bal(y, p, "ozkaynaklar")
         aktif = bal(y, p, "toplam_aktif")
 
-        # ROE (TTM) = net kar / ortalama ozkaynak
         roe = None
         netk_ttm = ttm(y, p, "net_kar")
         py, pp = y, p
@@ -415,7 +400,6 @@ def build_company_bank(code, want_quarters=10):
             if avg:
                 roe = round(netk_ttm / avg * 100, 1)
 
-        # ROA (TTM) = net kar / ortalama aktif
         roa = None
         aktif_prev = bal(py, pp, "toplam_aktif")
         if netk_ttm is not None and aktif is not None:
@@ -455,14 +439,12 @@ def build_company_bank(code, want_quarters=10):
 
 def build_company(code, want_quarters=10):
     """Dispatcher: once sinai dene, olmazsa banka/finans dene."""
-    # 1) SINAI (mevcut, dokunulmadi)
     try:
         comp = build_company_sinai(code, want_quarters)
         if comp and any(q["satislar"] is not None for q in comp["quarters"]):
             return comp
     except Exception as e:
         print(f"  [{code}] sinai hata: {e}")
-    # 2) BANKA / FINANS
     try:
         comp = build_company_bank(code, want_quarters)
         if comp:
