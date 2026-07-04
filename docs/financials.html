@@ -327,9 +327,11 @@ function buildTable(id, last5, rows, allQ) {
 
 function drawBar(canvasId, key, labels, values, color, yoy) {
   if (charts[key]) charts[key].destroy();
+  // negatif degerler kirmizi, pozitifler grafigin kendi rengi
+  const barColors = values.map(v => (v !== null && v !== undefined && v < 0) ? "#ef5f5f" : color);
   charts[key] = new Chart(document.getElementById(canvasId), {
     type: 'bar',
-    data: { labels, datasets: [{ data: values, backgroundColor: color, borderRadius: 3 }] },
+    data: { labels, datasets: [{ data: values, backgroundColor: barColors, borderRadius: 3 }] },
     options: {
       responsive: true,
       plugins: {
