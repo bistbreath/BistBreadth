@@ -6,68 +6,113 @@
 <title>BIST Breadth — Fon Akışları</title>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-  :root { --bg:#131722; --panel:#1e222d; --text:#d1d4dc; --muted:#787b86; --border:#2a2e39; }
+  :root {
+    --bg:#131722; --panel:#1e222d; --text:#d1d4dc; --muted:#787b86;
+    --border:#2a2e39; --accent:#2962ff; --up:#26a69a; --down:#ef5350;
+  }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text);
-         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
   .wrap { max-width:1100px; margin:0 auto; padding:16px; }
-  h1 { font-size:20px; font-weight:600; margin:8px 0 2px; }
+  .topbar {
+    display:flex; align-items:baseline; justify-content:space-between;
+    flex-wrap:wrap; gap:8px; margin:8px 0 2px;
+  }
+  h1 { font-size:20px; font-weight:600; margin:0; }
+  .nav a {
+    color:var(--accent); font-size:14px; text-decoration:none; margin-left:16px;
+  }
+  .nav a:hover { text-decoration:underline; }
   .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
-  .panel { background:var(--panel); border:1px solid var(--border); border-radius:8px;
-           padding:12px 12px 6px; margin-bottom:16px; }
+  .panel {
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:12px 12px 6px; margin-bottom:16px;
+  }
   .panel h2 { font-size:14px; font-weight:600; margin:0 0 2px; }
-  .panel .desc { color:var(--muted); font-size:12px; margin:0 0 8px; }
-  .stat { font-size:13px; color:var(--muted); }
+  .panel .desc { color:var(--muted); font-size:12px; margin:0 0 8px; line-height:1.5; }
+  .stat { color:var(--muted); }
   .stat b { color:var(--text); font-weight:600; }
-  .pos { color:#26a69a; } .neg { color:#ef5350; }
+  .pos { color:var(--up); } .neg { color:var(--down); }
   .chart { width:100%; }
+  .err { color:var(--down); font-size:13px; padding:8px 0; }
+  footer { color:var(--muted); font-size:11px; text-align:center; padding:8px 0 24px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>BIST Breadth — Fon Akışları</h1>
+  <div class="topbar">
+    <h1>BIST Breadth — Fon Akışları</h1>
+    <nav class="nav">
+      <a href="financials/">Mali Tablolar →</a>
+    </nav>
+  </div>
   <div class="sub" id="updated">Yükleniyor…</div>
 
   <div class="panel">
     <h2>XU100</h2>
-    <p class="desc">Günlük mum + hacim (kaynak: Yahoo Finance)</p>
+    <p class="desc">Günlük mum + hacim · kaynak: Yahoo Finance</p>
     <div id="xu100" class="chart" style="height:420px"></div>
   </div>
 
   <div class="panel">
     <h2>Hisse senedi fonları — kümülatif net nakit akışı</h2>
-    <p class="desc">Pay adedi değişimi × fiyat ile hesaplanır; serbest ve yabancı hisse fonları hariç. Birim: milyar TL.
-      <span class="stat" id="hisseStat"></span></p>
+    <p class="desc">
+      AUM değişiminden getiri ayıklanarak hesaplanır; serbest ve yabancı hisse fonları hariç. Birim: milyar TL.
+      <span class="stat" id="hisseStat"></span>
+    </p>
     <div id="hisse" class="chart" style="height:260px"></div>
   </div>
 
   <div class="panel">
     <h2>Para piyasası fonları — kümülatif net nakit akışı</h2>
-    <p class="desc">Serbest para piyasası fonları hariç. Birim: milyar TL.
-      <span class="stat" id="ppfStat"></span></p>
+    <p class="desc">
+      Serbest para piyasası fonları hariç. Birim: milyar TL.
+      <span class="stat" id="ppfStat"></span>
+    </p>
     <div id="ppf" class="chart" style="height:260px"></div>
   </div>
+
+  <footer>
+    TEFAS verisi bir iş günü gecikmelidir · yatırım tavsiyesi değildir
+  </footer>
 </div>
 
 <script>
 const chartOpts = {
-  layout: { background: { color: '#1e222d' }, textColor: '#d1d4dc' },
+  layout: { background: { color: '#1e222d' }, textColor: '#d1d4dc', fontSize: 11 },
   grid: { vertLines: { color: '#2a2e39' }, horzLines: { color: '#2a2e39' } },
   timeScale: { borderColor: '#2a2e39' },
   rightPriceScale: { borderColor: '#2a2e39' },
   crosshair: { mode: 0 },
+  handleScale: { axisPressedMouseMove: true },
 };
 
 function fmtMilyar(v) {
-  return (v >= 0 ? '+' : '') + v.toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' mlr ₺';
+  const s = v >= 0 ? '+' : '';
+  return s + v.toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' mlr ₺';
+}
+
+function showError(msg) {
+  document.getElementById('updated').innerHTML =
+    '<span class="err">' + msg + '</span>';
 }
 
 async function init() {
-  const [xuRes, flowRes] = await Promise.all([
-    fetch('data/xu100.json'), fetch('data/flows.json')
-  ]);
-  const xu = (await xuRes.json()).data;
-  const flows = await flowRes.json();
+  let xu, flows;
+  try {
+    const [xuRes, flowRes] = await Promise.all([
+      fetch('data/xu100.json'),
+      fetch('data/flows.json'),
+    ]);
+    if (!xuRes.ok || !flowRes.ok) throw new Error('veri dosyası bulunamadı');
+    xu = (await xuRes.json()).data;
+    flows = await flowRes.json();
+  } catch (e) {
+    showError('Veri yüklenemedi (' + e.message + '). Backfill henüz çalışmadıysa data/ klasörü boş olabilir.');
+    return;
+  }
 
   document.getElementById('updated').textContent =
     'Son güncelleme: ' + flows.updated + ' · TEFAS verisi bir iş günü gecikmelidir';
@@ -79,32 +124,29 @@ async function init() {
     wickUpColor: '#26a69a', wickDownColor: '#ef5350', borderVisible: false,
   });
   candles.setData(xu.map(r => ({ time: r.t, open: r.o, high: r.h, low: r.l, close: r.c })));
-  const vol = c1.addHistogramSeries({
-    priceScaleId: '', priceFormat: { type: 'volume' },
-  });
+  const vol = c1.addHistogramSeries({ priceScaleId: '', priceFormat: { type: 'volume' } });
   c1.priceScale('').applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
   vol.setData(xu.map(r => ({
     time: r.t, value: r.v,
     color: r.c >= r.o ? 'rgba(38,166,154,0.45)' : 'rgba(239,83,80,0.45)',
   })));
 
-  // ---- Kumulatif akis grafikleri ----
+  // ---- Kümülatif akış grafikleri ----
   const dates = flows.series.dates;
   function flowChart(elId, arr, statId) {
-    const el = document.getElementById(elId);
-    const ch = LightweightCharts.createChart(el, chartOpts);
+    const ch = LightweightCharts.createChart(document.getElementById(elId), chartOpts);
     const s = ch.addBaselineSeries({
       baseValue: { type: 'price', price: 0 },
-      topLineColor: '#26a69a', topFillColor1: 'rgba(38,166,154,0.25)', topFillColor2: 'rgba(38,166,154,0.02)',
-      bottomLineColor: '#ef5350', bottomFillColor1: 'rgba(239,83,80,0.02)', bottomFillColor2: 'rgba(239,83,80,0.25)',
+      topLineColor: '#26a69a', topFillColor1: 'rgba(38,166,154,0.28)', topFillColor2: 'rgba(38,166,154,0.02)',
+      bottomLineColor: '#ef5350', bottomFillColor1: 'rgba(239,83,80,0.02)', bottomFillColor2: 'rgba(239,83,80,0.28)',
       lineWidth: 2,
     });
     s.setData(dates.map((d, i) => ({ time: d, value: arr[i] })));
     const last = arr[arr.length - 1];
-    const prev = arr.length > 21 ? arr[arr.length - 22] : 0;
+    const prev = arr.length > 21 ? arr[arr.length - 22] : arr[0];
     const delta = last - prev;
     document.getElementById(statId).innerHTML =
-      ' Toplam: <b>' + fmtMilyar(last) + '</b> · Son 21 gün: <b class="' +
+      ' · Toplam: <b>' + fmtMilyar(last) + '</b> · Son ~21 işlem günü: <b class="' +
       (delta >= 0 ? 'pos' : 'neg') + '">' + fmtMilyar(delta) + '</b>';
     return ch;
   }
@@ -113,15 +155,23 @@ async function init() {
 
   // ---- Zaman eksenlerini senkronize et ----
   const charts = [c1, c2, c3];
+  let syncing = false;
   charts.forEach(src => {
     src.timeScale().subscribeVisibleLogicalRangeChange(range => {
-      if (!range) return;
-      charts.forEach(dst => {
-        if (dst !== src) dst.timeScale().setVisibleLogicalRange(range);
-      });
+      if (!range || syncing) return;
+      syncing = true;
+      charts.forEach(dst => { if (dst !== src) dst.timeScale().setVisibleLogicalRange(range); });
+      syncing = false;
     });
   });
   c1.timeScale().fitContent();
+
+  // ---- Responsive genişlik ----
+  window.addEventListener('resize', () => {
+    [['xu100', c1], ['hisse', c2], ['ppf', c3]].forEach(([id, ch]) => {
+      ch.applyOptions({ width: document.getElementById(id).clientWidth });
+    });
+  });
 }
 init();
 </script>
