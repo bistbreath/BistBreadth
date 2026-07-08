@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
-"""XU100 gunluk OHLCV verisini Yahoo Finance'ten ceker -> data/xu100.json"""
+"""XU100 gunluk OHLCV -> docs/data/xu100.json"""
 import json
 import os
 
 import yfinance as yf
 
-OUT_PATH = "data/xu100.json"
+OUT_PATH = "docs/data/xu100.json"
 
 df = yf.download("XU100.IS", period="5y", interval="1d",
                  auto_adjust=False, progress=False)
 if df.empty:
     raise SystemExit("XU100 verisi bos geldi")
-
-# yfinance bazen MultiIndex kolon donduruyor
 if hasattr(df.columns, "levels"):
     df.columns = df.columns.get_level_values(0)
 
