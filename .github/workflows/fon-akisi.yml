@@ -2,7 +2,7 @@ name: Fon Akisi Guncelle
 
 on:
   schedule:
-    - cron: "30 7 * * 1-5"   # UTC 07:30 = TR 10:30, hafta ici (TEFAS T-1 verisi sabah kesinlesir)
+    - cron: "30 7 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
@@ -18,24 +18,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Bagimliliklar
-        run: pip install requests yfinance
-
+        run: pip install pytefas yfinance pandas
       - name: TEFAS fon akislari
         run: python scripts/tefas_flows.py ${{ github.event.inputs.mode || 'update' }}
-
       - name: XU100 verisi
         run: python scripts/fetch_xu100.py
-
       - name: Commit
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add data/
+          git add docs/data/
           git diff --staged --quiet || git commit -m "Veri guncellendi: $(date -u +%Y-%m-%d)"
           git push
