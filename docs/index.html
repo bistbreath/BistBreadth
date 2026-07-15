@@ -36,6 +36,11 @@
   .stat b { color:var(--text); font-weight:600; }
   .pos { color:var(--up); } .neg { color:var(--down); }
   .chart { width:100%; }
+  .legend {
+    font-size:12px; color:var(--text); min-height:16px; margin:0 0 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .legend .lmuted { color:var(--muted); }
   .err { color:var(--down); font-size:13px; padding:8px 0; }
   footer { color:var(--muted); font-size:11px; text-align:center; padding:8px 0 24px; }
 </style>
@@ -54,6 +59,38 @@
     <h2>XU100</h2>
     <p class="desc">Günlük mum + hacim · kaynak: Yahoo Finance</p>
     <div id="xu100" class="chart" style="height:420px"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Advance/Decline Line</h2>
+    <p class="desc">
+      Tüm BIST hisseleri için kümülatif (yükselen − düşen) toplamı, son ~1 yıl.
+      Mutlak seviye keyfidir; önemli olan şekli ve XU100 ile diverjansı.
+      <span class="stat" id="adStat"></span>
+    </p>
+    <div class="legend" id="adLegend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
+    <div id="adline" class="chart" style="height:240px"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Son 1 ayda ≥ %30 yükselen hisse sayısı</h2>
+    <p class="desc">21 işlem günü penceresi · kısa vadeli momentum patlaması sayacı</p>
+    <div class="legend" id="up30Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
+    <div id="up30" class="chart" style="height:200px"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Son 3 ayda ≥ %50 yükselen hisse sayısı</h2>
+    <p class="desc">63 işlem günü penceresi · orta vadeli momentum genişliği</p>
+    <div class="legend" id="up50Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
+    <div id="up50" class="chart" style="height:200px"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Son 6 ayda ≥ %70 yükselen hisse sayısı</h2>
+    <p class="desc">126 işlem günü penceresi · olgun trend / rejim göstergesi</p>
+    <div class="legend" id="up70Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
+    <div id="up70" class="chart" style="height:200px"></div>
   </div>
 
   <div class="panel">
@@ -114,6 +151,13 @@ async function init() {
     return;
   }
 
+  // Momentum verisi ayrı yüklenir: yoksa sayfanın kalanı çalışmaya devam eder
+  let mom = null;
+  try {
+    const momRes = await fetch('data/momentum.json');
+    if (momRes.ok) mom = await momRes.json();
+  } catch (e) { /* panel içinde not gösterilir */ }
+
   document.getElementById('updated').textContent =
     'Son güncelleme: ' + flows.updated + ' · TEFAS verisi bir iş günü gecikmelidir';
 
@@ -153,8 +197,64 @@ async function init() {
   const c2 = flowChart('hisse', flows.series.hisse.cum, 'hisseStat');
   const c3 = flowChart('ppf', flows.series.ppf.cum, 'ppfStat');
 
+  // ---- Momentum breadth + A/D Line ----
+  const momCharts = [];
+  if (mom) {
+    const md = mom.dates;
+    const idxByDate = new Map(md.map((d, i) => [d, i]));
+    const nf = v => v.toLocaleString('tr-TR');
+
+    function legendUpdater(chart, elId, render) {
+      const el = document.getElementById(elId);
+      chart.subscribeCrosshairMove(p => {
+        if (!p.time) {
+          el.innerHTML = '<span class="lmuted">imleci grafiğin üzerine getir</span>';
+          return;
+        }
+        const i = idxByDate.get(p.time);
+        if (i === undefined) return;
+        el.innerHTML = '<span class="lmuted">' + p.time + '</span> · ' + render(i);
+      });
+    }
+
+    // A/D Line
+    const cAd = LightweightCharts.createChart(document.getElementById('adline'), chartOpts);
+    const sAd = cAd.addLineSeries({ color: '#2962ff', lineWidth: 2, priceLineVisible: false });
+    sAd.setData(md.map((d, i) => ({ time: d, value: mom.ad[i] })));
+    legendUpdater(cAd, 'adLegend', i =>
+      'A/D: <b>' + nf(mom.ad[i]) + '</b> · Yükselen: <b class="pos">' + nf(mom.adv[i]) +
+      '</b> · Düşen: <b class="neg">' + nf(mom.dec[i]) + '</b> · Net: <b>' +
+      (mom.adv[i] - mom.dec[i] >= 0 ? '+' : '') + nf(mom.adv[i] - mom.dec[i]) + '</b>');
+    const n = md.length;
+    const adDelta = mom.ad[n - 1] - (n > 21 ? mom.ad[n - 22] : mom.ad[0]);
+    document.getElementById('adStat').innerHTML =
+      ' · Son ~21 işlem günü net: <b class="' + (adDelta >= 0 ? 'pos' : 'neg') + '">' +
+      (adDelta >= 0 ? '+' : '') + nf(adDelta) + '</b>';
+    momCharts.push(cAd);
+
+    // Momentum sayaçları (histogram)
+    function momChart(elId, legendId, counts, pcts, color, label) {
+      const ch = LightweightCharts.createChart(document.getElementById(elId), chartOpts);
+      const s = ch.addHistogramSeries({ color: color, priceLineVisible: false });
+      s.setData(md.map((d, i) => ({ time: d, value: counts[i] })));
+      legendUpdater(ch, legendId, i =>
+        label + ': <b>' + nf(counts[i]) + ' hisse</b>' +
+        (pcts[i] != null ? ' · evrenin <b>%' + pcts[i].toLocaleString('tr-TR') + '</b>\u2019i' : ''));
+      momCharts.push(ch);
+      return ch;
+    }
+    momChart('up30', 'up30Legend', mom.up30, mom.p30, 'rgba(38,166,154,0.85)',  '1 ayda ≥%30');
+    momChart('up50', 'up50Legend', mom.up50, mom.p50, 'rgba(41,98,255,0.85)',   '3 ayda ≥%50');
+    momChart('up70', 'up70Legend', mom.up70, mom.p70, 'rgba(171,71,188,0.85)',  '6 ayda ≥%70');
+  } else {
+    ['adLegend', 'up30Legend', 'up50Legend', 'up70Legend'].forEach(id => {
+      document.getElementById(id).innerHTML =
+        '<span class="err">momentum.json bulunamadı — workflow\u2019u backfill modunda bir kez çalıştır.</span>';
+    });
+  }
+
   // ---- Zaman eksenlerini senkronize et ----
-  const charts = [c1, c2, c3];
+  const charts = [c1, c2, c3].concat(momCharts);
   let syncing = false;
   charts.forEach(src => {
     src.timeScale().subscribeVisibleLogicalRangeChange(range => {
@@ -167,8 +267,13 @@ async function init() {
   c1.timeScale().fitContent();
 
   // ---- Responsive genişlik ----
+  const chartIds = [['xu100', c1], ['hisse', c2], ['ppf', c3]];
+  if (momCharts.length) {
+    chartIds.push(['adline', momCharts[0]], ['up30', momCharts[1]],
+                  ['up50', momCharts[2]], ['up70', momCharts[3]]);
+  }
   window.addEventListener('resize', () => {
-    [['xu100', c1], ['hisse', c2], ['ppf', c3]].forEach(([id, ch]) => {
+    chartIds.forEach(([id, ch]) => {
       ch.applyOptions({ width: document.getElementById(id).clientWidth });
     });
   });
