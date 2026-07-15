@@ -1,0 +1,36 @@
+name: Momentum Breadth Guncelle
+ 
+on:
+  schedule:
+    # 16:00 UTC = 19:00 TRT — BIST kapanisindan sonra, Yahoo EOD verisi oturmus olur
+    - cron: "0 16 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "backfill veya update"
+        required: false
+        default: "update"
+ 
+permissions:
+  contents: write
+ 
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Bagimliliklar
+        run: pip install yfinance pandas
+      - name: Momentum breadth + A/D line
+        run: python scripts/momentum_breadth.py ${{ github.event.inputs.mode || 'update' }}
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/data/
+          git diff --staged --quiet || git commit -m "Momentum verisi guncellendi: $(date -u +%Y-%m-%d)"
+          git push
+ 
