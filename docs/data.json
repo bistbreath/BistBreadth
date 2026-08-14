@@ -375965,5 +375965,3012 @@
         "pct_vs_open": -0.36
       }
     ]
+  },
+  {
+    "timestamp": "2026-08-14 16:38:02",
+    "total_tracked": 599,
+    "positive": 329,
+    "negative": 252,
+    "up_4pct": 63,
+    "down_4pct": 20,
+    "positive_vs_open": 296,
+    "negative_vs_open": 270,
+    "details": [
+      {
+        "code": "A1CAP",
+        "pct_vs_prev_close": -0.98,
+        "pct_vs_open": -1.46
+      },
+      {
+        "code": "A1YEN",
+        "pct_vs_prev_close": 3.32,
+        "pct_vs_open": 3.32
+      },
+      {
+        "code": "AAGYO",
+        "pct_vs_prev_close": -0.16,
+        "pct_vs_open": -0.39
+      },
+      {
+        "code": "ACSEL",
+        "pct_vs_prev_close": 0.66,
+        "pct_vs_open": 0.25
+      },
+      {
+        "code": "ADEL",
+        "pct_vs_prev_close": -2.13,
+        "pct_vs_open": -2.13
+      },
+      {
+        "code": "ADESE",
+        "pct_vs_prev_close": -1.15,
+        "pct_vs_open": -1.15
+      },
+      {
+        "code": "ADGYO",
+        "pct_vs_prev_close": 5.33,
+        "pct_vs_open": 5.23
+      },
+      {
+        "code": "AEFES",
+        "pct_vs_prev_close": -0.36,
+        "pct_vs_open": -0.1
+      },
+      {
+        "code": "AFYON",
+        "pct_vs_prev_close": 0.4,
+        "pct_vs_open": 0.4
+      },
+      {
+        "code": "AGESA",
+        "pct_vs_prev_close": -0.08,
+        "pct_vs_open": -0.08
+      },
+      {
+        "code": "AGHOL",
+        "pct_vs_prev_close": -1.38,
+        "pct_vs_open": -2.6
+      },
+      {
+        "code": "AGROT",
+        "pct_vs_prev_close": 0.43,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "AGYO",
+        "pct_vs_prev_close": 0.41,
+        "pct_vs_open": 0.41
+      },
+      {
+        "code": "AHGAZ",
+        "pct_vs_prev_close": -0.18,
+        "pct_vs_open": -1.86
+      },
+      {
+        "code": "AHSGY",
+        "pct_vs_prev_close": 0.58,
+        "pct_vs_open": 0.21
+      },
+      {
+        "code": "AKBNK",
+        "pct_vs_prev_close": -0.58,
+        "pct_vs_open": -0.51
+      },
+      {
+        "code": "AKCNS",
+        "pct_vs_prev_close": -0.9,
+        "pct_vs_open": -1.22
+      },
+      {
+        "code": "AKENR",
+        "pct_vs_prev_close": 9.99,
+        "pct_vs_open": 7.44
+      },
+      {
+        "code": "AKFIS",
+        "pct_vs_prev_close": -5.24,
+        "pct_vs_open": -5.24
+      },
+      {
+        "code": "AKFYE",
+        "pct_vs_prev_close": -1.37,
+        "pct_vs_open": -1.45
+      },
+      {
+        "code": "AKHAN",
+        "pct_vs_prev_close": 1.48,
+        "pct_vs_open": 1.34
+      },
+      {
+        "code": "AKMGY",
+        "pct_vs_prev_close": 4.55,
+        "pct_vs_open": 4.75
+      },
+      {
+        "code": "AKSA",
+        "pct_vs_prev_close": -3.74,
+        "pct_vs_open": -1.99
+      },
+      {
+        "code": "AKSEN",
+        "pct_vs_prev_close": 2.51,
+        "pct_vs_open": 4.25
+      },
+      {
+        "code": "AKSGY",
+        "pct_vs_prev_close": 0.52,
+        "pct_vs_open": 0.21
+      },
+      {
+        "code": "AKSUE",
+        "pct_vs_prev_close": -3.63,
+        "pct_vs_open": -3.51
+      },
+      {
+        "code": "AKYHO",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "ALARK",
+        "pct_vs_prev_close": 0.88,
+        "pct_vs_open": 0.98
+      },
+      {
+        "code": "ALBRK",
+        "pct_vs_prev_close": 0.12,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "ALBTN",
+        "pct_vs_prev_close": -1.06,
+        "pct_vs_open": -1.21
+      },
+      {
+        "code": "ALCAR",
+        "pct_vs_prev_close": 0.28,
+        "pct_vs_open": -0.28
+      },
+      {
+        "code": "ALCTL",
+        "pct_vs_prev_close": -6.91,
+        "pct_vs_open": -6.91
+      },
+      {
+        "code": "ALFAS",
+        "pct_vs_prev_close": 1.09,
+        "pct_vs_open": 1.89
+      },
+      {
+        "code": "ALGYO",
+        "pct_vs_prev_close": 6.12,
+        "pct_vs_open": 5.51
+      },
+      {
+        "code": "ALKA",
+        "pct_vs_prev_close": -0.37,
+        "pct_vs_open": -0.24
+      },
+      {
+        "code": "ALKIM",
+        "pct_vs_prev_close": 2.02,
+        "pct_vs_open": 2.02
+      },
+      {
+        "code": "ALKLC",
+        "pct_vs_prev_close": 0.41,
+        "pct_vs_open": 0.41
+      },
+      {
+        "code": "ALVES",
+        "pct_vs_prev_close": -1.69,
+        "pct_vs_open": -2.23
+      },
+      {
+        "code": "ANELE",
+        "pct_vs_prev_close": -0.8,
+        "pct_vs_open": -0.8
+      },
+      {
+        "code": "ANGEN",
+        "pct_vs_prev_close": 0.33,
+        "pct_vs_open": 0.22
+      },
+      {
+        "code": "ANHYT",
+        "pct_vs_prev_close": -2.02,
+        "pct_vs_open": -2.2
+      },
+      {
+        "code": "ANSGR",
+        "pct_vs_prev_close": -0.35,
+        "pct_vs_open": -0.49
+      },
+      {
+        "code": "ARASE",
+        "pct_vs_prev_close": 9.98,
+        "pct_vs_open": 3.43
+      },
+      {
+        "code": "ARCLK",
+        "pct_vs_prev_close": 0.16,
+        "pct_vs_open": 0.32
+      },
+      {
+        "code": "ARDYZ",
+        "pct_vs_prev_close": -0.06,
+        "pct_vs_open": 1.1
+      },
+      {
+        "code": "ARENA",
+        "pct_vs_prev_close": 2.32,
+        "pct_vs_open": 2.72
+      },
+      {
+        "code": "ARFYE",
+        "pct_vs_prev_close": 7.25,
+        "pct_vs_open": 6.78
+      },
+      {
+        "code": "ARMGD",
+        "pct_vs_prev_close": 4.78,
+        "pct_vs_open": 4.78
+      },
+      {
+        "code": "ARSAN",
+        "pct_vs_prev_close": 4.19,
+        "pct_vs_open": 3.57
+      },
+      {
+        "code": "ARTMS",
+        "pct_vs_prev_close": 0.17,
+        "pct_vs_open": -0.55
+      },
+      {
+        "code": "ARZUM",
+        "pct_vs_prev_close": 2.47,
+        "pct_vs_open": 3.11
+      },
+      {
+        "code": "ASELS",
+        "pct_vs_prev_close": -0.76,
+        "pct_vs_open": -1.38
+      },
+      {
+        "code": "ASGYO",
+        "pct_vs_prev_close": -0.27,
+        "pct_vs_open": -0.36
+      },
+      {
+        "code": "ASTOR",
+        "pct_vs_prev_close": -1.3,
+        "pct_vs_open": -1.66
+      },
+      {
+        "code": "ASUZU",
+        "pct_vs_prev_close": 0.21,
+        "pct_vs_open": 0.21
+      },
+      {
+        "code": "ATAGY",
+        "pct_vs_prev_close": -0.86,
+        "pct_vs_open": -0.86
+      },
+      {
+        "code": "ATAKP",
+        "pct_vs_prev_close": -0.7,
+        "pct_vs_open": -1.05
+      },
+      {
+        "code": "ATATP",
+        "pct_vs_prev_close": 6.92,
+        "pct_vs_open": 7.33
+      },
+      {
+        "code": "ATATR",
+        "pct_vs_prev_close": 4.48,
+        "pct_vs_open": 0.07
+      },
+      {
+        "code": "ATEKS",
+        "pct_vs_prev_close": 3.57,
+        "pct_vs_open": 1.46
+      },
+      {
+        "code": "ATLAS",
+        "pct_vs_prev_close": -0.92,
+        "pct_vs_open": -1.38
+      },
+      {
+        "code": "ATSYH",
+        "pct_vs_prev_close": 5.37,
+        "pct_vs_open": 5.37
+      },
+      {
+        "code": "AVGYO",
+        "pct_vs_prev_close": 4.7,
+        "pct_vs_open": 4.63
+      },
+      {
+        "code": "AVOD",
+        "pct_vs_prev_close": 1.28,
+        "pct_vs_open": 0.76
+      },
+      {
+        "code": "AVPGY",
+        "pct_vs_prev_close": 0.29,
+        "pct_vs_open": 0.29
+      },
+      {
+        "code": "AVTUR",
+        "pct_vs_prev_close": 2.98,
+        "pct_vs_open": 3.48
+      },
+      {
+        "code": "AYCES",
+        "pct_vs_prev_close": 7.06,
+        "pct_vs_open": 6.71
+      },
+      {
+        "code": "AYDEM",
+        "pct_vs_prev_close": -2.95,
+        "pct_vs_open": -6.02
+      },
+      {
+        "code": "AYEN",
+        "pct_vs_prev_close": 0.24,
+        "pct_vs_open": -1.6
+      },
+      {
+        "code": "AYES",
+        "pct_vs_prev_close": -1.36,
+        "pct_vs_open": -1.36
+      },
+      {
+        "code": "AYGAZ",
+        "pct_vs_prev_close": 6.95,
+        "pct_vs_open": 6.68
+      },
+      {
+        "code": "AZTEK",
+        "pct_vs_prev_close": 1.9,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "BAHKM",
+        "pct_vs_prev_close": 0.67,
+        "pct_vs_open": 0.5
+      },
+      {
+        "code": "BAKAB",
+        "pct_vs_prev_close": -0.27,
+        "pct_vs_open": 1.17
+      },
+      {
+        "code": "BALAT",
+        "pct_vs_prev_close": -0.28,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "BALSU",
+        "pct_vs_prev_close": 0.74,
+        "pct_vs_open": 0.55
+      },
+      {
+        "code": "BANVT",
+        "pct_vs_prev_close": -1.13,
+        "pct_vs_open": -1.13
+      },
+      {
+        "code": "BARMA",
+        "pct_vs_prev_close": -9.99,
+        "pct_vs_open": -4.37
+      },
+      {
+        "code": "BASCM",
+        "pct_vs_prev_close": -0.07,
+        "pct_vs_open": -0.45
+      },
+      {
+        "code": "BASGZ",
+        "pct_vs_prev_close": 0.23,
+        "pct_vs_open": -0.37
+      },
+      {
+        "code": "BAYRK",
+        "pct_vs_prev_close": 0.71,
+        "pct_vs_open": 0.71
+      },
+      {
+        "code": "BEGYO",
+        "pct_vs_prev_close": 1.42,
+        "pct_vs_open": 1.42
+      },
+      {
+        "code": "BERA",
+        "pct_vs_prev_close": 2.03,
+        "pct_vs_open": 2.03
+      },
+      {
+        "code": "BESLR",
+        "pct_vs_prev_close": -2.08,
+        "pct_vs_open": -2.75
+      },
+      {
+        "code": "BESTE",
+        "pct_vs_prev_close": 4.98,
+        "pct_vs_open": 3.52
+      },
+      {
+        "code": "BETAE",
+        "pct_vs_prev_close": 2.57,
+        "pct_vs_open": 1.27
+      },
+      {
+        "code": "BEYAZ",
+        "pct_vs_prev_close": -0.84,
+        "pct_vs_open": -2.32
+      },
+      {
+        "code": "BIENY",
+        "pct_vs_prev_close": -0.58,
+        "pct_vs_open": -0.58
+      },
+      {
+        "code": "BIGCH",
+        "pct_vs_prev_close": -0.48,
+        "pct_vs_open": -0.64
+      },
+      {
+        "code": "BIGEN",
+        "pct_vs_prev_close": 2.22,
+        "pct_vs_open": 3.04
+      },
+      {
+        "code": "BIGTK",
+        "pct_vs_prev_close": 4.17,
+        "pct_vs_open": 11.17
+      },
+      {
+        "code": "BIMAS",
+        "pct_vs_prev_close": -0.33,
+        "pct_vs_open": -0.46
+      },
+      {
+        "code": "BINBN",
+        "pct_vs_prev_close": -0.28,
+        "pct_vs_open": -0.28
+      },
+      {
+        "code": "BINHO",
+        "pct_vs_prev_close": 1.5,
+        "pct_vs_open": 1.4
+      },
+      {
+        "code": "BIZIM",
+        "pct_vs_prev_close": 0.84,
+        "pct_vs_open": 0.75
+      },
+      {
+        "code": "BJKAS",
+        "pct_vs_prev_close": -8.33,
+        "pct_vs_open": -8.78
+      },
+      {
+        "code": "BLCYT",
+        "pct_vs_prev_close": 0.47,
+        "pct_vs_open": 0.57
+      },
+      {
+        "code": "BLUME",
+        "pct_vs_prev_close": -0.16,
+        "pct_vs_open": -0.16
+      },
+      {
+        "code": "BMSCH",
+        "pct_vs_prev_close": 0.76,
+        "pct_vs_open": -0.75
+      },
+      {
+        "code": "BMSTL",
+        "pct_vs_prev_close": -1.23,
+        "pct_vs_open": -1.48
+      },
+      {
+        "code": "BNTAS",
+        "pct_vs_prev_close": -1.25,
+        "pct_vs_open": -1.25
+      },
+      {
+        "code": "BOBET",
+        "pct_vs_prev_close": -2.55,
+        "pct_vs_open": -2.7
+      },
+      {
+        "code": "BORLS",
+        "pct_vs_prev_close": -0.93,
+        "pct_vs_open": -2.3
+      },
+      {
+        "code": "BORSK",
+        "pct_vs_prev_close": 2.02,
+        "pct_vs_open": 1.85
+      },
+      {
+        "code": "BOSSA",
+        "pct_vs_prev_close": 4.73,
+        "pct_vs_open": 0.85
+      },
+      {
+        "code": "BRISA",
+        "pct_vs_prev_close": -1.86,
+        "pct_vs_open": -3.54
+      },
+      {
+        "code": "BRKO",
+        "pct_vs_prev_close": 5.79,
+        "pct_vs_open": 4.07
+      },
+      {
+        "code": "BRKSN",
+        "pct_vs_prev_close": 0.62,
+        "pct_vs_open": 1.12
+      },
+      {
+        "code": "BRKVY",
+        "pct_vs_prev_close": 1.67,
+        "pct_vs_open": 0.39
+      },
+      {
+        "code": "BRLSM",
+        "pct_vs_prev_close": 2.64,
+        "pct_vs_open": 2.64
+      },
+      {
+        "code": "BRMEN",
+        "pct_vs_prev_close": -2.41,
+        "pct_vs_open": -0.13
+      },
+      {
+        "code": "BRSAN",
+        "pct_vs_prev_close": 4.38,
+        "pct_vs_open": 1.47
+      },
+      {
+        "code": "BRYAT",
+        "pct_vs_prev_close": 0.53,
+        "pct_vs_open": -0.52
+      },
+      {
+        "code": "BSOKE",
+        "pct_vs_prev_close": -2.8,
+        "pct_vs_open": -2.8
+      },
+      {
+        "code": "BTCIM",
+        "pct_vs_prev_close": -0.21,
+        "pct_vs_open": -0.64
+      },
+      {
+        "code": "BUCIM",
+        "pct_vs_prev_close": 1.81,
+        "pct_vs_open": 1.81
+      },
+      {
+        "code": "BULGS",
+        "pct_vs_prev_close": -0.68,
+        "pct_vs_open": -0.68
+      },
+      {
+        "code": "BURCE",
+        "pct_vs_prev_close": 1.83,
+        "pct_vs_open": 1.6
+      },
+      {
+        "code": "BURVA",
+        "pct_vs_prev_close": -2.63,
+        "pct_vs_open": 2.33
+      },
+      {
+        "code": "BVSAN",
+        "pct_vs_prev_close": 0.91,
+        "pct_vs_open": 0.64
+      },
+      {
+        "code": "BYDNR",
+        "pct_vs_prev_close": 1.47,
+        "pct_vs_open": 1.42
+      },
+      {
+        "code": "CANTE",
+        "pct_vs_prev_close": 0.85,
+        "pct_vs_open": 0.85
+      },
+      {
+        "code": "CASA",
+        "pct_vs_prev_close": 4.73,
+        "pct_vs_open": -1.35
+      },
+      {
+        "code": "CATES",
+        "pct_vs_prev_close": 3.6,
+        "pct_vs_open": 3.08
+      },
+      {
+        "code": "CCOLA",
+        "pct_vs_prev_close": -3.0,
+        "pct_vs_open": -3.23
+      },
+      {
+        "code": "CELHA",
+        "pct_vs_prev_close": 3.66,
+        "pct_vs_open": 4.73
+      },
+      {
+        "code": "CEMAS",
+        "pct_vs_prev_close": 0.74,
+        "pct_vs_open": 0.49
+      },
+      {
+        "code": "CEMTS",
+        "pct_vs_prev_close": 1.37,
+        "pct_vs_open": 1.37
+      },
+      {
+        "code": "CEMZY",
+        "pct_vs_prev_close": -0.68,
+        "pct_vs_open": -0.38
+      },
+      {
+        "code": "CEOEM",
+        "pct_vs_prev_close": -0.08,
+        "pct_vs_open": 0.17
+      },
+      {
+        "code": "CGCAM",
+        "pct_vs_prev_close": -0.71,
+        "pct_vs_open": -0.82
+      },
+      {
+        "code": "CIMSA",
+        "pct_vs_prev_close": -0.7,
+        "pct_vs_open": -0.22
+      },
+      {
+        "code": "CLEBI",
+        "pct_vs_prev_close": 1.76,
+        "pct_vs_open": 1.35
+      },
+      {
+        "code": "CMBTN",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.13
+      },
+      {
+        "code": "CMENT",
+        "pct_vs_prev_close": 1.48,
+        "pct_vs_open": 1.48
+      },
+      {
+        "code": "CONSE",
+        "pct_vs_prev_close": 1.33,
+        "pct_vs_open": 0.88
+      },
+      {
+        "code": "COSMO",
+        "pct_vs_prev_close": 0.08,
+        "pct_vs_open": 3.49
+      },
+      {
+        "code": "CRDFA",
+        "pct_vs_prev_close": -2.42,
+        "pct_vs_open": -2.42
+      },
+      {
+        "code": "CRFSA",
+        "pct_vs_prev_close": 10.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "CUSAN",
+        "pct_vs_prev_close": -6.52,
+        "pct_vs_open": -5.63
+      },
+      {
+        "code": "CVKMD",
+        "pct_vs_prev_close": 3.46,
+        "pct_vs_open": 3.52
+      },
+      {
+        "code": "CWENE",
+        "pct_vs_prev_close": -1.63,
+        "pct_vs_open": -1.63
+      },
+      {
+        "code": "DAGI",
+        "pct_vs_prev_close": 1.55,
+        "pct_vs_open": 1.03
+      },
+      {
+        "code": "DAPGM",
+        "pct_vs_prev_close": 0.69,
+        "pct_vs_open": 0.11
+      },
+      {
+        "code": "DARDL",
+        "pct_vs_prev_close": 2.41,
+        "pct_vs_open": 1.8
+      },
+      {
+        "code": "DCTTR",
+        "pct_vs_prev_close": -1.58,
+        "pct_vs_open": -1.45
+      },
+      {
+        "code": "DENGE",
+        "pct_vs_prev_close": 0.45,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "DERHL",
+        "pct_vs_prev_close": -1.32,
+        "pct_vs_open": -1.75
+      },
+      {
+        "code": "DERIM",
+        "pct_vs_prev_close": 4.35,
+        "pct_vs_open": 3.63
+      },
+      {
+        "code": "DESA",
+        "pct_vs_prev_close": 7.13,
+        "pct_vs_open": 7.13
+      },
+      {
+        "code": "DESPC",
+        "pct_vs_prev_close": 0.2,
+        "pct_vs_open": -0.2
+      },
+      {
+        "code": "DEVA",
+        "pct_vs_prev_close": -0.62,
+        "pct_vs_open": -0.97
+      },
+      {
+        "code": "DGATE",
+        "pct_vs_prev_close": -0.09,
+        "pct_vs_open": -0.09
+      },
+      {
+        "code": "DGGYO",
+        "pct_vs_prev_close": 9.23,
+        "pct_vs_open": 9.04
+      },
+      {
+        "code": "DGNMO",
+        "pct_vs_prev_close": 0.46,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "DIRIT",
+        "pct_vs_prev_close": 3.85,
+        "pct_vs_open": 1.81
+      },
+      {
+        "code": "DITAS",
+        "pct_vs_prev_close": 3.56,
+        "pct_vs_open": 2.88
+      },
+      {
+        "code": "DMRGD",
+        "pct_vs_prev_close": 5.34,
+        "pct_vs_open": 5.45
+      },
+      {
+        "code": "DMSAS",
+        "pct_vs_prev_close": 4.56,
+        "pct_vs_open": 4.56
+      },
+      {
+        "code": "DNISI",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.26
+      },
+      {
+        "code": "DOAS",
+        "pct_vs_prev_close": -1.55,
+        "pct_vs_open": -1.55
+      },
+      {
+        "code": "DOCO",
+        "pct_vs_prev_close": 0.56,
+        "pct_vs_open": 0.47
+      },
+      {
+        "code": "DOFRB",
+        "pct_vs_prev_close": 0.07,
+        "pct_vs_open": 0.07
+      },
+      {
+        "code": "DOGUB",
+        "pct_vs_prev_close": -0.89,
+        "pct_vs_open": -1.52
+      },
+      {
+        "code": "DOHOL",
+        "pct_vs_prev_close": -1.04,
+        "pct_vs_open": -0.95
+      },
+      {
+        "code": "DOKTA",
+        "pct_vs_prev_close": 2.64,
+        "pct_vs_open": 1.78
+      },
+      {
+        "code": "DSTKF",
+        "pct_vs_prev_close": 0.05,
+        "pct_vs_open": -0.47
+      },
+      {
+        "code": "DUNYH",
+        "pct_vs_prev_close": 36.57,
+        "pct_vs_open": -0.67
+      },
+      {
+        "code": "DURDO",
+        "pct_vs_prev_close": 1.58,
+        "pct_vs_open": 0.78
+      },
+      {
+        "code": "DURKN",
+        "pct_vs_prev_close": 1.68,
+        "pct_vs_open": 1.68
+      },
+      {
+        "code": "DYOBY",
+        "pct_vs_prev_close": 4.49,
+        "pct_vs_open": 3.53
+      },
+      {
+        "code": "DZGYO",
+        "pct_vs_prev_close": 1.1,
+        "pct_vs_open": 1.39
+      },
+      {
+        "code": "EBEBK",
+        "pct_vs_prev_close": -2.7,
+        "pct_vs_open": -2.7
+      },
+      {
+        "code": "ECILC",
+        "pct_vs_prev_close": -2.15,
+        "pct_vs_open": -1.89
+      },
+      {
+        "code": "ECOGR",
+        "pct_vs_prev_close": 1.58,
+        "pct_vs_open": 1.58
+      },
+      {
+        "code": "ECZYT",
+        "pct_vs_prev_close": -0.54,
+        "pct_vs_open": -0.85
+      },
+      {
+        "code": "EDATA",
+        "pct_vs_prev_close": 2.44,
+        "pct_vs_open": 2.22
+      },
+      {
+        "code": "EDIP",
+        "pct_vs_prev_close": -4.33,
+        "pct_vs_open": -4.68
+      },
+      {
+        "code": "EFOR",
+        "pct_vs_prev_close": -4.08,
+        "pct_vs_open": -3.62
+      },
+      {
+        "code": "EGEEN",
+        "pct_vs_prev_close": -0.1,
+        "pct_vs_open": -0.33
+      },
+      {
+        "code": "EGEGY",
+        "pct_vs_prev_close": 0.36,
+        "pct_vs_open": -0.22
+      },
+      {
+        "code": "EGEPO",
+        "pct_vs_prev_close": -1.72,
+        "pct_vs_open": -2.09
+      },
+      {
+        "code": "EGGUB",
+        "pct_vs_prev_close": 7.53,
+        "pct_vs_open": 7.53
+      },
+      {
+        "code": "EGPRO",
+        "pct_vs_prev_close": 0.74,
+        "pct_vs_open": -0.22
+      },
+      {
+        "code": "EGSER",
+        "pct_vs_prev_close": 4.86,
+        "pct_vs_open": 3.42
+      },
+      {
+        "code": "EKDMR",
+        "pct_vs_prev_close": 2.07,
+        "pct_vs_open": 1.45
+      },
+      {
+        "code": "EKGYO",
+        "pct_vs_prev_close": -0.05,
+        "pct_vs_open": 0.11
+      },
+      {
+        "code": "EKIM",
+        "pct_vs_prev_close": 3.88,
+        "pct_vs_open": 3.09
+      },
+      {
+        "code": "EKIZ",
+        "pct_vs_prev_close": 0.41,
+        "pct_vs_open": 5.56
+      },
+      {
+        "code": "EKOS",
+        "pct_vs_prev_close": -0.55,
+        "pct_vs_open": -1.44
+      },
+      {
+        "code": "EKSUN",
+        "pct_vs_prev_close": 0.33,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "ELITE",
+        "pct_vs_prev_close": 1.97,
+        "pct_vs_open": 0.72
+      },
+      {
+        "code": "EMKEL",
+        "pct_vs_prev_close": 2.1,
+        "pct_vs_open": 1.69
+      },
+      {
+        "code": "EMNIS",
+        "pct_vs_prev_close": -0.69,
+        "pct_vs_open": 0.63
+      },
+      {
+        "code": "EMPAE",
+        "pct_vs_prev_close": -2.04,
+        "pct_vs_open": 2.66
+      },
+      {
+        "code": "ENDAE",
+        "pct_vs_prev_close": 5.76,
+        "pct_vs_open": 6.28
+      },
+      {
+        "code": "ENERY",
+        "pct_vs_prev_close": -0.11,
+        "pct_vs_open": -0.22
+      },
+      {
+        "code": "ENJSA",
+        "pct_vs_prev_close": -1.21,
+        "pct_vs_open": -1.21
+      },
+      {
+        "code": "ENKAI",
+        "pct_vs_prev_close": 1.28,
+        "pct_vs_open": 1.05
+      },
+      {
+        "code": "ENPRA",
+        "pct_vs_prev_close": -0.27,
+        "pct_vs_open": -0.35
+      },
+      {
+        "code": "ENSRI",
+        "pct_vs_prev_close": 1.97,
+        "pct_vs_open": 1.77
+      },
+      {
+        "code": "ENTRA",
+        "pct_vs_prev_close": 0.86,
+        "pct_vs_open": 0.65
+      },
+      {
+        "code": "EPLAS",
+        "pct_vs_prev_close": 1.08,
+        "pct_vs_open": 0.54
+      },
+      {
+        "code": "ERBOS",
+        "pct_vs_prev_close": 1.54,
+        "pct_vs_open": 1.47
+      },
+      {
+        "code": "ERCB",
+        "pct_vs_prev_close": -0.75,
+        "pct_vs_open": -0.75
+      },
+      {
+        "code": "EREGL",
+        "pct_vs_prev_close": -2.41,
+        "pct_vs_open": -2.76
+      },
+      {
+        "code": "ERSU",
+        "pct_vs_prev_close": -1.57,
+        "pct_vs_open": -1.03
+      },
+      {
+        "code": "ESCAR",
+        "pct_vs_prev_close": 3.56,
+        "pct_vs_open": 3.37
+      },
+      {
+        "code": "ESCOM",
+        "pct_vs_prev_close": -0.33,
+        "pct_vs_open": -0.98
+      },
+      {
+        "code": "ESEN",
+        "pct_vs_prev_close": 1.77,
+        "pct_vs_open": 1.47
+      },
+      {
+        "code": "ETILR",
+        "pct_vs_prev_close": 0.83,
+        "pct_vs_open": 0.83
+      },
+      {
+        "code": "ETYAT",
+        "pct_vs_prev_close": 1.46,
+        "pct_vs_open": 1.46
+      },
+      {
+        "code": "EUHOL",
+        "pct_vs_prev_close": -5.19,
+        "pct_vs_open": 4.55
+      },
+      {
+        "code": "EUKYO",
+        "pct_vs_prev_close": -0.38,
+        "pct_vs_open": 0.7
+      },
+      {
+        "code": "EUPWR",
+        "pct_vs_prev_close": 3.48,
+        "pct_vs_open": 3.26
+      },
+      {
+        "code": "EUREN",
+        "pct_vs_prev_close": 2.12,
+        "pct_vs_open": 2.12
+      },
+      {
+        "code": "EUYO",
+        "pct_vs_prev_close": 2.71,
+        "pct_vs_open": -3.24
+      },
+      {
+        "code": "FADE",
+        "pct_vs_prev_close": -0.38,
+        "pct_vs_open": -0.76
+      },
+      {
+        "code": "FENER",
+        "pct_vs_prev_close": -1.89,
+        "pct_vs_open": -2.19
+      },
+      {
+        "code": "FLAP",
+        "pct_vs_prev_close": -0.28,
+        "pct_vs_open": -0.28
+      },
+      {
+        "code": "FMIZP",
+        "pct_vs_prev_close": 0.59,
+        "pct_vs_open": 0.59
+      },
+      {
+        "code": "FORMT",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.58
+      },
+      {
+        "code": "FORTE",
+        "pct_vs_prev_close": 0.51,
+        "pct_vs_open": 0.51
+      },
+      {
+        "code": "FRIGO",
+        "pct_vs_prev_close": 1.32,
+        "pct_vs_open": 0.87
+      },
+      {
+        "code": "FRMPL",
+        "pct_vs_prev_close": 4.66,
+        "pct_vs_open": 4.66
+      },
+      {
+        "code": "FROTO",
+        "pct_vs_prev_close": -0.63,
+        "pct_vs_open": -0.94
+      },
+      {
+        "code": "FZLGY",
+        "pct_vs_prev_close": 0.47,
+        "pct_vs_open": -0.09
+      },
+      {
+        "code": "GARAN",
+        "pct_vs_prev_close": 0.54,
+        "pct_vs_open": 0.62
+      },
+      {
+        "code": "GARFA",
+        "pct_vs_prev_close": 1.84,
+        "pct_vs_open": 1.45
+      },
+      {
+        "code": "GATEG",
+        "pct_vs_prev_close": 0.32,
+        "pct_vs_open": 0.32
+      },
+      {
+        "code": "GEDIK",
+        "pct_vs_prev_close": -1.25,
+        "pct_vs_open": -1.55
+      },
+      {
+        "code": "GEDZA",
+        "pct_vs_prev_close": 0.65,
+        "pct_vs_open": 0.79
+      },
+      {
+        "code": "GENIL",
+        "pct_vs_prev_close": -0.74,
+        "pct_vs_open": -1.01
+      },
+      {
+        "code": "GENKM",
+        "pct_vs_prev_close": -2.2,
+        "pct_vs_open": 2.7
+      },
+      {
+        "code": "GENTS",
+        "pct_vs_prev_close": -1.87,
+        "pct_vs_open": -3.32
+      },
+      {
+        "code": "GEREL",
+        "pct_vs_prev_close": 3.92,
+        "pct_vs_open": 3.92
+      },
+      {
+        "code": "GESAN",
+        "pct_vs_prev_close": 3.07,
+        "pct_vs_open": 2.88
+      },
+      {
+        "code": "GIPTA",
+        "pct_vs_prev_close": 5.06,
+        "pct_vs_open": 2.41
+      },
+      {
+        "code": "GLBMD",
+        "pct_vs_prev_close": 3.23,
+        "pct_vs_open": 3.15
+      },
+      {
+        "code": "GLCVY",
+        "pct_vs_prev_close": 0.69,
+        "pct_vs_open": 0.69
+      },
+      {
+        "code": "GLRMK",
+        "pct_vs_prev_close": -2.95,
+        "pct_vs_open": -2.95
+      },
+      {
+        "code": "GLRYH",
+        "pct_vs_prev_close": -0.96,
+        "pct_vs_open": -0.96
+      },
+      {
+        "code": "GLYHO",
+        "pct_vs_prev_close": -0.98,
+        "pct_vs_open": -0.92
+      },
+      {
+        "code": "GMTAS",
+        "pct_vs_prev_close": -2.12,
+        "pct_vs_open": -2.65
+      },
+      {
+        "code": "GOKNR",
+        "pct_vs_prev_close": -9.98,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "GOLDA",
+        "pct_vs_prev_close": 2.99,
+        "pct_vs_open": 2.9
+      },
+      {
+        "code": "GOLTS",
+        "pct_vs_prev_close": 0.77,
+        "pct_vs_open": 0.43
+      },
+      {
+        "code": "GOODY",
+        "pct_vs_prev_close": 7.27,
+        "pct_vs_open": 7.27
+      },
+      {
+        "code": "GOZDE",
+        "pct_vs_prev_close": -2.65,
+        "pct_vs_open": -3.07
+      },
+      {
+        "code": "GRNYO",
+        "pct_vs_prev_close": -2.41,
+        "pct_vs_open": -0.56
+      },
+      {
+        "code": "GRSEL",
+        "pct_vs_prev_close": -0.36,
+        "pct_vs_open": -1.13
+      },
+      {
+        "code": "GRTHO",
+        "pct_vs_prev_close": 0.49,
+        "pct_vs_open": 0.49
+      },
+      {
+        "code": "GSDDE",
+        "pct_vs_prev_close": 0.46,
+        "pct_vs_open": 0.31
+      },
+      {
+        "code": "GSDHO",
+        "pct_vs_prev_close": -0.62,
+        "pct_vs_open": -0.62
+      },
+      {
+        "code": "GSRAY",
+        "pct_vs_prev_close": -0.97,
+        "pct_vs_open": -0.97
+      },
+      {
+        "code": "GUBRF",
+        "pct_vs_prev_close": -1.02,
+        "pct_vs_open": 0.42
+      },
+      {
+        "code": "GWIND",
+        "pct_vs_prev_close": 0.09,
+        "pct_vs_open": 0.09
+      },
+      {
+        "code": "GZNMI",
+        "pct_vs_prev_close": -2.65,
+        "pct_vs_open": -2.07
+      },
+      {
+        "code": "HALKB",
+        "pct_vs_prev_close": -0.92,
+        "pct_vs_open": -0.41
+      },
+      {
+        "code": "HATEK",
+        "pct_vs_prev_close": -1.25,
+        "pct_vs_open": -1.5
+      },
+      {
+        "code": "HATSN",
+        "pct_vs_prev_close": 0.9,
+        "pct_vs_open": 0.3
+      },
+      {
+        "code": "HDFGS",
+        "pct_vs_prev_close": -0.4,
+        "pct_vs_open": -0.8
+      },
+      {
+        "code": "HEDEF",
+        "pct_vs_prev_close": -9.97,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "HEKTS",
+        "pct_vs_prev_close": -1.77,
+        "pct_vs_open": -1.77
+      },
+      {
+        "code": "HKTM",
+        "pct_vs_prev_close": 0.72,
+        "pct_vs_open": 0.63
+      },
+      {
+        "code": "HLGYO",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.22
+      },
+      {
+        "code": "HOROZ",
+        "pct_vs_prev_close": 0.32,
+        "pct_vs_open": -0.79
+      },
+      {
+        "code": "HRKET",
+        "pct_vs_prev_close": 7.86,
+        "pct_vs_open": 8.74
+      },
+      {
+        "code": "HTTBT",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "HUBVC",
+        "pct_vs_prev_close": 0.38,
+        "pct_vs_open": 0.38
+      },
+      {
+        "code": "HUNER",
+        "pct_vs_prev_close": 3.04,
+        "pct_vs_open": 3.04
+      },
+      {
+        "code": "HURGZ",
+        "pct_vs_prev_close": 0.64,
+        "pct_vs_open": -0.63
+      },
+      {
+        "code": "ICBCT",
+        "pct_vs_prev_close": 1.95,
+        "pct_vs_open": -4.7
+      },
+      {
+        "code": "ICUGS",
+        "pct_vs_prev_close": 0.74,
+        "pct_vs_open": -0.73
+      },
+      {
+        "code": "IDGYO",
+        "pct_vs_prev_close": 4.88,
+        "pct_vs_open": 3.3
+      },
+      {
+        "code": "IEYHO",
+        "pct_vs_prev_close": -0.67,
+        "pct_vs_open": -0.67
+      },
+      {
+        "code": "IHAAS",
+        "pct_vs_prev_close": -2.45,
+        "pct_vs_open": -6.7
+      },
+      {
+        "code": "IHEVA",
+        "pct_vs_prev_close": -0.5,
+        "pct_vs_open": -0.5
+      },
+      {
+        "code": "IHGZT",
+        "pct_vs_prev_close": -0.85,
+        "pct_vs_open": -0.85
+      },
+      {
+        "code": "IHLAS",
+        "pct_vs_prev_close": -6.19,
+        "pct_vs_open": -7.02
+      },
+      {
+        "code": "IHLGM",
+        "pct_vs_prev_close": -1.27,
+        "pct_vs_open": -1.27
+      },
+      {
+        "code": "IHYAY",
+        "pct_vs_prev_close": -2.33,
+        "pct_vs_open": -2.33
+      },
+      {
+        "code": "IMASM",
+        "pct_vs_prev_close": 1.18,
+        "pct_vs_open": 2.8
+      },
+      {
+        "code": "INDES",
+        "pct_vs_prev_close": -0.67,
+        "pct_vs_open": -0.58
+      },
+      {
+        "code": "INFO",
+        "pct_vs_prev_close": -3.28,
+        "pct_vs_open": -5.09
+      },
+      {
+        "code": "INGRM",
+        "pct_vs_prev_close": 0.19,
+        "pct_vs_open": -1.12
+      },
+      {
+        "code": "INTEK",
+        "pct_vs_prev_close": -2.65,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "INTEM",
+        "pct_vs_prev_close": 0.19,
+        "pct_vs_open": -0.86
+      },
+      {
+        "code": "INVEO",
+        "pct_vs_prev_close": -1.53,
+        "pct_vs_open": -2.21
+      },
+      {
+        "code": "INVES",
+        "pct_vs_prev_close": 0.43,
+        "pct_vs_open": 0.43
+      },
+      {
+        "code": "ISBIR",
+        "pct_vs_prev_close": -0.14,
+        "pct_vs_open": 0.35
+      },
+      {
+        "code": "ISBTR",
+        "pct_vs_prev_close": -3.85,
+        "pct_vs_open": 2.67
+      },
+      {
+        "code": "ISCTR",
+        "pct_vs_prev_close": -0.16,
+        "pct_vs_open": -0.24
+      },
+      {
+        "code": "ISDMR",
+        "pct_vs_prev_close": -0.29,
+        "pct_vs_open": 0.1
+      },
+      {
+        "code": "ISFIN",
+        "pct_vs_prev_close": 0.97,
+        "pct_vs_open": 0.77
+      },
+      {
+        "code": "ISGSY",
+        "pct_vs_prev_close": -1.18,
+        "pct_vs_open": -1.18
+      },
+      {
+        "code": "ISGYO",
+        "pct_vs_prev_close": -2.25,
+        "pct_vs_open": -2.11
+      },
+      {
+        "code": "ISKPL",
+        "pct_vs_prev_close": 9.89,
+        "pct_vs_open": 6.61
+      },
+      {
+        "code": "ISMEN",
+        "pct_vs_prev_close": 0.06,
+        "pct_vs_open": -0.18
+      },
+      {
+        "code": "ISSEN",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.72
+      },
+      {
+        "code": "ISVEA",
+        "pct_vs_prev_close": 2.33,
+        "pct_vs_open": 1.79
+      },
+      {
+        "code": "ISYAT",
+        "pct_vs_prev_close": -0.13,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "IZENR",
+        "pct_vs_prev_close": -1.39,
+        "pct_vs_open": -1.39
+      },
+      {
+        "code": "IZFAS",
+        "pct_vs_prev_close": 0.08,
+        "pct_vs_open": 0.08
+      },
+      {
+        "code": "IZINV",
+        "pct_vs_prev_close": -0.45,
+        "pct_vs_open": -0.27
+      },
+      {
+        "code": "IZMDC",
+        "pct_vs_prev_close": -4.01,
+        "pct_vs_open": -3.66
+      },
+      {
+        "code": "JANTS",
+        "pct_vs_prev_close": 1.51,
+        "pct_vs_open": 1.44
+      },
+      {
+        "code": "KAPLM",
+        "pct_vs_prev_close": 1.0,
+        "pct_vs_open": -0.23
+      },
+      {
+        "code": "KARCL",
+        "pct_vs_prev_close": 9.99,
+        "pct_vs_open": 4.49
+      },
+      {
+        "code": "KAREL",
+        "pct_vs_prev_close": -1.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "KARSN",
+        "pct_vs_prev_close": 0.3,
+        "pct_vs_open": -0.89
+      },
+      {
+        "code": "KARTN",
+        "pct_vs_prev_close": -2.17,
+        "pct_vs_open": -2.17
+      },
+      {
+        "code": "KATMR",
+        "pct_vs_prev_close": 1.79,
+        "pct_vs_open": 0.89
+      },
+      {
+        "code": "KAYSE",
+        "pct_vs_prev_close": 0.53,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "KBORU",
+        "pct_vs_prev_close": -0.85,
+        "pct_vs_open": -1.23
+      },
+      {
+        "code": "KCAER",
+        "pct_vs_prev_close": -0.7,
+        "pct_vs_open": -1.01
+      },
+      {
+        "code": "KCHOL",
+        "pct_vs_prev_close": 1.28,
+        "pct_vs_open": 1.23
+      },
+      {
+        "code": "KENT",
+        "pct_vs_prev_close": -2.5,
+        "pct_vs_open": -2.37
+      },
+      {
+        "code": "KERVN",
+        "pct_vs_prev_close": 2.9,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "KFEIN",
+        "pct_vs_prev_close": 2.99,
+        "pct_vs_open": 0.7
+      },
+      {
+        "code": "KGYO",
+        "pct_vs_prev_close": 5.24,
+        "pct_vs_open": 5.24
+      },
+      {
+        "code": "KIMMR",
+        "pct_vs_prev_close": -0.72,
+        "pct_vs_open": -0.65
+      },
+      {
+        "code": "KLGYO",
+        "pct_vs_prev_close": 2.31,
+        "pct_vs_open": 2.31
+      },
+      {
+        "code": "KLKIM",
+        "pct_vs_prev_close": 1.17,
+        "pct_vs_open": 1.32
+      },
+      {
+        "code": "KLMSN",
+        "pct_vs_prev_close": 2.38,
+        "pct_vs_open": 1.95
+      },
+      {
+        "code": "KLRHO",
+        "pct_vs_prev_close": 3.83,
+        "pct_vs_open": 3.83
+      },
+      {
+        "code": "KLSER",
+        "pct_vs_prev_close": 1.86,
+        "pct_vs_open": 0.24
+      },
+      {
+        "code": "KLSYN",
+        "pct_vs_prev_close": 2.76,
+        "pct_vs_open": 0.71
+      },
+      {
+        "code": "KLYPV",
+        "pct_vs_prev_close": -0.51,
+        "pct_vs_open": -0.43
+      },
+      {
+        "code": "KMPUR",
+        "pct_vs_prev_close": -4.63,
+        "pct_vs_open": -5.32
+      },
+      {
+        "code": "KOCMT",
+        "pct_vs_prev_close": 1.15,
+        "pct_vs_open": 0.19
+      },
+      {
+        "code": "KONKA",
+        "pct_vs_prev_close": 0.51,
+        "pct_vs_open": -0.08
+      },
+      {
+        "code": "KONTR",
+        "pct_vs_prev_close": 8.33,
+        "pct_vs_open": 4.79
+      },
+      {
+        "code": "KONYA",
+        "pct_vs_prev_close": -0.07,
+        "pct_vs_open": -2.19
+      },
+      {
+        "code": "KOPOL",
+        "pct_vs_prev_close": 1.41,
+        "pct_vs_open": 1.06
+      },
+      {
+        "code": "KORDS",
+        "pct_vs_prev_close": 9.95,
+        "pct_vs_open": 5.04
+      },
+      {
+        "code": "KOTON",
+        "pct_vs_prev_close": -1.65,
+        "pct_vs_open": -0.24
+      },
+      {
+        "code": "KRDMA",
+        "pct_vs_prev_close": -1.05,
+        "pct_vs_open": -1.05
+      },
+      {
+        "code": "KRDMB",
+        "pct_vs_prev_close": 0.08,
+        "pct_vs_open": -0.08
+      },
+      {
+        "code": "KRDMD",
+        "pct_vs_prev_close": -1.63,
+        "pct_vs_open": -1.82
+      },
+      {
+        "code": "KRGYO",
+        "pct_vs_prev_close": 9.96,
+        "pct_vs_open": 12.11
+      },
+      {
+        "code": "KRONT",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "KRPLS",
+        "pct_vs_prev_close": -0.81,
+        "pct_vs_open": -0.81
+      },
+      {
+        "code": "KRSTL",
+        "pct_vs_prev_close": -1.76,
+        "pct_vs_open": -2.36
+      },
+      {
+        "code": "KRTEK",
+        "pct_vs_prev_close": 0.32,
+        "pct_vs_open": 0.65
+      },
+      {
+        "code": "KRVGD",
+        "pct_vs_prev_close": -1.23,
+        "pct_vs_open": -1.23
+      },
+      {
+        "code": "KSTUR",
+        "pct_vs_prev_close": 0.6,
+        "pct_vs_open": -0.2
+      },
+      {
+        "code": "KTLEV",
+        "pct_vs_prev_close": 2.96,
+        "pct_vs_open": 2.57
+      },
+      {
+        "code": "KTSKR",
+        "pct_vs_prev_close": 1.43,
+        "pct_vs_open": -0.06
+      },
+      {
+        "code": "KUTPO",
+        "pct_vs_prev_close": 1.16,
+        "pct_vs_open": 0.43
+      },
+      {
+        "code": "KUVVA",
+        "pct_vs_prev_close": 0.7,
+        "pct_vs_open": -0.57
+      },
+      {
+        "code": "KUYAS",
+        "pct_vs_prev_close": -1.37,
+        "pct_vs_open": -1.6
+      },
+      {
+        "code": "KZBGY",
+        "pct_vs_prev_close": -0.49,
+        "pct_vs_open": -0.49
+      },
+      {
+        "code": "KZGYO",
+        "pct_vs_prev_close": -0.15,
+        "pct_vs_open": -0.4
+      },
+      {
+        "code": "LIDER",
+        "pct_vs_prev_close": -8.6,
+        "pct_vs_open": -2.39
+      },
+      {
+        "code": "LIDFA",
+        "pct_vs_prev_close": 3.01,
+        "pct_vs_open": 1.48
+      },
+      {
+        "code": "LILAK",
+        "pct_vs_prev_close": -2.15,
+        "pct_vs_open": -2.15
+      },
+      {
+        "code": "LINK",
+        "pct_vs_prev_close": 4.71,
+        "pct_vs_open": 4.53
+      },
+      {
+        "code": "LKMNH",
+        "pct_vs_prev_close": -0.07,
+        "pct_vs_open": -0.07
+      },
+      {
+        "code": "LMKDC",
+        "pct_vs_prev_close": -1.22,
+        "pct_vs_open": -1.38
+      },
+      {
+        "code": "LOGO",
+        "pct_vs_prev_close": 1.34,
+        "pct_vs_open": 1.26
+      },
+      {
+        "code": "LRSHO",
+        "pct_vs_prev_close": -8.44,
+        "pct_vs_open": -9.29
+      },
+      {
+        "code": "LUKSK",
+        "pct_vs_prev_close": 0.28,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "LXGYO",
+        "pct_vs_prev_close": 1.52,
+        "pct_vs_open": 1.43
+      },
+      {
+        "code": "LYDHO",
+        "pct_vs_prev_close": 0.17,
+        "pct_vs_open": 0.28
+      },
+      {
+        "code": "MAALT",
+        "pct_vs_prev_close": 5.8,
+        "pct_vs_open": 5.54
+      },
+      {
+        "code": "MACKO",
+        "pct_vs_prev_close": -3.73,
+        "pct_vs_open": -2.5
+      },
+      {
+        "code": "MAGEN",
+        "pct_vs_prev_close": 2.13,
+        "pct_vs_open": 2.72
+      },
+      {
+        "code": "MAKIM",
+        "pct_vs_prev_close": 0.63,
+        "pct_vs_open": 0.5
+      },
+      {
+        "code": "MAKTK",
+        "pct_vs_prev_close": 1.57,
+        "pct_vs_open": 2.11
+      },
+      {
+        "code": "MANAS",
+        "pct_vs_prev_close": 2.72,
+        "pct_vs_open": 2.72
+      },
+      {
+        "code": "MARBL",
+        "pct_vs_prev_close": 0.58,
+        "pct_vs_open": 0.58
+      },
+      {
+        "code": "MARKA",
+        "pct_vs_prev_close": -2.53,
+        "pct_vs_open": 0.99
+      },
+      {
+        "code": "MARMR",
+        "pct_vs_prev_close": 0.42,
+        "pct_vs_open": 0.42
+      },
+      {
+        "code": "MARTI",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "MASFN",
+        "pct_vs_prev_close": -2.22,
+        "pct_vs_open": -1.81
+      },
+      {
+        "code": "MAVI",
+        "pct_vs_prev_close": -1.08,
+        "pct_vs_open": -1.34
+      },
+      {
+        "code": "MCARD",
+        "pct_vs_prev_close": -1.47,
+        "pct_vs_open": -2.66
+      },
+      {
+        "code": "MEDTR",
+        "pct_vs_prev_close": -0.08,
+        "pct_vs_open": 0.48
+      },
+      {
+        "code": "MEGAP",
+        "pct_vs_prev_close": 0.56,
+        "pct_vs_open": -0.55
+      },
+      {
+        "code": "MEGMT",
+        "pct_vs_prev_close": -0.93,
+        "pct_vs_open": -1.07
+      },
+      {
+        "code": "MEPET",
+        "pct_vs_prev_close": 3.97,
+        "pct_vs_open": 2.96
+      },
+      {
+        "code": "MERCN",
+        "pct_vs_prev_close": -2.35,
+        "pct_vs_open": -2.35
+      },
+      {
+        "code": "MERIT",
+        "pct_vs_prev_close": -1.9,
+        "pct_vs_open": -3.38
+      },
+      {
+        "code": "MERKO",
+        "pct_vs_prev_close": 0.72,
+        "pct_vs_open": 0.72
+      },
+      {
+        "code": "METEN",
+        "pct_vs_prev_close": 0.88,
+        "pct_vs_open": -0.87
+      },
+      {
+        "code": "METRO",
+        "pct_vs_prev_close": 0.93,
+        "pct_vs_open": 0.23
+      },
+      {
+        "code": "MEYSU",
+        "pct_vs_prev_close": -1.19,
+        "pct_vs_open": -1.19
+      },
+      {
+        "code": "MGROS",
+        "pct_vs_prev_close": 0.63,
+        "pct_vs_open": -0.27
+      },
+      {
+        "code": "MHRGY",
+        "pct_vs_prev_close": 0.6,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "MIATK",
+        "pct_vs_prev_close": 4.67,
+        "pct_vs_open": 4.87
+      },
+      {
+        "code": "MMCAS",
+        "pct_vs_prev_close": 4.64,
+        "pct_vs_open": 6.39
+      },
+      {
+        "code": "MNDRS",
+        "pct_vs_prev_close": 2.57,
+        "pct_vs_open": 1.99
+      },
+      {
+        "code": "MNDTR",
+        "pct_vs_prev_close": 0.4,
+        "pct_vs_open": 0.2
+      },
+      {
+        "code": "MOBTL",
+        "pct_vs_prev_close": -1.49,
+        "pct_vs_open": -1.49
+      },
+      {
+        "code": "MOGAN",
+        "pct_vs_prev_close": -0.15,
+        "pct_vs_open": -1.24
+      },
+      {
+        "code": "MOPAS",
+        "pct_vs_prev_close": 0.8,
+        "pct_vs_open": 0.43
+      },
+      {
+        "code": "MPARK",
+        "pct_vs_prev_close": 0.64,
+        "pct_vs_open": 0.64
+      },
+      {
+        "code": "MRGYO",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "MSGYO",
+        "pct_vs_prev_close": -0.17,
+        "pct_vs_open": -1.16
+      },
+      {
+        "code": "MTRKS",
+        "pct_vs_prev_close": 0.49,
+        "pct_vs_open": 0.49
+      },
+      {
+        "code": "MTRYO",
+        "pct_vs_prev_close": 0.35,
+        "pct_vs_open": -2.73
+      },
+      {
+        "code": "MZHLD",
+        "pct_vs_prev_close": 0.38,
+        "pct_vs_open": -0.57
+      },
+      {
+        "code": "NATEN",
+        "pct_vs_prev_close": 2.0,
+        "pct_vs_open": 0.9
+      },
+      {
+        "code": "NETAS",
+        "pct_vs_prev_close": -1.66,
+        "pct_vs_open": -0.72
+      },
+      {
+        "code": "NETCD",
+        "pct_vs_prev_close": -0.76,
+        "pct_vs_open": -1.66
+      },
+      {
+        "code": "NIBAS",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.28
+      },
+      {
+        "code": "NTGAZ",
+        "pct_vs_prev_close": 5.59,
+        "pct_vs_open": 5.49
+      },
+      {
+        "code": "NTHOL",
+        "pct_vs_prev_close": 1.58,
+        "pct_vs_open": 0.74
+      },
+      {
+        "code": "NUGYO",
+        "pct_vs_prev_close": -0.45,
+        "pct_vs_open": 0.11
+      },
+      {
+        "code": "NUHCM",
+        "pct_vs_prev_close": 0.41,
+        "pct_vs_open": 0.37
+      },
+      {
+        "code": "OBAMS",
+        "pct_vs_prev_close": 4.55,
+        "pct_vs_open": 4.33
+      },
+      {
+        "code": "ODAS",
+        "pct_vs_prev_close": -1.2,
+        "pct_vs_open": -1.2
+      },
+      {
+        "code": "ODINE",
+        "pct_vs_prev_close": -1.57,
+        "pct_vs_open": 4.67
+      },
+      {
+        "code": "OFSYM",
+        "pct_vs_prev_close": -3.85,
+        "pct_vs_open": -3.77
+      },
+      {
+        "code": "ONCSM",
+        "pct_vs_prev_close": -0.04,
+        "pct_vs_open": -0.33
+      },
+      {
+        "code": "ONRYT",
+        "pct_vs_prev_close": -0.34,
+        "pct_vs_open": -0.25
+      },
+      {
+        "code": "ORCAY",
+        "pct_vs_prev_close": 0.56,
+        "pct_vs_open": 0.28
+      },
+      {
+        "code": "ORGE",
+        "pct_vs_prev_close": 9.93,
+        "pct_vs_open": 2.98
+      },
+      {
+        "code": "ORMA",
+        "pct_vs_prev_close": 0.61,
+        "pct_vs_open": -0.24
+      },
+      {
+        "code": "ORZAX",
+        "pct_vs_prev_close": -0.31,
+        "pct_vs_open": -0.51
+      },
+      {
+        "code": "OSMEN",
+        "pct_vs_prev_close": -1.52,
+        "pct_vs_open": -1.52
+      },
+      {
+        "code": "OSTIM",
+        "pct_vs_prev_close": 1.27,
+        "pct_vs_open": 1.27
+      },
+      {
+        "code": "OTTO",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.12
+      },
+      {
+        "code": "OYAKC",
+        "pct_vs_prev_close": -0.28,
+        "pct_vs_open": 0.09
+      },
+      {
+        "code": "OYAYO",
+        "pct_vs_prev_close": 0.59,
+        "pct_vs_open": 0.41
+      },
+      {
+        "code": "OYLUM",
+        "pct_vs_prev_close": -2.51,
+        "pct_vs_open": -2.38
+      },
+      {
+        "code": "OYYAT",
+        "pct_vs_prev_close": 0.87,
+        "pct_vs_open": 0.87
+      },
+      {
+        "code": "OZATD",
+        "pct_vs_prev_close": -1.29,
+        "pct_vs_open": -1.07
+      },
+      {
+        "code": "OZGYO",
+        "pct_vs_prev_close": 1.95,
+        "pct_vs_open": 1.46
+      },
+      {
+        "code": "OZKGY",
+        "pct_vs_prev_close": -0.08,
+        "pct_vs_open": -0.24
+      },
+      {
+        "code": "OZRDN",
+        "pct_vs_prev_close": -0.49,
+        "pct_vs_open": -0.49
+      },
+      {
+        "code": "OZSUB",
+        "pct_vs_prev_close": -7.47,
+        "pct_vs_open": -4.86
+      },
+      {
+        "code": "OZYSR",
+        "pct_vs_prev_close": 0.56,
+        "pct_vs_open": -0.16
+      },
+      {
+        "code": "PAGYO",
+        "pct_vs_prev_close": 1.24,
+        "pct_vs_open": 1.24
+      },
+      {
+        "code": "PAHOL",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "PAMEL",
+        "pct_vs_prev_close": -2.31,
+        "pct_vs_open": -2.31
+      },
+      {
+        "code": "PAPIL",
+        "pct_vs_prev_close": 1.41,
+        "pct_vs_open": 1.41
+      },
+      {
+        "code": "PARSN",
+        "pct_vs_prev_close": 0.71,
+        "pct_vs_open": 0.56
+      },
+      {
+        "code": "PASEU",
+        "pct_vs_prev_close": 6.32,
+        "pct_vs_open": 6.39
+      },
+      {
+        "code": "PATEK",
+        "pct_vs_prev_close": -1.06,
+        "pct_vs_open": -1.01
+      },
+      {
+        "code": "PCILT",
+        "pct_vs_prev_close": 4.32,
+        "pct_vs_open": 4.39
+      },
+      {
+        "code": "PEKGY",
+        "pct_vs_prev_close": 0.39,
+        "pct_vs_open": 0.72
+      },
+      {
+        "code": "PENGD",
+        "pct_vs_prev_close": 0.53,
+        "pct_vs_open": 0.42
+      },
+      {
+        "code": "PENTA",
+        "pct_vs_prev_close": 0.38,
+        "pct_vs_open": -0.67
+      },
+      {
+        "code": "PETKM",
+        "pct_vs_prev_close": 1.54,
+        "pct_vs_open": 1.43
+      },
+      {
+        "code": "PETUN",
+        "pct_vs_prev_close": 1.1,
+        "pct_vs_open": 1.38
+      },
+      {
+        "code": "PGSUS",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "PINSU",
+        "pct_vs_prev_close": 0.1,
+        "pct_vs_open": 0.29
+      },
+      {
+        "code": "PKART",
+        "pct_vs_prev_close": -0.45,
+        "pct_vs_open": 0.3
+      },
+      {
+        "code": "PKENT",
+        "pct_vs_prev_close": 2.08,
+        "pct_vs_open": 1.59
+      },
+      {
+        "code": "PLTUR",
+        "pct_vs_prev_close": -0.48,
+        "pct_vs_open": -0.48
+      },
+      {
+        "code": "PNLSN",
+        "pct_vs_prev_close": -1.5,
+        "pct_vs_open": -1.63
+      },
+      {
+        "code": "PNSUT",
+        "pct_vs_prev_close": 0.29,
+        "pct_vs_open": 0.29
+      },
+      {
+        "code": "POLHO",
+        "pct_vs_prev_close": 0.36,
+        "pct_vs_open": 0.36
+      },
+      {
+        "code": "POLTK",
+        "pct_vs_prev_close": 5.83,
+        "pct_vs_open": 2.34
+      },
+      {
+        "code": "PRDGS",
+        "pct_vs_prev_close": -2.12,
+        "pct_vs_open": -2.76
+      },
+      {
+        "code": "PRKAB",
+        "pct_vs_prev_close": -0.54,
+        "pct_vs_open": -0.54
+      },
+      {
+        "code": "PRKME",
+        "pct_vs_prev_close": 0.63,
+        "pct_vs_open": 0.42
+      },
+      {
+        "code": "PRZMA",
+        "pct_vs_prev_close": 4.46,
+        "pct_vs_open": 7.24
+      },
+      {
+        "code": "PSDTC",
+        "pct_vs_prev_close": -1.91,
+        "pct_vs_open": -1.13
+      },
+      {
+        "code": "PSGYO",
+        "pct_vs_prev_close": -0.28,
+        "pct_vs_open": -0.84
+      },
+      {
+        "code": "QNBFK",
+        "pct_vs_prev_close": 0.26,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "QNBTR",
+        "pct_vs_prev_close": -0.05,
+        "pct_vs_open": 0.21
+      },
+      {
+        "code": "QUAGR",
+        "pct_vs_prev_close": -2.16,
+        "pct_vs_open": -2.46
+      },
+      {
+        "code": "QUICK",
+        "pct_vs_prev_close": 0.76,
+        "pct_vs_open": 0.14
+      },
+      {
+        "code": "RALYH",
+        "pct_vs_prev_close": 6.8,
+        "pct_vs_open": 6.59
+      },
+      {
+        "code": "RAYSG",
+        "pct_vs_prev_close": 0.87,
+        "pct_vs_open": 0.31
+      },
+      {
+        "code": "REEDR",
+        "pct_vs_prev_close": 2.85,
+        "pct_vs_open": 2.85
+      },
+      {
+        "code": "RGYAS",
+        "pct_vs_prev_close": 3.15,
+        "pct_vs_open": 2.64
+      },
+      {
+        "code": "RNPOL",
+        "pct_vs_prev_close": -0.4,
+        "pct_vs_open": -0.4
+      },
+      {
+        "code": "RODRG",
+        "pct_vs_prev_close": -0.24,
+        "pct_vs_open": 4.76
+      },
+      {
+        "code": "RTALB",
+        "pct_vs_prev_close": -0.67,
+        "pct_vs_open": -1.0
+      },
+      {
+        "code": "RUBNS",
+        "pct_vs_prev_close": 6.51,
+        "pct_vs_open": 6.86
+      },
+      {
+        "code": "RUZYE",
+        "pct_vs_prev_close": -0.35,
+        "pct_vs_open": -0.46
+      },
+      {
+        "code": "RYGYO",
+        "pct_vs_prev_close": 1.6,
+        "pct_vs_open": 1.6
+      },
+      {
+        "code": "RYSAS",
+        "pct_vs_prev_close": -0.81,
+        "pct_vs_open": -1.61
+      },
+      {
+        "code": "SAFKR",
+        "pct_vs_prev_close": 1.19,
+        "pct_vs_open": 1.19
+      },
+      {
+        "code": "SAHOL",
+        "pct_vs_prev_close": 0.34,
+        "pct_vs_open": 0.28
+      },
+      {
+        "code": "SAMAT",
+        "pct_vs_prev_close": -0.18,
+        "pct_vs_open": 0.18
+      },
+      {
+        "code": "SANEL",
+        "pct_vs_prev_close": -0.75,
+        "pct_vs_open": -0.75
+      },
+      {
+        "code": "SANFM",
+        "pct_vs_prev_close": 1.35,
+        "pct_vs_open": 1.35
+      },
+      {
+        "code": "SANKO",
+        "pct_vs_prev_close": 0.21,
+        "pct_vs_open": 0.11
+      },
+      {
+        "code": "SARAE",
+        "pct_vs_prev_close": -1.11,
+        "pct_vs_open": -1.11
+      },
+      {
+        "code": "SARKY",
+        "pct_vs_prev_close": -0.08,
+        "pct_vs_open": 0.71
+      },
+      {
+        "code": "SASA",
+        "pct_vs_prev_close": -1.63,
+        "pct_vs_open": -2.03
+      },
+      {
+        "code": "SAYAS",
+        "pct_vs_prev_close": 3.18,
+        "pct_vs_open": 4.19
+      },
+      {
+        "code": "SDTTR",
+        "pct_vs_prev_close": -1.15,
+        "pct_vs_open": -4.55
+      },
+      {
+        "code": "SEGMN",
+        "pct_vs_prev_close": 0.18,
+        "pct_vs_open": 0.09
+      },
+      {
+        "code": "SEGYO",
+        "pct_vs_prev_close": 2.09,
+        "pct_vs_open": 2.09
+      },
+      {
+        "code": "SEKFK",
+        "pct_vs_prev_close": -2.85,
+        "pct_vs_open": -3.04
+      },
+      {
+        "code": "SEKUR",
+        "pct_vs_prev_close": -3.17,
+        "pct_vs_open": -4.85
+      },
+      {
+        "code": "SERNT",
+        "pct_vs_prev_close": 0.26,
+        "pct_vs_open": 0.13
+      },
+      {
+        "code": "SEYKM",
+        "pct_vs_prev_close": 2.34,
+        "pct_vs_open": 2.34
+      },
+      {
+        "code": "SILVR",
+        "pct_vs_prev_close": 0.88,
+        "pct_vs_open": 0.88
+      },
+      {
+        "code": "SISE",
+        "pct_vs_prev_close": -0.38,
+        "pct_vs_open": -1.0
+      },
+      {
+        "code": "SKBNK",
+        "pct_vs_prev_close": -1.0,
+        "pct_vs_open": -0.83
+      },
+      {
+        "code": "SKTAS",
+        "pct_vs_prev_close": 0.31,
+        "pct_vs_open": 0.93
+      },
+      {
+        "code": "SKYLP",
+        "pct_vs_prev_close": 0.58,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "SKYMD",
+        "pct_vs_prev_close": 2.64,
+        "pct_vs_open": 2.19
+      },
+      {
+        "code": "SMART",
+        "pct_vs_prev_close": 3.84,
+        "pct_vs_open": 3.15
+      },
+      {
+        "code": "SMRTG",
+        "pct_vs_prev_close": 0.86,
+        "pct_vs_open": 0.86
+      },
+      {
+        "code": "SMRVA",
+        "pct_vs_prev_close": 7.2,
+        "pct_vs_open": 6.15
+      },
+      {
+        "code": "SNGYO",
+        "pct_vs_prev_close": 0.31,
+        "pct_vs_open": 0.31
+      },
+      {
+        "code": "SNICA",
+        "pct_vs_prev_close": -0.31,
+        "pct_vs_open": -0.63
+      },
+      {
+        "code": "SNPAM",
+        "pct_vs_prev_close": -4.83,
+        "pct_vs_open": -5.59
+      },
+      {
+        "code": "SODSN",
+        "pct_vs_prev_close": -1.56,
+        "pct_vs_open": -0.26
+      },
+      {
+        "code": "SOHOE",
+        "pct_vs_prev_close": 0.85,
+        "pct_vs_open": 0.19
+      },
+      {
+        "code": "SOKE",
+        "pct_vs_prev_close": 0.34,
+        "pct_vs_open": 0.13
+      },
+      {
+        "code": "SOKM",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.75
+      },
+      {
+        "code": "SONME",
+        "pct_vs_prev_close": 0.86,
+        "pct_vs_open": 3.62
+      },
+      {
+        "code": "SRVGY",
+        "pct_vs_prev_close": 1.61,
+        "pct_vs_open": 1.2
+      },
+      {
+        "code": "SSAAT",
+        "pct_vs_prev_close": 1.15,
+        "pct_vs_open": -4.8
+      },
+      {
+        "code": "SUMAS",
+        "pct_vs_prev_close": 2.27,
+        "pct_vs_open": 0.27
+      },
+      {
+        "code": "SUNTK",
+        "pct_vs_prev_close": -7.18,
+        "pct_vs_open": -7.18
+      },
+      {
+        "code": "SURGY",
+        "pct_vs_prev_close": -1.2,
+        "pct_vs_open": 0.46
+      },
+      {
+        "code": "SUWEN",
+        "pct_vs_prev_close": -0.46,
+        "pct_vs_open": -2.39
+      },
+      {
+        "code": "SVGYO",
+        "pct_vs_prev_close": 0.65,
+        "pct_vs_open": 0.71
+      },
+      {
+        "code": "TABGD",
+        "pct_vs_prev_close": -0.29,
+        "pct_vs_open": -0.29
+      },
+      {
+        "code": "TARKM",
+        "pct_vs_prev_close": -1.28,
+        "pct_vs_open": -1.56
+      },
+      {
+        "code": "TATEN",
+        "pct_vs_prev_close": 0.23,
+        "pct_vs_open": 0.23
+      },
+      {
+        "code": "TATGD",
+        "pct_vs_prev_close": 3.12,
+        "pct_vs_open": 3.06
+      },
+      {
+        "code": "TAVHL",
+        "pct_vs_prev_close": -0.54,
+        "pct_vs_open": -0.54
+      },
+      {
+        "code": "TBORG",
+        "pct_vs_prev_close": -1.02,
+        "pct_vs_open": -1.02
+      },
+      {
+        "code": "TCELL",
+        "pct_vs_prev_close": 0.68,
+        "pct_vs_open": -0.1
+      },
+      {
+        "code": "TCKRC",
+        "pct_vs_prev_close": 7.12,
+        "pct_vs_open": 4.77
+      },
+      {
+        "code": "TDGYO",
+        "pct_vs_prev_close": -2.0,
+        "pct_vs_open": -2.0
+      },
+      {
+        "code": "TEHOL",
+        "pct_vs_prev_close": 0.49,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "TEKTU",
+        "pct_vs_prev_close": 1.44,
+        "pct_vs_open": 1.97
+      },
+      {
+        "code": "TERA",
+        "pct_vs_prev_close": 0.73,
+        "pct_vs_open": 0.73
+      },
+      {
+        "code": "TEZOL",
+        "pct_vs_prev_close": 0.82,
+        "pct_vs_open": 0.92
+      },
+      {
+        "code": "TGSAS",
+        "pct_vs_prev_close": 3.05,
+        "pct_vs_open": 2.5
+      },
+      {
+        "code": "THYAO",
+        "pct_vs_prev_close": -0.65,
+        "pct_vs_open": -0.81
+      },
+      {
+        "code": "TKFEN",
+        "pct_vs_prev_close": -0.09,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "TKNSA",
+        "pct_vs_prev_close": 9.99,
+        "pct_vs_open": 9.99
+      },
+      {
+        "code": "TLMAN",
+        "pct_vs_prev_close": -0.19,
+        "pct_vs_open": -0.19
+      },
+      {
+        "code": "TMPOL",
+        "pct_vs_prev_close": 8.03,
+        "pct_vs_open": 7.93
+      },
+      {
+        "code": "TMSN",
+        "pct_vs_prev_close": 0.58,
+        "pct_vs_open": 0.52
+      },
+      {
+        "code": "TNZTP",
+        "pct_vs_prev_close": -0.29,
+        "pct_vs_open": -0.29
+      },
+      {
+        "code": "TOASO",
+        "pct_vs_prev_close": -0.46,
+        "pct_vs_open": -0.46
+      },
+      {
+        "code": "TRALT",
+        "pct_vs_prev_close": -1.46,
+        "pct_vs_open": -1.13
+      },
+      {
+        "code": "TRCAS",
+        "pct_vs_prev_close": 4.65,
+        "pct_vs_open": 4.65
+      },
+      {
+        "code": "TRENJ",
+        "pct_vs_prev_close": -2.16,
+        "pct_vs_open": -1.4
+      },
+      {
+        "code": "TRGYO",
+        "pct_vs_prev_close": 1.3,
+        "pct_vs_open": 1.3
+      },
+      {
+        "code": "TRILC",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "TRMET",
+        "pct_vs_prev_close": -5.24,
+        "pct_vs_open": -4.36
+      },
+      {
+        "code": "TSGYO",
+        "pct_vs_prev_close": -0.85,
+        "pct_vs_open": -1.02
+      },
+      {
+        "code": "TSKB",
+        "pct_vs_prev_close": 0.46,
+        "pct_vs_open": 0.46
+      },
+      {
+        "code": "TSPOR",
+        "pct_vs_prev_close": -0.98,
+        "pct_vs_open": -1.94
+      },
+      {
+        "code": "TTKOM",
+        "pct_vs_prev_close": -0.73,
+        "pct_vs_open": -0.46
+      },
+      {
+        "code": "TTRAK",
+        "pct_vs_prev_close": 0.24,
+        "pct_vs_open": 0.24
+      },
+      {
+        "code": "TUCLK",
+        "pct_vs_prev_close": -0.52,
+        "pct_vs_open": -2.07
+      },
+      {
+        "code": "TUKAS",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "TUPRS",
+        "pct_vs_prev_close": 3.54,
+        "pct_vs_open": 2.36
+      },
+      {
+        "code": "TUREX",
+        "pct_vs_prev_close": 2.65,
+        "pct_vs_open": 2.17
+      },
+      {
+        "code": "TURGG",
+        "pct_vs_prev_close": -1.94,
+        "pct_vs_open": -1.94
+      },
+      {
+        "code": "TURSG",
+        "pct_vs_prev_close": 0.8,
+        "pct_vs_open": 0.8
+      },
+      {
+        "code": "UCAYM",
+        "pct_vs_prev_close": 1.83,
+        "pct_vs_open": 2.21
+      },
+      {
+        "code": "UFUK",
+        "pct_vs_prev_close": -1.54,
+        "pct_vs_open": -2.47
+      },
+      {
+        "code": "ULAS",
+        "pct_vs_prev_close": 9.68,
+        "pct_vs_open": 7.53
+      },
+      {
+        "code": "ULKER",
+        "pct_vs_prev_close": 2.33,
+        "pct_vs_open": 2.04
+      },
+      {
+        "code": "ULUFA",
+        "pct_vs_prev_close": 1.16,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "ULUSE",
+        "pct_vs_prev_close": 0.77,
+        "pct_vs_open": -5.56
+      },
+      {
+        "code": "ULUUN",
+        "pct_vs_prev_close": 3.21,
+        "pct_vs_open": 1.95
+      },
+      {
+        "code": "UNLU",
+        "pct_vs_prev_close": 0.83,
+        "pct_vs_open": 0.09
+      },
+      {
+        "code": "USAK",
+        "pct_vs_prev_close": 0.81,
+        "pct_vs_open": 0.81
+      },
+      {
+        "code": "VAKBN",
+        "pct_vs_prev_close": -1.16,
+        "pct_vs_open": -0.97
+      },
+      {
+        "code": "VAKFA",
+        "pct_vs_prev_close": 1.02,
+        "pct_vs_open": 0.83
+      },
+      {
+        "code": "VAKFN",
+        "pct_vs_prev_close": -0.84,
+        "pct_vs_open": -0.84
+      },
+      {
+        "code": "VAKKO",
+        "pct_vs_prev_close": 0.51,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "VANGD",
+        "pct_vs_prev_close": -1.86,
+        "pct_vs_open": -1.86
+      },
+      {
+        "code": "VBTYZ",
+        "pct_vs_prev_close": 1.03,
+        "pct_vs_open": 0.77
+      },
+      {
+        "code": "VERTU",
+        "pct_vs_prev_close": -0.39,
+        "pct_vs_open": -0.39
+      },
+      {
+        "code": "VERUS",
+        "pct_vs_prev_close": 1.18,
+        "pct_vs_open": 0.94
+      },
+      {
+        "code": "VESBE",
+        "pct_vs_prev_close": -0.36,
+        "pct_vs_open": -0.88
+      },
+      {
+        "code": "VESTL",
+        "pct_vs_prev_close": -1.06,
+        "pct_vs_open": -1.15
+      },
+      {
+        "code": "VKFYO",
+        "pct_vs_prev_close": -2.09,
+        "pct_vs_open": -1.57
+      },
+      {
+        "code": "VKGYO",
+        "pct_vs_prev_close": -0.51,
+        "pct_vs_open": -0.51
+      },
+      {
+        "code": "VKING",
+        "pct_vs_prev_close": 0.54,
+        "pct_vs_open": 0.45
+      },
+      {
+        "code": "VRGYO",
+        "pct_vs_prev_close": 0.0,
+        "pct_vs_open": -0.57
+      },
+      {
+        "code": "VSNMD",
+        "pct_vs_prev_close": 0.08,
+        "pct_vs_open": 0.17
+      },
+      {
+        "code": "YAPRK",
+        "pct_vs_prev_close": 0.26,
+        "pct_vs_open": -1.47
+      },
+      {
+        "code": "YATAS",
+        "pct_vs_prev_close": -1.54,
+        "pct_vs_open": -1.13
+      },
+      {
+        "code": "YAYLA",
+        "pct_vs_prev_close": -7.95,
+        "pct_vs_open": -8.73
+      },
+      {
+        "code": "YBTAS",
+        "pct_vs_prev_close": -2.34,
+        "pct_vs_open": 0.0
+      },
+      {
+        "code": "YEOTK",
+        "pct_vs_prev_close": 5.04,
+        "pct_vs_open": 4.77
+      },
+      {
+        "code": "YESIL",
+        "pct_vs_prev_close": 2.52,
+        "pct_vs_open": 1.67
+      },
+      {
+        "code": "YGGYO",
+        "pct_vs_prev_close": 2.99,
+        "pct_vs_open": 2.99
+      },
+      {
+        "code": "YIGIT",
+        "pct_vs_prev_close": 0.29,
+        "pct_vs_open": -0.19
+      },
+      {
+        "code": "YKBNK",
+        "pct_vs_prev_close": -0.79,
+        "pct_vs_open": -0.56
+      },
+      {
+        "code": "YKSLN",
+        "pct_vs_prev_close": -0.35,
+        "pct_vs_open": -1.38
+      },
+      {
+        "code": "YONGA",
+        "pct_vs_prev_close": -0.75,
+        "pct_vs_open": -0.71
+      },
+      {
+        "code": "YUNSA",
+        "pct_vs_prev_close": 0.77,
+        "pct_vs_open": 1.22
+      },
+      {
+        "code": "YYLGD",
+        "pct_vs_prev_close": -0.19,
+        "pct_vs_open": -0.39
+      },
+      {
+        "code": "ZEDUR",
+        "pct_vs_prev_close": 1.66,
+        "pct_vs_open": 1.79
+      },
+      {
+        "code": "ZERGY",
+        "pct_vs_prev_close": 1.13,
+        "pct_vs_open": 1.02
+      },
+      {
+        "code": "ZGYO",
+        "pct_vs_prev_close": 9.99,
+        "pct_vs_open": 10.63
+      },
+      {
+        "code": "ZOREN",
+        "pct_vs_prev_close": 0.44,
+        "pct_vs_open": 0.44
+      },
+      {
+        "code": "ZRGYO",
+        "pct_vs_prev_close": 0.36,
+        "pct_vs_open": -0.46
+      }
+    ]
   }
 ]
