@@ -686527,5 +686527,16 @@
         "pct_vs_open": -0.61
       }
     ]
+  },
+  {
+    "timestamp": "2026-08-26 10:07:18",
+    "total_tracked": 0,
+    "positive": 0,
+    "negative": 0,
+    "up_4pct": 0,
+    "down_4pct": 0,
+    "positive_vs_open": 0,
+    "negative_vs_open": 0,
+    "details": []
   }
 ]
