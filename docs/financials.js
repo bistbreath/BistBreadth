@@ -5,10 +5,7 @@ const financialStatus = document.getElementById('financial-status');
 let financialAllRows = [];
 const quarterColors = {1:'#4f7fb3',2:'#ef8c2f',3:'#75b7b2',4:'#a878a5'};
 const billions = value => value == null || !Number.isFinite(value) ? null : value / 1e9;
-const quarterLabel = period => {
-  const [year, month] = period.split('/').map(Number);
-  return `${Math.ceil(month / 3)}Ç ${year}`;
-};
+const quarterLabel = period => period;
 const pretty = (value, digits = 2) => Number(value).toLocaleString('tr-TR', {
   minimumFractionDigits: digits, maximumFractionDigits: digits,
 });
@@ -111,8 +108,8 @@ function drawFinancialChart(title, subtitle, rows, definitions, unit, options = 
   svg += `<line x1="${margin.left}" y1="${zero}" x2="${width-margin.right}" y2="${zero}" class="fin-zero"/>`;
 
   const barDefs = definitions.filter(def => def.type !== 'line');
-  const groupWidth = Math.min(slot * 0.72, 42);
-  const barWidth = Math.max(2, Math.min(28, groupWidth / Math.max(1,barDefs.length)));
+  const groupWidth = Math.min(slot * 0.88, 70);
+  const barWidth = Math.max(2, Math.min(68, groupWidth / Math.max(1,barDefs.length)));
   rows.forEach((row,index) => {
     const cx = margin.left + slot * index + slot / 2;
     let barIndex = 0;
@@ -174,20 +171,23 @@ function showFinancialTooltip(mark, event) {
   const formatValue = value => isPercent ? `%${pretty(value,1)}`
     : isRatio ? `${pretty(value,2)}x` : `${pretty(value,2)} ${unit}`;
   const signed = (value,digits=2) => `${value >= 0 ? '+' : ''}${pretty(value,digits)}`;
-  let comparison = 'Geçen yılın aynı çeyrek verisi yok.';
+  let growthText = 'Geçen yılın aynı çeyrek verisi bulunmuyor.';
+  let delta = null;
   if (prior != null && Number.isFinite(prior)) {
-    if (isPercent) {
-      const delta = current-prior;
-      comparison = `Geçen yıl aynı çeyrek: ${formatValue(prior)} • Fark: ${signed(delta,1)} puan`;
-      if (prior > 0) comparison += ` • Oransal değişim: ${signed((current/prior-1)*100,1)}%`;
-    } else if (prior > 0) {
-      comparison = `Geçen yıl aynı çeyrek: ${formatValue(prior)} • Büyüme: ${signed((current/prior-1)*100,1)}%`;
+    delta = current-prior;
+    if (prior > 0) {
+      const rate = (current/prior-1)*100;
+      growthText = isPercent
+        ? `${signed(rate,1)}% büyüme • marj farkı ${signed(delta,1)} puan`
+        : `${signed(rate,1)}% büyüme`;
     } else {
-      const delta = current-prior;
-      comparison = `Geçen yıl aynı çeyrek: ${formatValue(prior)} • Fark: ${signed(delta,2)} ${isRatio ? 'x' : unit} • Önceki değer sıfır/negatif olduğu için büyüme oranı anlamlı değil.`;
+      growthText = isPercent
+        ? `Oransal büyüme hesaplanamıyor • marj farkı ${signed(delta,1)} puan`
+        : `Oransal büyüme hesaplanamıyor • dönem farkı ${signed(delta,2)} ${isRatio ? 'x' : unit}`;
     }
   }
-  tooltip.innerHTML = `<strong>${escapeSvg(mark.dataset.tipPeriod)} • ${escapeSvg(mark.dataset.tipSeries)}</strong><span>Değer <b>${escapeSvg(formatValue(current))}</b></span><small>${escapeSvg(comparison)}</small>`;
+  const tone = delta == null ? '' : delta >= 0 ? 'positive' : 'negative';
+  tooltip.innerHTML = `<strong>${escapeSvg(mark.dataset.tipPeriod)} • ${escapeSvg(mark.dataset.tipSeries)}</strong><span>Değer <b>${escapeSvg(formatValue(current))}</b></span><div class="fin-growth ${tone}"><small>Geçen yılın aynı çeyreğine göre</small><b>${escapeSvg(growthText)}</b></div>`;
   tooltip.hidden = false;
   const rect = wrap.getBoundingClientRect();
   const left = Math.max(8, Math.min(event.clientX-rect.left+14, wrap.clientWidth-tooltip.offsetWidth-8));
@@ -195,6 +195,103 @@ function showFinancialTooltip(mark, event) {
   tooltip.style.left = `${left}px`;
   tooltip.style.top = `${top}px`;
 }
+
+function quarterAvailableDate(period) {
+  const [year, month] = period.split('/').map(Number);
+  const end = new Date(Date.UTC(year, month, 0));
+  end.setUTCDate(end.getUTCDate() + (month === 12 ? 75 : 60));
+  return end.toISOString().slice(0,10);
+}
+
+function buildFnfkSeries(company, prices) {
+  const quarters = company.periods || [];
+  const shares = Number(company.shares_outstanding);
+  if (!(shares > 0)) return [];
+  return (prices || []).map(point => {
+    const known = quarters.filter(q => quarterAvailableDate(q.period) <= point.time);
+    if (known.length < 4) return null;
+    const latest = known[known.length-1];
+    const endIndex = quarters.indexOf(latest);
+    const lastFour = quarters.slice(endIndex-3,endIndex+1);
+    const continuous = lastFour.length === 4 && lastFour.every((q,i) => {
+      if (i===0) return true;
+      const [py,pm]=lastFour[i-1].period.split('/').map(Number);
+      const [cy,cm]=q.period.split('/').map(Number);
+      return (cy*4+Math.ceil(cm/3))-(py*4+Math.ceil(pm/3))===1;
+    });
+    if (!continuous || !lastFour.every(q => Number.isFinite(q.netOperatingProfit))) return null;
+    const ttm = lastFour.reduce((sum,q)=>sum+q.netOperatingProfit,0);
+    const perShare = ttm/shares;
+    if (!Number.isFinite(perShare) || perShare === 0) return null;
+    return {time:point.time,price:point.close,ttm,perShare,ratio:point.close/perShare};
+  }).filter(Boolean);
+}
+
+function dailyLabel(time) {
+  const [year,month]=time.split('-');
+  return `${year}/${Number(month)}`;
+}
+
+function drawFnfkChart(company, ticker) {
+  const host=document.getElementById('fnfk-chart');
+  if (!window.financialPriceData) {
+    host.innerHTML='<div class="financial-chart-empty">Günlük fiyat geçmişi hazırlanıyor…</div>';
+    return;
+  }
+  const all=buildFnfkSeries(company,window.financialPriceData.daily_prices?.[ticker]);
+  const range=document.querySelector('[data-daily-range].active')?.dataset.dailyRange || 'all';
+  let points=all;
+  if (points.length && range!=='all') {
+    const months=range==='1y'?12:36;
+    const cutoff=new Date(points[points.length-1].time+'T00:00:00Z');
+    cutoff.setUTCMonth(cutoff.getUTCMonth()-months);
+    const key=cutoff.toISOString().slice(0,10);
+    points=points.filter(p=>p.time>=key);
+  }
+  if (points.length<2) {
+    host.innerHTML='<div class="financial-chart-empty">Bu hisse için yeterli günlük F/NFK geçmişi bulunamadı.</div>';
+    return;
+  }
+  const width=980,height=350,margin={left:72,right:22,top:20,bottom:48};
+  const plotW=width-margin.left-margin.right,plotH=height-margin.top-margin.bottom;
+  const values=points.map(p=>p.ratio);
+  let min=Math.min(...values),max=Math.max(...values);
+  if(min===max){min-=1;max+=1;}
+  const pad=(max-min)*0.08;min-=pad;max+=pad;
+  const y=v=>margin.top+(max-v)/(max-min)*plotH;
+  const x=i=>margin.left+i*plotW/(points.length-1);
+  const average=values.reduce((a,b)=>a+b,0)/values.length;
+  const band=Math.abs(average)*0.2;
+  const upper=average+band,lower=average-band;
+  let path='';
+  points.forEach((p,i)=>{path+=`${i?'L':'M'} ${x(i).toFixed(2)} ${y(p.ratio).toFixed(2)} `;});
+  let svg=`<svg class="financial-svg fnfk-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeSvg(ticker)} günlük fiyat net faaliyet kârı katsayısı">`;
+  for(let i=0;i<=4;i++){
+    const value=max-(max-min)*i/4, yy=y(value);
+    svg+=`<line x1="${margin.left}" y1="${yy}" x2="${width-margin.right}" y2="${yy}" class="fin-grid"/><text x="${margin.left-9}" y="${yy+4}" text-anchor="end" class="fin-axis">${pretty(value,1)}x</text>`;
+  }
+  const levels=[
+    {value:upper,color:'#3dc8f4',label:'Ort. %20 üstü'},
+    {value:average,color:'#75d27b',label:'Ortalama'},
+    {value:lower,color:'#3dc8f4',label:'Ort. %20 altı'},
+  ];
+  levels.forEach(level=>{
+    const yy=y(level.value);
+    svg+=`<line x1="${margin.left}" y1="${yy}" x2="${width-margin.right}" y2="${yy}" class="fnfk-level" stroke="${level.color}"/><text x="${margin.left+7}" y="${yy-7}" class="fnfk-level-label" fill="${level.color}">${level.label}: ${pretty(level.value,2)}</text>`;
+  });
+  svg+=`<path d="${path}" fill="none" stroke="#82aaff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><title>${escapeSvg(ticker)} F/NFK günlük</title></path>`;
+  const labels=5;
+  for(let i=0;i<labels;i++){
+    const index=Math.round(i*(points.length-1)/(labels-1));
+    svg+=`<text x="${x(index)}" y="${height-17}" text-anchor="middle" class="fin-axis">${dailyLabel(points[index].time)}</text>`;
+  }
+  svg+='</svg>';
+  host.innerHTML=svg;
+  const last=points[points.length-1];
+  const caption=document.getElementById('fnfk-caption');
+  caption.textContent=`${points.length.toLocaleString('tr-TR')} günlük gözlem • Son oran ${pretty(last.ratio,2)}x • F/NFK = kapanış fiyatı / TTM net faaliyet kârı hisse başına`;
+}
+
 function renderFinancials() {
   if (!window.financialData) return;
   const ticker = financialSelect.value;
@@ -235,21 +332,26 @@ function renderFinancials() {
   financialContainer.innerHTML = charts.join('');
   const latest = rows.at(-1);
   financialStatus.textContent = `${company.name} • ${rows.length} dönem gösteriliyor • Son dönem ${latest?.label || '—'}`;
+  drawFnfkChart(company,ticker);
 }
 
-fetch('./data/financials.json', {cache:'no-store'})
-  .then(response => {
-    if (!response.ok) throw new Error('Finansal veri dosyası yüklenemedi.');
+Promise.all([
+  fetch('./data/financials.json',{cache:'no-store'}).then(response=>{
+    if(!response.ok) throw new Error('Finansal veri dosyası yüklenemedi.');
+    return response.json();
+  }),
+  fetch('./data/financial_prices.json',{cache:'no-store'}).then(response=>{
+    if(!response.ok) throw new Error('Günlük hisse fiyatları henüz yayımlanmadı.');
     return response.json();
   })
-  .then(payload => {
-    window.financialData = payload;
-    renderFinancials();
-  })
-  .catch(error => {
-    financialStatus.textContent = error.message;
-    financialContainer.innerHTML = '<div class="financial-chart-empty">Finansal tablolar şu anda yüklenemiyor.</div>';
-  });
+]).then(([fundamentals,prices])=>{
+  window.financialData=fundamentals;
+  window.financialPriceData=prices;
+  renderFinancials();
+}).catch(error=>{
+  financialStatus.textContent=error.message;
+  financialContainer.innerHTML='<div class="financial-chart-empty">Finansal tablolar şu anda yüklenemiyor.</div>';
+});
 
 financialContainer.addEventListener('pointermove', event => {
   const mark = event.target.closest('[data-fin-tooltip]');
@@ -261,3 +363,8 @@ financialContainer.addEventListener('pointerleave', () => {
 });
 financialSelect.addEventListener('change', renderFinancials);
 financialRange.addEventListener('change', renderFinancials);
+document.querySelectorAll('[data-daily-range]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-daily-range]').forEach(item=>item.classList.remove('active'));
+  button.classList.add('active');
+  renderFinancials();
+}));
