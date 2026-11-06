@@ -292,11 +292,80 @@ function drawFnfkChart(company, ticker) {
   caption.textContent=`${points.length.toLocaleString('tr-TR')} günlük gözlem • Son oran ${pretty(last.ratio,2)}x • F/NFK = kapanış fiyatı / TTM net faaliyet kârı hisse başına`;
 }
 
+function median(values) {
+  if (!values.length) return null;
+  const sorted=[...values].sort((a,b)=>a-b), mid=Math.floor(sorted.length/2);
+  return sorted.length%2 ? sorted[mid] : (sorted[mid-1]+sorted[mid])/2;
+}
+function growthRate(current,previous) {
+  return Number.isFinite(current)&&Number.isFinite(previous)&&previous>0
+    ? (current/previous-1)*100 : null;
+}
+function scoreGrowth(medianGrowth) {
+  if (!Number.isFinite(medianGrowth)) return null;
+  const clipped=Math.max(-100,Math.min(200,medianGrowth));
+  return 50+50*Math.tanh(clipped/60);
+}
+function calculateQuarterScores(rows) {
+  return rows.map((row,index)=>{
+    const yearAgo=rows.find(item=>item.quarter?.[0]===row.quarter?.[0]-1&&item.quarter?.[1]===row.quarter?.[1]);
+    const salesGrowth=growthRate(row.sales,yearAgo?.sales);
+    const opGrowth=growthRate(row.netOperatingProfit,yearAgo?.netOperatingProfit);
+    const recent=rows.slice(Math.max(0,index-3),index+1).map(item=>item.yoy).filter(Boolean);
+    const salesRates=recent.map(item=>item.sales).filter(Number.isFinite);
+    const opRates=recent.map(item=>item.op).filter(Number.isFinite);
+    const salesScore=scoreGrowth(median(salesRates));
+    const opScore=scoreGrowth(median(opRates));
+    const levelScore=salesScore==null ? opScore : opScore==null ? salesScore : salesScore*0.35+opScore*0.65;
+    const positiveRates=[...salesRates,...opRates];
+    const consistencyScore=positiveRates.length
+      ? positiveRates.filter(value=>value>0).length/positiveRates.length*100 : null;
+    const cashRatio=row.shortDebt>0&&row.cashAndInvestments!=null
+      ? row.cashAndInvestments/row.shortDebt
+      : row.shortDebt===0&&row.cashAndInvestments!=null ? Infinity : null;
+    const liquidityScore=cashRatio==null ? null
+      : !Number.isFinite(cashRatio)||cashRatio>=1.5 ? 100
+      : cashRatio<=0 ? 0
+      : cashRatio<=0.5 ? cashRatio*100
+      : cashRatio<=1 ? 50+(cashRatio-0.5)*60
+      : 80+(cashRatio-1)*40;
+    const parts=[
+      {key:'growth',label:'Büyüme seviyesi',value:levelScore,weight:0.45},
+      {key:'consistency',label:'Büyüme düzenliliği',value:consistencyScore,weight:0.25},
+      {key:'liquidity',label:'Nakit / kısa borç',value:liquidityScore,weight:0.30},
+    ];
+    const available=parts.filter(part=>Number.isFinite(part.value));
+    const score=available.length
+      ? available.reduce((sum,part)=>sum+part.value*part.weight,0)/available.reduce((sum,part)=>sum+part.weight,0)
+      : null;
+    return {...row,yoy:{sales:salesGrowth,op:opGrowth},score,scoreParts:parts,
+      scoreCoverage:recent.length, cashDebtCoverage:cashRatio};
+  });
+}
+function renderFinancialScore(rows, company) {
+  const host=document.getElementById('financial-score');
+  if (!host) return;
+  const latest=[...rows].reverse().find(row=>Number.isFinite(row.score));
+  if (!latest) {
+    host.innerHTML='<div class="score-empty">Karşılaştırılabilir aynı çeyrek verisi bulunamadı.</div>';
+    return;
+  }
+  const score=Math.round(latest.score);
+  const color=score>=70?'#75d27b':score>=45?'#e9bd66':'#ff6868';
+  const name=score>=75?'Güçlü':score>=60?'Olumlu':score>=40?'Orta':'Zayıf';
+  const parts=latest.scoreParts.map(part=>{
+    const value=Number.isFinite(part.value)?Math.round(part.value):null;
+    return '<div class="score-part"><div><span>'+part.label+'</span><b>'+(value==null?'Veri yok':value+'/100')+'</b></div><div class="score-track"><i style="width:'+(value??0)+'%;background:'+(part.key==='liquidity'?'#67b8d5':color)+'"></i></div></div>';
+  }).join('');
+  const coverage=latest.scoreCoverage;
+  host.innerHTML='<div class="score-top"><div><h3>Çeyreklik finansal kalite puanı</h3><p>'+company.name+' • Son değerlendirilen dönem '+latest.label+'</p></div><div class="score-total" style="--score-color:'+color+'"><b>'+score+'</b><span>/ 100</span></div></div><div class="score-meter"><i style="width:'+score+'%;background:'+color+'"></i></div><div class="score-rating" style="color:'+color+'">'+name+'</div><div class="score-breakdown">'+parts+'</div><div class="score-history"><span>Çeyreklik puan geçmişi</span><div class="score-spark">'+rows.filter(row=>Number.isFinite(row.score)).map(row=>'<span title="'+row.label+': '+Math.round(row.score)+'/100" style="height:'+Math.max(4,row.score)+'%"></span>').join('')+'</div></div><p class="score-method">Puan: büyüme seviyesi %45 (satış büyümesi %35, net faaliyet kârı büyümesi %65; son 4 aynı-çeyrek yıllık değişimin medyanı), pozitif büyüme düzenliliği %25, (nakit + finansal yatırımlar) / kısa vadeli finansal borç %30. Tek dönemlik sıçramalar medyan ve sınırlı büyüme dönüşümüyle yumuşatılır. Büyüme yalnızca önceki yıl karşılaştırma tabanı pozitif olduğunda hesaplanır. Eksik bileşenler kalan ağırlıklara orantılı dağıtılır; dönemsel nakit karşılama 1,5x ve üzerinde tam puandır. Bu gösterge yatırım tavsiyesi değildir.</p>';
+}
 function renderFinancials() {
   if (!window.financialData) return;
   const ticker = financialSelect.value;
   const company = window.financialData.companies[ticker];
-  financialAllRows = buildFinancialRows(company);
+  financialAllRows = calculateQuarterScores(buildFinancialRows(company));
+  renderFinancialScore(financialAllRows, company);
   let rows = financialAllRows;
   const limit = financialRange.value;
   if (limit !== 'all') rows = rows.slice(-Number(limit));
