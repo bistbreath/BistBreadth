@@ -1,78 +1,35 @@
-# BIST 100 Equal Weight
+# BIST Equal-Weight Charts
 
-BIST 100 hisselerinden eşit ağırlıklı sentetik günlük OHLC mum serisi oluşturmak için başlangıç projesi.
+GitHub Pages interface for daily equal-weight synthetic charts of:
+- BIST 100 (XU100)
+- BIST 30 (XU030)
+- BIST Tüm-100 (XTUMY)
+- BIST Tüm / all shares (XUTUM)
 
-## Proje durumu
+## Data pipeline
 
-- Web arayüzü ve mum grafik bileşeni hazır.
-- Sentetik eşit ağırlık hesaplama betiği hazır.
-- Gerçek piyasa verisi ve doğrulanmış BIST 100 bileşen listesi henüz eklenmedi.
-- Bu nedenle site şu anda boş veri durumunu gösterir; örnek veya uydurma fiyat kullanılmaz.
+The GitHub Actions workflow downloads the current constituent lists from Borsa İstanbul's public components CSV and daily adjusted OHLC prices through Yahoo Finance using yfinance. It recalculates the four series with a 1,000 starting value and daily equal weighting, then commits the output to `docs/data/indices.json`. The workflow runs on weekdays after the BIST session and can also be started manually from Actions → Refresh BIST equal-weight charts → Run workflow.
 
-## Dosyalar
-
-- `docs/`: GitHub Pages ile yayımlanacak web sitesi
-- `data/constituents.csv`: seçilen dönem için BIST 100 bileşenleri
-- `data/prices.csv`: günlük OHLC girdisi
-- `scripts/build_index.py`: eşit ağırlıklı sentetik endeks hesaplaması
-
-## Veri hazırlığı
-
-`data/constituents.csv`:
-```csv
-ticker
-AKBNK
-ASELS
-...
-```
-
-İlk sürümde dosyada tam 100 benzersiz sembol olmalıdır.
-
-`data/prices.csv`:
-```csv
-date,ticker,open,high,low,close
-2026-01-02,AKBNK,....
-2026-01-02,ASELS,....
-```
-
-Her işlem gününde listedeki 100 hissenin tamamı bulunmalıdır. Eksik fiyatı sessizce atlamak yerine betik hata verir; böylece ağırlıklar farkında olmadan değişmez.
-
-## Hesaplama metodolojisi
-
-Her gün, önceki kapanış itibarıyla 100 hisseye eşit ağırlık verilir. Her hissenin o günkü OHLC değeri önceki kapanışına bölünür. Bu 100 oranın aritmetik ortalaması, sentetik endeksin önceki kapanışına uygulanır.
-
-- Başlangıç seviyesi: 1.000
-- Yeniden dengeleme: günlük
-- Kapanış, takip eden günün hesaplamasında yeni referans olur.
-- Sentetik High/Low değerleri bağımsız hisse zirve/dip oranlarının ortalamasıdır. Hisselerin gün içi zirve ve dip zamanları aynı olmadığından bu değerler eşzamanlı olarak işlem görebilen gerçek bir portföyün kesin High/Low'u değildir.
-
-İlk fiyat günü yalnızca 1.000 başlangıç noktasıdır; ilk günlük getiri ikinci işlem gününde hesaplanır.
-
-## Çalıştırma
-
-Python 3.10+:
+To run it locally with Python 3.10+:
 
 ```bash
 pip install -r requirements.txt
-python scripts/build_index.py
-```
-
-Komut `docs/data/index.json` üretir. Yerelde görüntülemek için proje kökünde:
-
-```bash
+python scripts/build_indices.py
 python -m http.server 8000
 ```
 
-Ardından `http://localhost:8000/docs/` adresini açın.
+Open `http://localhost:8000/docs/`.
 
-## GitHub Pages
+## Calculation and limitations
 
-Repository → Settings → Pages → Deploy from a branch → `main` → `/docs`.
+For each session, each constituent's OHLC is divided by its previous close; the arithmetic mean of those ratios is applied to the synthetic series' previous close. Weights reset to equal at each daily close. Prices are adjusted by the data provider.
 
-## Veri ve lisans notu
+The component snapshot is current membership. The builder replays that current list across available price history, up to five years. It does not reconstruct historical membership changes, so the chart is not survivorship-bias-free and must not be treated as official index performance. Newer listings shorten the common history available for a basket. The synthetic high and low are averages of individual price extremes; those extremes may not have occurred at the same time.
 
-Yahoo Finance, yfinance veya başka bir kaynağın verilerine erişebilmek, bunları herkese açık bir sitede yeniden yayımlama hakkı vermez. Veri sağlayıcısının kullanım ve yeniden dağıtım koşulları kontrol edilmelidir. Kurumsal ve kalıcı kullanım için lisanslı, düzeltilmiş tarihsel OHLC verisi tercih edilmelidir.
+Borsa İstanbul provides the constituent source. Yahoo Finance/yfinance is a third-party price source; availability, delay, and redistribution rights depend on its terms. The site is for research, not investment advice, and is not affiliated with Borsa İstanbul.
 
-Bugünkü BIST 100 listesini geçmişe uygulamak sağkalım yanlılığı yaratır. Gerçek 10 yıllık karşılaştırma için tarihsel endeks bileşenleri ve etkinlik tarihleri gerekir. Bu sürümde tarihsel bileşen arşivi varmış gibi davranılmaz.
+## Site files
 
-Bu proje Borsa İstanbul tarafından hesaplanan resmî bir endeks değildir; araştırma amaçlı sentetik bir göstergedir.
+- `docs/`: GitHub Pages site
+- `scripts/build_indices.py`: constituent download, price retrieval, and chart calculations
+- `.github/workflows/refresh-index-data.yml`: scheduled data refresh
