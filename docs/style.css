@@ -26,3 +26,11 @@
 .financial-method{margin:14px 1px 0;color:var(--muted);font-size:11px;line-height:1.7}
 .financial-method b{color:#c4d4e9}
 @media(max-width:650px){.financials-panel{padding:16px 12px}.financial-controls{width:100%}.financial-controls label{justify-content:space-between;flex:1 1 180px}.financial-controls select{max-width:175px}.financial-chart-card{padding:12px 8px 8px}.financial-chart-card h3{font-size:14px}.fin-axis{font-size:10px}.fin-value{font-size:9px}}
+
+.fin-svg-wrap{position:relative}
+.fin-value{pointer-events:none}
+.financial-tooltip{position:absolute;z-index:8;display:grid;gap:5px;max-width:min(340px,90%);padding:10px 12px;border:1px solid #526984;border-radius:9px;background:rgba(7,14,25,.97);box-shadow:0 8px 24px rgba(0,0,0,.42);color:#e8eef7;font-size:11px;line-height:1.45;pointer-events:none}
+.financial-tooltip[hidden]{display:none}
+.financial-tooltip strong{font-size:12px;color:#fff}
+.financial-tooltip span{display:flex;justify-content:space-between;gap:10px}
+.financial-tooltip small{color:#b7c7db}
