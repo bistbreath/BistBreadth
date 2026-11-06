@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BIST Eşit Ağırlık Grafikleri</title>
-<link rel="stylesheet" href="style.css?v=20261106-financials-3">
+<link rel="stylesheet" href="style.css?v=20261106-financials-4">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -48,6 +48,14 @@
    </div>
   </div>
   <div id="financial-status" class="financial-status">Finansal veriler yükleniyor…</div>
+  <article class="fnfk-card">
+   <div class="fin-title"><div><h3>F/NFK Günlük • yıllıklandırılmış net faaliyet kârı</h3><p>Günlük kapanış fiyatı / son dört çeyrek net faaliyet kârının hisse başına tutarı.</p></div>
+    <div class="fnfk-ranges" aria-label="F/NFK grafik dönemi"><button data-daily-range="1y">1Y</button><button data-daily-range="3y">3Y</button><button data-daily-range="all" class="active">Tümü</button></div>
+   </div>
+   <div id="fnfk-chart"><div class="financial-chart-empty">Günlük fiyat geçmişi yükleniyor…</div></div>
+   <p id="fnfk-caption" class="fnfk-caption"></p>
+   <p class="fnfk-method">F/NFK = bölünme düzeltmeli, temettü düzeltmesi yapılmamış günlük kapanış / TTM net faaliyet kârı hisse başına. Finansal dönemler, yayın tarihi dosyalarda bulunmadığı için dönem sonundan 60 gün sonra (4Ç için 75 gün sonra) uygulanır. Hisse sayısı, son bilançodaki ödenmiş sermayenin 1 TL nominal değer varsayımıyla hesaplanıp tarih boyunca sabit tutulur; tarihsel sermaye değişimlerini tam yansıtmaz.</p>
+  </article>
   <div id="financial-charts" class="financial-charts"></div>
   <p class="financial-method"><b>Hesaplama:</b> Tutarlar kaynak dosyadaki değerlerden ₺ milyar cinsine çevrilir. Net faaliyet kârı = brüt kâr + genel yönetim + pazarlama/satış/dağıtım + Ar-Ge giderleri (giderler eksi değerli). Marj ortalaması basit 4 çeyrek ortalamasıdır. Net borç/FAVÖK; kısa ve uzun vadeli finansal borçlardan nakit ve kısa/uzun vadeli finansal yatırımlar çıkarılarak, son dört çeyrek faaliyet kârı + amortisman toplamına bölünür. Bilanço serileri dönem sonu değeridir.</p>
  </section>
@@ -55,4 +63,4 @@
 </main>
 <footer><span>Araştırma amaçlıdır; yatırım tavsiyesi değildir.</span><span>Fiyat kaynağı: Yahoo Finance • Bileşen kaynağı: Borsa İstanbul</span></footer>
 <script src="app.js?v=20261106-3"></script>
-<script src="financials.js?v=20261106-3"></script>\n</body></html>
+<script src="financials.js?v=20261106-4"></script>\n</body></html>
