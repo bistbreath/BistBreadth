@@ -4,7 +4,7 @@ const financialContainer = document.getElementById('financial-charts');
 const financialStatus = document.getElementById('financial-status');
 let financialAllRows = [];
 const quarterColors = {1:'#4f7fb3',2:'#ef8c2f',3:'#75b7b2',4:'#a878a5'};
-const billions = value => value == null || !Number.isFinite(value) ? null : value / 1e9;
+const millions = value => value == null || !Number.isFinite(value) ? null : value / 1e6;
 const quarterLabel = period => period;
 const pretty = (value, digits = 2) => Number(value).toLocaleString('tr-TR', {
   minimumFractionDigits: digits, maximumFractionDigits: digits,
@@ -16,14 +16,14 @@ const escapeSvg = value => String(value).replace(/[&<>"']/g, ch => ({
 function buildFinancialRows(company) {
   const source = company.periods || [];
   return source.map((row, index) => {
-    const sales = billions(row.sales);
-    const gross = billions(row.grossProfit);
-    const netOperating = billions(row.netOperatingProfit);
-    const netProfit = billions(row.netProfit);
-    const cash = billions(row.cash);
-    const investments = billions(row.financialInvestments);
-    const shortDebt = billions(row.shortTermDebt);
-    const longDebt = billions(row.longTermDebt);
+    const sales = millions(row.sales);
+    const gross = millions(row.grossProfit);
+    const netOperating = millions(row.netOperatingProfit);
+    const netProfit = millions(row.netProfit);
+    const cash = millions(row.cash);
+    const investments = millions(row.financialInvestments);
+    const shortDebt = millions(row.shortTermDebt);
+    const longDebt = millions(row.longTermDebt);
     const totalCash = cash == null || investments == null ? null : cash + investments;
     const netCash = totalCash == null || shortDebt == null ? null : totalCash - shortDebt;
     const netDebt = totalCash == null || shortDebt == null || longDebt == null
@@ -96,7 +96,7 @@ function drawFinancialChart(title, subtitle, rows, definitions, unit, options = 
   const labelEvery = Math.max(1, Math.ceil(rows.length / 14));
   const numberLabel = value => options.percent
     ? `%${pretty(value,1)}`
-    : options.ratio ? `${pretty(value,1)}x` : pretty(value,2);
+    : options.ratio ? `${pretty(value,1)}x` : pretty(value,0);
   let svg = `<svg class="financial-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeSvg(title)}">`;
 
   for (let i=0;i<=4;i++) {
@@ -169,7 +169,7 @@ function showFinancialTooltip(mark, event) {
   const isRatio = mark.dataset.tipRatio === '1';
   const unit = mark.dataset.tipUnit;
   const formatValue = value => isPercent ? `%${pretty(value,1)}`
-    : isRatio ? `${pretty(value,2)}x` : `${pretty(value,2)} ${unit}`;
+    : isRatio ? `${pretty(value,2)}x` : `${pretty(value,0)} ${unit}`;
   const signed = (value,digits=2) => `${value >= 0 ? '+' : ''}${pretty(value,digits)}`;
   let growthText = 'Geçen yılın aynı çeyrek verisi bulunmuyor.';
   let delta = null;
@@ -183,7 +183,7 @@ function showFinancialTooltip(mark, event) {
     } else {
       growthText = isPercent
         ? `Oransal büyüme hesaplanamıyor • marj farkı ${signed(delta,1)} puan`
-        : `Oransal büyüme hesaplanamıyor • dönem farkı ${signed(delta,2)} ${isRatio ? 'x' : unit}`;
+        : `Oransal büyüme hesaplanamıyor • dönem farkı ${signed(delta,isRatio?2:0)} ${isRatio ? 'x' : unit}`;
     }
   }
   const tone = delta == null ? '' : delta >= 0 ? 'positive' : 'negative';
@@ -376,9 +376,9 @@ function renderFinancials() {
 
   const bar = (key,label,color) => ({key,label,color});
   const charts = [
-    drawFinancialChart('Satış gelirleri', 'Çeyreklik', rows, [bar('sales','Satış','#ef8c2f')], '₺ milyar'),
-    drawFinancialChart('Net faaliyet kârı*', 'Çeyreklik • görseldeki formül', rows, [bar('netOperatingProfit','Net faaliyet kârı','#75b7b2')], '₺ milyar'),
-    drawFinancialChart('Net kâr (ana ortaklık payı)', 'Çeyreklik', rows, [bar('netProfit','Ana ortaklık net kârı','#8e79ad')], '₺ milyar'),
+    drawFinancialChart('Satış gelirleri', 'Çeyreklik', rows, [bar('sales','Satış','#ef8c2f')], '₺ milyon'),
+    drawFinancialChart('Net faaliyet kârı*', 'Çeyreklik • görseldeki formül', rows, [bar('netOperatingProfit','Net faaliyet kârı','#75b7b2')], '₺ milyon'),
+    drawFinancialChart('Net kâr (ana ortaklık payı)', 'Çeyreklik', rows, [bar('netProfit','Ana ortaklık net kârı','#8e79ad')], '₺ milyon'),
     drawFinancialChart('Brüt kâr marjı', 'Çeyreklik marj ve basit 4Ç hareketli ortalama', rows, [
       bar('grossMargin','Brüt kâr marjı','#ef8c2f'),
       {key:'grossMarginSma4',label:'4Ç ortalaması',color:'#e9eef5',type:'line'},
@@ -394,10 +394,10 @@ function renderFinancials() {
     drawFinancialChart('Nakit ve finansal yatırımlar / kısa vadeli finansal borçlar', 'Nakit ve yatırımlar toplamı ile bilanço dönemi sonu kısa vadeli borç karşılaştırması', rows, [
       bar('cashAndInvestments','Nakit + finansal yatırımlar','#75b7b2'),
       {key:'shortDebt',label:'Kısa vadeli finansal borçlar',color:'#ef8c2f',type:'line'},
-    ], '₺ milyar'),
+    ], '₺ milyon'),
     drawFinancialChart('Net nakit', '(Nakit + finansal yatırımlar) − kısa vadeli finansal borçlar', rows, [
       bar('netCash','Net nakit / (borç)','#5c91c9'),
-    ], '₺ milyar'),
+    ], '₺ milyon'),
     drawFinancialChart('Net borç / FAVÖK', 'Net borç: toplam finansal borç − (nakit + finansal yatırımlar) • FAVÖK: son 4 çeyrek', rows, [
       bar('netDebtEbitda','Net borç / FAVÖK','#d77b79'),
     ], 'x', {ratio:true}),
