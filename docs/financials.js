@@ -41,7 +41,7 @@ function buildFinancialRows(company) {
       if (consecutive && lastFour.every(item =>
         Number.isFinite(item.operatingProfit) && Number.isFinite(item.depreciationAmortization))) {
         ebitdaTtm = lastFour.reduce((sum, item) =>
-          sum + item.operatingProfit + item.depreciationAmortization, 0) / 1e9;
+          sum + item.operatingProfit + item.depreciationAmortization, 0) / 1e6;
       }
     }
     const ratio = netDebt != null && ebitdaTtm > 0 ? netDebt / ebitdaTtm : null;
