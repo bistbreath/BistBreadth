@@ -2,32 +2,39 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BIST 100 Equal Weight</title>
+<title>BIST Eşit Ağırlık Grafikleri</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
 <header class="top">
- <div><div class="eyebrow">BIST MARKET BREADTH • EŞİT AĞIRLIK</div><h1>BIST 100 <span>Equal Weight</span></h1><p>BIST 100 hisselerinin eşit ağırlıklı sentetik fiyat endeksi</p></div>
- <div id="status" class="status">Veri bekleniyor</div>
+ <div><div class="eyebrow">BIST MARKET BREADTH • EŞİT AĞIRLIK</div><h1><span id="index-name">BIST 100</span> <span>Equal Weight</span></h1><p id="subtitle">Endeks verileri yükleniyor</p></div>
+ <div id="status" class="status">Veri yükleniyor…</div>
 </header>
 <main>
  <section class="metrics">
-  <article><small>Endeks değeri</small><b id="value">—</b></article>
+  <article><small>Sentetik değer</small><b id="value">—</b></article>
   <article><small>Günlük değişim</small><b id="change">—</b></article>
   <article><small>Son veri tarihi</small><b id="date">—</b></article>
-  <article><small>Hisse sayısı</small><b id="count">100</b></article>
+  <article><small>Hisse sayısı <span class="muted-small">• bileşen listesi <span id="membership-date">—</span></span></small><b id="count">—</b></article>
  </section>
- <section class="panel">
-  <div class="chart-head"><div><h2>Günlük mum grafiği</h2><p>Başlangıç seviyesi 1.000 • Günlük eşit ağırlıklandırma</p></div>
-   <nav class="ranges"><button data-range="1m">1A</button><button data-range="3m">3A</button><button data-range="6m">6A</button><button data-range="1y">1Y</button><button data-range="5y">5Y</button><button data-range="all" class="active">Tümü</button></nav>
+ <section id="panel" class="panel" style="display:none">
+  <div class="chart-head"><div><h2 id="chart-title">Günlük mum grafiği</h2><p id="history-note"></p></div>
+   <div class="controls">
+    <label class="index-picker">Endeks
+     <select id="index-select">
+      <option value="XU100">BIST 100</option><option value="XU030">BIST 30</option><option value="XTUMY">XTUMY</option><option value="XUTUM">Tüm BIST</option>
+     </select>
+    </label>
+    <nav class="ranges"><button data-range="1m">1A</button><button data-range="3m">3A</button><button data-range="6m">6A</button><button data-range="1y">1Y</button><button data-range="5y">5Y</button><button data-range="all" class="active">Tümü</button></nav>
+   </div>
   </div>
   <div id="chart"></div>
-  <div class="note">Sentetik OHLC mumları. Bu seri resmî BIST 100 endeksi değildir.</div>
+  <div class="note">Sentetik OHLC mumlarıdır; resmî BIST endeksi veya doğrudan yatırım getirisi değildir.</div>
  </section>
- <section id="empty" class="empty"><b>Henüz piyasa verisi eklenmedi.</b><span>Doğrulanmış 100 hisse bileşen listesi ve günlük OHLC verileri eklendiğinde grafik burada görüntülenecek.</span></section>
- <section class="method"><h3>Hesaplama yöntemi</h3><p>Her işlem gününde hisseler eşit ağırlıkla değerlendirilir ve kapanışta ağırlıklar yeniden dengelenir. Açılış, en yüksek, en düşük ve kapanış değerleri önceki kapanışa göre normalize edilerek sentetik endeks mumları oluşturulur.</p></section>
+ <section id="empty" class="empty"><b id="empty-title">Piyasa verisi yükleniyor…</b><span id="empty-message">BIST bileşenleri ve günlük OHLC fiyatları hazırlanıyor.</span></section>
+ <section class="method"><h3>Hesaplama yöntemi</h3><p>Güncel BIST bileşenleri eşit ağırlıkla değerlendirilir; her günün açılış, en yüksek, en düşük ve kapanış değerleri önceki kapanışa göre normalize edilir. Seri 1.000 başlangıç değeriyle oluşturulur. Geçmiş grafik, son bileşen listesini geçmişe uygular; tarihsel üyelik değişikliklerini yansıtmaz ve bu nedenle resmî endeks performansıyla karşılaştırılamaz.</p></section>
 </main>
-<footer><span>Yalnızca araştırma amaçlıdır; yatırım tavsiyesi değildir.</span><span>Grafik: TradingView Lightweight Charts</span></footer>
+<footer><span>Araştırma amaçlıdır; yatırım tavsiyesi değildir.</span><span>Fiyat kaynağı: Yahoo Finance • Bileşen kaynağı: Borsa İstanbul</span></footer>
 <script src="app.js"></script>
 </body></html>
