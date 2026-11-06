@@ -19,6 +19,8 @@ import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "data" / "indices.json"
+FINANCIAL_PRICE_OUTPUT = ROOT / "docs" / "data" / "financial_prices.json"
+FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT"]
 MEMBERS_URL = "https://www.borsaistanbul.com/datum/hisse_endeks_ds.csv"
 BASE_VALUE = 1000.0
 PERIOD = "5y"
@@ -90,6 +92,46 @@ def download_prices(symbols: list[str]) -> dict[str, pd.DataFrame]:
     return result
 
 
+def download_financial_prices(symbols: list[str]) -> dict[str, list[dict]]:
+    """Get split-adjusted, non-dividend-adjusted closes for valuation multiples."""
+    raw = yf.download(
+        [f"{symbol}.IS" for symbol in symbols],
+        period=PERIOD,
+        interval="1d",
+        auto_adjust=False,
+        actions=False,
+        progress=False,
+        threads=True,
+        group_by="ticker",
+        timeout=45,
+    )
+    result: dict[str, list[dict]] = {}
+    for symbol in symbols:
+        yahoo_symbol = f"{symbol}.IS"
+        if isinstance(raw.columns, pd.MultiIndex):
+            if yahoo_symbol in raw.columns.get_level_values(0):
+                data = raw[yahoo_symbol].copy()
+            elif yahoo_symbol in raw.columns.get_level_values(-1):
+                data = raw.xs(yahoo_symbol, axis=1, level=-1).copy()
+            else:
+                continue
+        else:
+            data = raw.copy()
+        data.columns = [str(column).lower() for column in data.columns]
+        if "close" not in data.columns:
+            continue
+        close = pd.to_numeric(data["close"], errors="coerce").dropna()
+        if close.empty:
+            continue
+        close.index = pd.to_datetime(close.index).tz_localize(None).normalize()
+        close = close[~close.index.duplicated(keep="last")]
+        result[symbol] = [
+            {"time": date.strftime("%Y-%m-%d"), "close": round(float(value), 6)}
+            for date, value in close.items() if float(value) > 0
+        ]
+    return result
+
+
 def make_candles(members: list[str], prices: dict[str, pd.DataFrame]) -> tuple[list[dict], list[str]]:
     missing = [symbol for symbol in members if symbol not in prices]
     if missing:
@@ -138,6 +180,9 @@ def main() -> None:
         for code in INDEXES
     ]))
     prices = download_prices(symbols)
+    financial_prices = download_financial_prices(FINANCIAL_TICKERS)
+    for ticker in FINANCIAL_TICKERS:
+        print(f"{ticker}: {len(financial_prices.get(ticker, []))} daily closes")
     payload = {
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance (yfinance), auto-adjusted daily OHLC",
@@ -163,7 +208,12 @@ def main() -> None:
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {OUTPUT}")
+    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
+        "updated_at": fetched_at,
+        "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
+        "daily_prices": financial_prices,
+    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"Wrote {OUTPUT} and {FINANCIAL_PRICE_OUTPUT}")
 
 
 if __name__ == "__main__":
