@@ -49,7 +49,7 @@ function buildFinancialRows(company) {
     return {
       ...row, label: quarterLabel(row.period), sales, grossProfit: gross,
       netOperatingProfit: netOperating, netProfit, cash, investments,
-      shortDebt, longDebt, netCash, netDebt, ebitdaTtm, netDebtEbitda: ratio,
+      shortDebt, longDebt, cashAndInvestments: totalCash, netCash, netDebt, ebitdaTtm, netDebtEbitda: ratio,
       grossMargin: sales && gross != null ? gross / sales * 100 : null,
       operatingMargin: sales && netOperating != null ? netOperating / sales * 100 : null,
       netMargin: sales && netProfit != null ? netProfit / sales * 100 : null,
@@ -175,9 +175,8 @@ function renderFinancials() {
       bar('netMargin','Net kâr marjı','#8e79ad'),
       {key:'netMarginSma4',label:'4Ç ortalaması',color:'#e9eef5',type:'line'},
     ], '%', {percent:true}),
-    drawFinancialChart('Nakit + finansal yatırımlar / kısa vadeli finansal borçlar', 'Bilanço dönemi sonu karşılaştırması', rows, [
-      bar('cash','Nakit ve nakit benzerleri','#75b7b2'),
-      bar('investments','Finansal yatırımlar','#8e79ad'),
+    drawFinancialChart('Nakit ve finansal yatırımlar / kısa vadeli finansal borçlar', 'Nakit ve yatırımlar toplamı ile bilanço dönemi sonu kısa vadeli borç karşılaştırması', rows, [
+      bar('cashAndInvestments','Nakit + finansal yatırımlar','#75b7b2'),
       bar('shortDebt','Kısa vadeli finansal borçlar','#ef8c2f'),
     ], '₺ milyar'),
     drawFinancialChart('Net nakit', '(Nakit + finansal yatırımlar) − kısa vadeli finansal borçlar', rows, [
