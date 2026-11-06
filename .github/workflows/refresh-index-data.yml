@@ -11,6 +11,8 @@ on:
       - "data/**"
       - "requirements.txt"
       - "docs/app.js"
+      - "docs/financials.js"
+      - "docs/data/financials.json"
       - "docs/index.html"
       - ".github/workflows/refresh-index-data.yml"
 
@@ -44,7 +46,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/indices.json
+          git add docs/data/indices.json docs/data/financial_prices.json
           if git diff --cached --quiet; then
             echo "Chart data has not changed."
           else
