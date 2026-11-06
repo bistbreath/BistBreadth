@@ -1,27 +1,46 @@
 const el = document.getElementById('chart');
-const chart = LightweightCharts.createChart(el, {
+const chartOptions = {
   layout: { background: { color: '#111c2e' }, textColor: '#a9b8cc' },
   grid: { vertLines: { color: '#1d2a3d' }, horzLines: { color: '#1d2a3d' } },
   rightPriceScale: { borderColor: '#28374c' },
   timeScale: { borderColor: '#28374c', timeVisible: false },
   crosshair: { mode: 0 },
-});
-const series = chart.addCandlestickSeries({
-  upColor: '#26a69a', downColor: '#ef5350',
-  borderUpColor: '#26a69a', borderDownColor: '#ef5350',
-  wickUpColor: '#26a69a', wickDownColor: '#ef5350',
-});
+};
+let chart;
+let series;
+let data;
+let selectedIndex;
 
 const fmt = n => Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const dateFmt = value => new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' }).format(new Date(value + 'T00:00:00'));
 const rangeMonths = { '1m': 1, '3m': 3, '6m': 6, '1y': 12, '5y': 60 };
-let data;
-let selectedIndex;
 
 function setStatus(message, healthy = true) {
   const status = document.getElementById('status');
   status.textContent = message;
   status.style.color = healthy ? '#42c7a5' : '#e9bd66';
+}
+
+function ensureChart() {
+  if (chart) return;
+  const { width, height } = el.getBoundingClientRect();
+  chart = LightweightCharts.createChart(el, {
+    ...chartOptions,
+    width: Math.max(1, Math.round(width)),
+    height: Math.max(1, Math.round(height)),
+  });
+  series = chart.addCandlestickSeries({
+    upColor: '#26a69a', downColor: '#ef5350',
+    borderUpColor: '#26a69a', borderDownColor: '#ef5350',
+    wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+  });
+  new ResizeObserver(entries => {
+    if (!entries.length) return;
+    const rect = entries[0].contentRect;
+    if (rect.width > 0 && rect.height > 0) {
+      chart.resize(Math.round(rect.width), Math.round(rect.height));
+    }
+  }).observe(el);
 }
 
 function showRange(range) {
@@ -60,8 +79,12 @@ function renderIndex(code) {
   } else {
     change.textContent = '—';
   }
+
+  // Reveal the panel before creating the canvas so its initial width and height
+  // are measurable; hidden chart containers can otherwise remain blank.
   document.getElementById('empty').style.display = 'none';
   document.getElementById('panel').style.display = '';
+  ensureChart();
   document.querySelectorAll('[data-range]').forEach(button => button.classList.toggle('active', button.dataset.range === 'all'));
   showRange('all');
 }
@@ -104,14 +127,3 @@ fetch('./data/indices.json', { cache: 'no-store' })
       `${error.message} Veri yenilemesi tamamlandığında grafik otomatik görünür.`;
     setStatus('Veri bekleniyor', false);
   });
-
-new ResizeObserver(entries => {
-  if (!entries.length) return;
-  const { width, height } = entries[0].contentRect;
-  // The chart is created while its parent panel is hidden. Resize both dimensions
-  // when the panel opens so the canvas is not left at zero height.
-  if (width > 0 && height > 0) {
-    chart.applyOptions({ width, height });
-    chart.timeScale().fitContent();
-  }
-}).observe(el);
