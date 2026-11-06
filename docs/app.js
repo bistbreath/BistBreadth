@@ -106,5 +106,12 @@ fetch('./data/indices.json', { cache: 'no-store' })
   });
 
 new ResizeObserver(entries => {
-  if (entries.length) chart.applyOptions({ width: entries[0].contentRect.width });
+  if (!entries.length) return;
+  const { width, height } = entries[0].contentRect;
+  // The chart is created while its parent panel is hidden. Resize both dimensions
+  // when the panel opens so the canvas is not left at zero height.
+  if (width > 0 && height > 0) {
+    chart.applyOptions({ width, height });
+    chart.timeScale().fitContent();
+  }
 }).observe(el);
