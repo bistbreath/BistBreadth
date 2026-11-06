@@ -10,6 +10,7 @@ let chart;
 let series;
 let data;
 let selectedIndex;
+let tooltip;
 
 const fmt = n => Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const dateFmt = value => new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' }).format(new Date(value + 'T00:00:00'));
@@ -34,6 +35,11 @@ function ensureChart() {
     borderUpColor: '#26a69a', borderDownColor: '#ef5350',
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',
   });
+  tooltip = document.createElement('div');
+  tooltip.className = 'chart-tooltip';
+  tooltip.hidden = true;
+  el.appendChild(tooltip);
+  chart.subscribeCrosshairMove(showCandleTooltip);
   new ResizeObserver(entries => {
     if (!entries.length) return;
     const rect = entries[0].contentRect;
@@ -41,6 +47,52 @@ function ensureChart() {
       chart.resize(Math.round(rect.width), Math.round(rect.height));
     }
   }).observe(el);
+}
+
+function dateKey(time) {
+  if (typeof time === 'string') return time;
+  if (typeof time === 'number') return new Date(time * 1000).toISOString().slice(0, 10);
+  return `${time.year}-${String(time.month).padStart(2, '0')}-${String(time.day).padStart(2, '0')}`;
+}
+
+function showCandleTooltip(param) {
+  if (!tooltip || !selectedIndex || !param.point || !param.seriesData) {
+    if (tooltip) tooltip.hidden = true;
+    return;
+  }
+  const bar = param.seriesData.get(series);
+  if (!bar || !('close' in bar)) {
+    tooltip.hidden = true;
+    return;
+  }
+  const key = dateKey(bar.time ?? param.time);
+  const index = selectedIndex.candles.findIndex(candle => candle.time === key);
+  if (index < 0) {
+    tooltip.hidden = true;
+    return;
+  }
+  const candle = selectedIndex.candles[index];
+  const previous = index > 0 ? selectedIndex.candles[index - 1] : null;
+  const difference = previous ? candle.close - previous.close : null;
+  const percent = previous ? difference / previous.close * 100 : null;
+  const signed = value => `${value >= 0 ? '+' : ''}${fmt(value)}`;
+  const deltaClass = difference === null ? '' : difference >= 0 ? 'positive' : 'negative';
+
+  tooltip.innerHTML = `<strong>${dateFmt(candle.time)}</strong>
+    <span>Açılış <b>${fmt(candle.open)}</b></span>
+    <span>Yüksek <b>${fmt(candle.high)}</b></span>
+    <span>Düşük <b>${fmt(candle.low)}</b></span>
+    <span>Kapanış <b>${fmt(candle.close)}</b></span>
+    <div class="tooltip-delta">
+      <small>Önceki mum kapanışına göre</small>
+      <b class="${deltaClass}">${previous ? `${signed(difference)} (${percent >= 0 ? '+' : ''}${percent.toFixed(2).replace('.', ',')}%)` : '—'}</b>
+    </div>`;
+  tooltip.hidden = false;
+
+  const left = Math.max(8, Math.min(param.point.x + 14, el.clientWidth - tooltip.offsetWidth - 8));
+  const top = Math.max(8, Math.min(param.point.y + 14, el.clientHeight - tooltip.offsetHeight - 8));
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
 }
 
 function showRange(range) {
@@ -65,8 +117,10 @@ function renderIndex(code) {
   document.getElementById('subtitle').textContent =
     `${selectedIndex.constituent_count} hissenin eşit ağırlıklı sentetik fiyat endeksi`;
   document.getElementById('chart-title').textContent = `${selectedIndex.short_name} günlük mum grafiği`;
+  const blockers = selectedIndex.history_start_blockers || [];
+  const blockerNote = blockers.length ? ` • Ortak başlangıcı belirleyen: ${blockers.join(', ')}` : '';
   document.getElementById('history-note').textContent =
-    `Geçmiş hesaplama ${selectedIndex.history_starts} tarihinde başlıyor • Başlangıç seviyesi 1.000 • Günlük eşit ağırlık`;
+    `Tüm ${selectedIndex.constituent_count} hissede ortak fiyat geçmişi: ${selectedIndex.history_starts}${blockerNote} • Başlangıç 1.000`;
   document.getElementById('value').textContent = fmt(last.close);
   document.getElementById('date').textContent = dateFmt(last.time);
   document.getElementById('count').textContent = selectedIndex.constituent_count;
