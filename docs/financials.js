@@ -340,10 +340,9 @@ Promise.all([
     if(!response.ok) throw new Error('Finansal veri dosyası yüklenemedi.');
     return response.json();
   }),
-  fetch('./data/financial_prices.json',{cache:'no-store'}).then(response=>{
-    if(!response.ok) throw new Error('Günlük hisse fiyatları henüz yayımlanmadı.');
-    return response.json();
-  })
+  fetch('./data/financial_prices.json',{cache:'no-store'}).then(response=>
+    response.ok ? response.json() : null
+  ).catch(()=>null)
 ]).then(([fundamentals,prices])=>{
   window.financialData=fundamentals;
   window.financialPriceData=prices;
