@@ -307,11 +307,15 @@ function scoreGrowth(medianGrowth) {
   return 50+50*Math.tanh(clipped/60);
 }
 function calculateQuarterScores(rows) {
-  return rows.map((row,index)=>{
+  const growthRows=rows.map(row=>{
     const yearAgo=rows.find(item=>item.quarter?.[0]===row.quarter?.[0]-1&&item.quarter?.[1]===row.quarter?.[1]);
+    return {...row,yoy:{sales:growthRate(row.sales,yearAgo?.sales),op:growthRate(row.netOperatingProfit,yearAgo?.netOperatingProfit)}};
+  });
+  return growthRows.map((row,index)=>{
+    const yearAgo=growthRows.find(item=>item.quarter?.[0]===row.quarter?.[0]-1&&item.quarter?.[1]===row.quarter?.[1]);
     const salesGrowth=growthRate(row.sales,yearAgo?.sales);
     const opGrowth=growthRate(row.netOperatingProfit,yearAgo?.netOperatingProfit);
-    const recent=rows.slice(Math.max(0,index-3),index+1).map(item=>item.yoy).filter(Boolean);
+    const recent=growthRows.slice(Math.max(0,index-3),index+1).map(item=>item.yoy).filter(Boolean);
     const salesRates=recent.map(item=>item.sales).filter(Number.isFinite);
     const opRates=recent.map(item=>item.op).filter(Number.isFinite);
     const salesScore=scoreGrowth(median(salesRates));
