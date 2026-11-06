@@ -1,284 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST Breadth — Fon Akışları</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BIST 100 Equal Weight</title>
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-<style>
-  :root {
-    --bg:#131722; --panel:#1e222d; --text:#d1d4dc; --muted:#787b86;
-    --border:#2a2e39; --accent:#2962ff; --up:#26a69a; --down:#ef5350;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  }
-  .wrap { max-width:1100px; margin:0 auto; padding:16px; }
-  .topbar {
-    display:flex; align-items:baseline; justify-content:space-between;
-    flex-wrap:wrap; gap:8px; margin:8px 0 2px;
-  }
-  h1 { font-size:20px; font-weight:600; margin:0; }
-  .nav a {
-    color:var(--accent); font-size:14px; text-decoration:none; margin-left:16px;
-  }
-  .nav a:hover { text-decoration:underline; }
-  .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
-  .panel {
-    background:var(--panel); border:1px solid var(--border); border-radius:8px;
-    padding:12px 12px 6px; margin-bottom:16px;
-  }
-  .panel h2 { font-size:14px; font-weight:600; margin:0 0 2px; }
-  .panel .desc { color:var(--muted); font-size:12px; margin:0 0 8px; line-height:1.5; }
-  .stat { color:var(--muted); }
-  .stat b { color:var(--text); font-weight:600; }
-  .pos { color:var(--up); } .neg { color:var(--down); }
-  .chart { width:100%; }
-  .legend {
-    font-size:12px; color:var(--text); min-height:16px; margin:0 0 4px;
-    font-variant-numeric: tabular-nums;
-  }
-  .legend .lmuted { color:var(--muted); }
-  .err { color:var(--down); font-size:13px; padding:8px 0; }
-  footer { color:var(--muted); font-size:11px; text-align:center; padding:8px 0 24px; }
-</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar">
-    <h1>BIST Breadth — Fon Akışları</h1>
-    <nav class="nav">
-      <a href="financials.html">Mali Tablolar →</a>
-    </nav>
+<header class="top">
+ <div><div class="eyebrow">BIST MARKET BREADTH • EŞİT AĞIRLIK</div><h1>BIST 100 <span>Equal Weight</span></h1><p>BIST 100 hisselerinin eşit ağırlıklı sentetik fiyat endeksi</p></div>
+ <div id="status" class="status">Veri bekleniyor</div>
+</header>
+<main>
+ <section class="metrics">
+  <article><small>Endeks değeri</small><b id="value">—</b></article>
+  <article><small>Günlük değişim</small><b id="change">—</b></article>
+  <article><small>Son veri tarihi</small><b id="date">—</b></article>
+  <article><small>Hisse sayısı</small><b id="count">100</b></article>
+ </section>
+ <section class="panel">
+  <div class="chart-head"><div><h2>Günlük mum grafiği</h2><p>Başlangıç seviyesi 1.000 • Günlük eşit ağırlıklandırma</p></div>
+   <nav class="ranges"><button data-range="1m">1A</button><button data-range="3m">3A</button><button data-range="6m">6A</button><button data-range="1y">1Y</button><button data-range="5y">5Y</button><button data-range="all" class="active">Tümü</button></nav>
   </div>
-  <div class="sub" id="updated">Yükleniyor…</div>
-
-  <div class="panel">
-    <h2>XU100</h2>
-    <p class="desc">Günlük mum + hacim · kaynak: Yahoo Finance</p>
-    <div id="xu100" class="chart" style="height:420px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Advance/Decline Line</h2>
-    <p class="desc">
-      Tüm BIST hisseleri için kümülatif (yükselen − düşen) toplamı, son ~1 yıl.
-      Mutlak seviye keyfidir; önemli olan şekli ve XU100 ile diverjansı.
-      <span class="stat" id="adStat"></span>
-    </p>
-    <div class="legend" id="adLegend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
-    <div id="adline" class="chart" style="height:240px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Son 1 ayda ≥ %30 yükselen hisse sayısı</h2>
-    <p class="desc">21 işlem günü penceresi · kısa vadeli momentum patlaması sayacı</p>
-    <div class="legend" id="up30Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
-    <div id="up30" class="chart" style="height:200px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Son 3 ayda ≥ %50 yükselen hisse sayısı</h2>
-    <p class="desc">63 işlem günü penceresi · orta vadeli momentum genişliği</p>
-    <div class="legend" id="up50Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
-    <div id="up50" class="chart" style="height:200px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Son 6 ayda ≥ %70 yükselen hisse sayısı</h2>
-    <p class="desc">126 işlem günü penceresi · olgun trend / rejim göstergesi</p>
-    <div class="legend" id="up70Legend"><span class="lmuted">imleci grafiğin üzerine getir</span></div>
-    <div id="up70" class="chart" style="height:200px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Hisse senedi fonları — kümülatif net nakit akışı</h2>
-    <p class="desc">
-      AUM değişiminden getiri ayıklanarak hesaplanır; serbest ve yabancı hisse fonları hariç. Birim: milyar TL.
-      <span class="stat" id="hisseStat"></span>
-    </p>
-    <div id="hisse" class="chart" style="height:260px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Para piyasası fonları — kümülatif net nakit akışı</h2>
-    <p class="desc">
-      Serbest para piyasası fonları hariç. Birim: milyar TL.
-      <span class="stat" id="ppfStat"></span>
-    </p>
-    <div id="ppf" class="chart" style="height:260px"></div>
-  </div>
-
-  <footer>
-    TEFAS verisi bir iş günü gecikmelidir · yatırım tavsiyesi değildir
-  </footer>
-</div>
-
-<script>
-const chartOpts = {
-  layout: { background: { color: '#1e222d' }, textColor: '#d1d4dc', fontSize: 11 },
-  grid: { vertLines: { color: '#2a2e39' }, horzLines: { color: '#2a2e39' } },
-  timeScale: { borderColor: '#2a2e39' },
-  rightPriceScale: { borderColor: '#2a2e39' },
-  crosshair: { mode: 0 },
-  handleScale: { axisPressedMouseMove: true },
-};
-
-function fmtMilyar(v) {
-  const s = v >= 0 ? '+' : '';
-  return s + v.toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' mlr ₺';
-}
-
-function showError(msg) {
-  document.getElementById('updated').innerHTML =
-    '<span class="err">' + msg + '</span>';
-}
-
-async function init() {
-  let xu, flows;
-  try {
-    const [xuRes, flowRes] = await Promise.all([
-      fetch('data/xu100.json'),
-      fetch('data/flows.json'),
-    ]);
-    if (!xuRes.ok || !flowRes.ok) throw new Error('veri dosyası bulunamadı');
-    xu = (await xuRes.json()).data;
-    flows = await flowRes.json();
-  } catch (e) {
-    showError('Veri yüklenemedi (' + e.message + '). Backfill henüz çalışmadıysa data/ klasörü boş olabilir.');
-    return;
-  }
-
-  // Momentum verisi ayrı yüklenir: yoksa sayfanın kalanı çalışmaya devam eder
-  let mom = null;
-  try {
-    const momRes = await fetch('data/momentum.json');
-    if (momRes.ok) mom = await momRes.json();
-  } catch (e) { /* panel içinde not gösterilir */ }
-
-  document.getElementById('updated').textContent =
-    'Son güncelleme: ' + flows.updated + ' · TEFAS verisi bir iş günü gecikmelidir';
-
-  // ---- XU100: mum + hacim ----
-  const c1 = LightweightCharts.createChart(document.getElementById('xu100'), chartOpts);
-  const candles = c1.addCandlestickSeries({
-    upColor: '#26a69a', downColor: '#ef5350',
-    wickUpColor: '#26a69a', wickDownColor: '#ef5350', borderVisible: false,
-  });
-  candles.setData(xu.map(r => ({ time: r.t, open: r.o, high: r.h, low: r.l, close: r.c })));
-  const vol = c1.addHistogramSeries({ priceScaleId: '', priceFormat: { type: 'volume' } });
-  c1.priceScale('').applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
-  vol.setData(xu.map(r => ({
-    time: r.t, value: r.v,
-    color: r.c >= r.o ? 'rgba(38,166,154,0.45)' : 'rgba(239,83,80,0.45)',
-  })));
-
-  // ---- Kümülatif akış grafikleri ----
-  const dates = flows.series.dates;
-  function flowChart(elId, arr, statId) {
-    const ch = LightweightCharts.createChart(document.getElementById(elId), chartOpts);
-    const s = ch.addBaselineSeries({
-      baseValue: { type: 'price', price: 0 },
-      topLineColor: '#26a69a', topFillColor1: 'rgba(38,166,154,0.28)', topFillColor2: 'rgba(38,166,154,0.02)',
-      bottomLineColor: '#ef5350', bottomFillColor1: 'rgba(239,83,80,0.02)', bottomFillColor2: 'rgba(239,83,80,0.28)',
-      lineWidth: 2,
-    });
-    s.setData(dates.map((d, i) => ({ time: d, value: arr[i] })));
-    const last = arr[arr.length - 1];
-    const prev = arr.length > 21 ? arr[arr.length - 22] : arr[0];
-    const delta = last - prev;
-    document.getElementById(statId).innerHTML =
-      ' · Toplam: <b>' + fmtMilyar(last) + '</b> · Son ~21 işlem günü: <b class="' +
-      (delta >= 0 ? 'pos' : 'neg') + '">' + fmtMilyar(delta) + '</b>';
-    return ch;
-  }
-  const c2 = flowChart('hisse', flows.series.hisse.cum, 'hisseStat');
-  const c3 = flowChart('ppf', flows.series.ppf.cum, 'ppfStat');
-
-  // ---- Momentum breadth + A/D Line ----
-  const momCharts = [];
-  if (mom) {
-    const md = mom.dates;
-    const idxByDate = new Map(md.map((d, i) => [d, i]));
-    const nf = v => v.toLocaleString('tr-TR');
-
-    function legendUpdater(chart, elId, render) {
-      const el = document.getElementById(elId);
-      chart.subscribeCrosshairMove(p => {
-        if (!p.time) {
-          el.innerHTML = '<span class="lmuted">imleci grafiğin üzerine getir</span>';
-          return;
-        }
-        const i = idxByDate.get(p.time);
-        if (i === undefined) return;
-        el.innerHTML = '<span class="lmuted">' + p.time + '</span> · ' + render(i);
-      });
-    }
-
-    // A/D Line
-    const cAd = LightweightCharts.createChart(document.getElementById('adline'), chartOpts);
-    const sAd = cAd.addLineSeries({ color: '#2962ff', lineWidth: 2, priceLineVisible: false });
-    sAd.setData(md.map((d, i) => ({ time: d, value: mom.ad[i] })));
-    legendUpdater(cAd, 'adLegend', i =>
-      'A/D: <b>' + nf(mom.ad[i]) + '</b> · Yükselen: <b class="pos">' + nf(mom.adv[i]) +
-      '</b> · Düşen: <b class="neg">' + nf(mom.dec[i]) + '</b> · Net: <b>' +
-      (mom.adv[i] - mom.dec[i] >= 0 ? '+' : '') + nf(mom.adv[i] - mom.dec[i]) + '</b>');
-    const n = md.length;
-    const adDelta = mom.ad[n - 1] - (n > 21 ? mom.ad[n - 22] : mom.ad[0]);
-    document.getElementById('adStat').innerHTML =
-      ' · Son ~21 işlem günü net: <b class="' + (adDelta >= 0 ? 'pos' : 'neg') + '">' +
-      (adDelta >= 0 ? '+' : '') + nf(adDelta) + '</b>';
-    momCharts.push(cAd);
-
-    // Momentum sayaçları (histogram)
-    function momChart(elId, legendId, counts, pcts, color, label) {
-      const ch = LightweightCharts.createChart(document.getElementById(elId), chartOpts);
-      const s = ch.addHistogramSeries({ color: color, priceLineVisible: false });
-      s.setData(md.map((d, i) => ({ time: d, value: counts[i] })));
-      legendUpdater(ch, legendId, i =>
-        label + ': <b>' + nf(counts[i]) + ' hisse</b>' +
-        (pcts[i] != null ? ' · evrenin <b>%' + pcts[i].toLocaleString('tr-TR') + '</b>\u2019i' : ''));
-      momCharts.push(ch);
-      return ch;
-    }
-    momChart('up30', 'up30Legend', mom.up30, mom.p30, 'rgba(38,166,154,0.85)',  '1 ayda ≥%30');
-    momChart('up50', 'up50Legend', mom.up50, mom.p50, 'rgba(41,98,255,0.85)',   '3 ayda ≥%50');
-    momChart('up70', 'up70Legend', mom.up70, mom.p70, 'rgba(171,71,188,0.85)',  '6 ayda ≥%70');
-  } else {
-    ['adLegend', 'up30Legend', 'up50Legend', 'up70Legend'].forEach(id => {
-      document.getElementById(id).innerHTML =
-        '<span class="err">momentum.json bulunamadı — workflow\u2019u backfill modunda bir kez çalıştır.</span>';
-    });
-  }
-
-  // ---- Zaman eksenlerini senkronize et ----
-  const charts = [c1, c2, c3].concat(momCharts);
-  let syncing = false;
-  charts.forEach(src => {
-    src.timeScale().subscribeVisibleLogicalRangeChange(range => {
-      if (!range || syncing) return;
-      syncing = true;
-      charts.forEach(dst => { if (dst !== src) dst.timeScale().setVisibleLogicalRange(range); });
-      syncing = false;
-    });
-  });
-  c1.timeScale().fitContent();
-
-  // ---- Responsive genişlik ----
-  const chartIds = [['xu100', c1], ['hisse', c2], ['ppf', c3]];
-  if (momCharts.length) {
-    chartIds.push(['adline', momCharts[0]], ['up30', momCharts[1]],
-                  ['up50', momCharts[2]], ['up70', momCharts[3]]);
-  }
-  window.addEventListener('resize', () => {
-    chartIds.forEach(([id, ch]) => {
-      ch.applyOptions({ width: document.getElementById(id).clientWidth });
-    });
-  });
-}
-init();
-</script>
-</body>
-</html>
+  <div id="chart"></div>
+  <div class="note">Sentetik OHLC mumları. Bu seri resmî BIST 100 endeksi değildir.</div>
+ </section>
+ <section id="empty" class="empty"><b>Henüz piyasa verisi eklenmedi.</b><span>Doğrulanmış 100 hisse bileşen listesi ve günlük OHLC verileri eklendiğinde grafik burada görüntülenecek.</span></section>
+ <section class="method"><h3>Hesaplama yöntemi</h3><p>Her işlem gününde hisseler eşit ağırlıkla değerlendirilir ve kapanışta ağırlıklar yeniden dengelenir. Açılış, en yüksek, en düşük ve kapanış değerleri önceki kapanışa göre normalize edilerek sentetik endeks mumları oluşturulur.</p></section>
+</main>
+<footer><span>Yalnızca araştırma amaçlıdır; yatırım tavsiyesi değildir.</span><span>Grafik: TradingView Lightweight Charts</span></footer>
+<script src="app.js"></script>
+</body></html>

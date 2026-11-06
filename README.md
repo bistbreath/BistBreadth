@@ -1,91 +1,78 @@
-# BIST Market Breadth Tracker
+# BIST 100 Equal Weight
 
-Her 30 dakikada bir otomatik çalışan, tamamen ücretsiz bir BIST piyasa
-genişliği (market breadth) takip sistemi.
+BIST 100 hisselerinden eşit ağırlıklı sentetik günlük OHLC mum serisi oluşturmak için başlangıç projesi.
 
-Ölçtüğü şeyler (her 30 dakikada bir):
-- Kaç hisse **pozitif** / **negatif** (önceki güne göre)
-- Kaç hisse **%4 üzerinde** / **%4 altında**
-- Kaç hisse **günün açılışına göre** pozitif/negatif (senin "sabah iyi başlayıp
-  gün sonu kötü kapanıyorsa" hipotezini test etmek için)
+## Proje durumu
 
-## Nasıl çalışıyor?
+- Web arayüzü ve mum grafik bileşeni hazır.
+- Sentetik eşit ağırlık hesaplama betiği hazır.
+- Gerçek piyasa verisi ve doğrulanmış BIST 100 bileşen listesi henüz eklenmedi.
+- Bu nedenle site şu anda boş veri durumunu gösterir; örnek veya uydurma fiyat kullanılmaz.
 
+## Dosyalar
+
+- `docs/`: GitHub Pages ile yayımlanacak web sitesi
+- `data/constituents.csv`: seçilen dönem için BIST 100 bileşenleri
+- `data/prices.csv`: günlük OHLC girdisi
+- `scripts/build_index.py`: eşit ağırlıklı sentetik endeks hesaplaması
+
+## Veri hazırlığı
+
+`data/constituents.csv`:
+```csv
+ticker
+AKBNK
+ASELS
+...
 ```
-tickers.txt              -> takip edilecek hisse listesi
-scripts/fetch_breadth.py -> yfinance ile veri çeker, docs/data.json'a ekler
-.github/workflows/breadth.yml -> her 30 dakikada bir scripti otomatik çalıştırır (GitHub Actions, ücretsiz)
-docs/index.html           -> data.json'ı okuyup grafikle gösteren dashboard (GitHub Pages, ücretsiz)
+
+İlk sürümde dosyada tam 100 benzersiz sembol olmalıdır.
+
+`data/prices.csv`:
+```csv
+date,ticker,open,high,low,close
+2026-01-02,AKBNK,....
+2026-01-02,ASELS,....
 ```
 
-Hiçbir sunucu kiralamana, bilgisayarını açık tutmana gerek yok — her şey
-GitHub'ın ücretsiz katmanında çalışır.
+Her işlem gününde listedeki 100 hissenin tamamı bulunmalıdır. Eksik fiyatı sessizce atlamak yerine betik hata verir; böylece ağırlıklar farkında olmadan değişmez.
 
-## Kurulum (5 dakika)
+## Hesaplama metodolojisi
 
-1. **GitHub'da yeni bir repo oluştur** (public veya private, ikisi de olur).
+Her gün, önceki kapanış itibarıyla 100 hisseye eşit ağırlık verilir. Her hissenin o günkü OHLC değeri önceki kapanışına bölünür. Bu 100 oranın aritmetik ortalaması, sentetik endeksin önceki kapanışına uygulanır.
 
-2. Bu klasördeki tüm dosyaları o repoya yükle:
-   ```bash
-   cd bist-breadth
-   git init
-   git add .
-   git commit -m "İlk kurulum"
-   git branch -M main
-   git remote add origin https://github.com/KULLANICI_ADIN/REPO_ADIN.git
-   git push -u origin main
-   ```
+- Başlangıç seviyesi: 1.000
+- Yeniden dengeleme: günlük
+- Kapanış, takip eden günün hesaplamasında yeni referans olur.
+- Sentetik High/Low değerleri bağımsız hisse zirve/dip oranlarının ortalamasıdır. Hisselerin gün içi zirve ve dip zamanları aynı olmadığından bu değerler eşzamanlı olarak işlem görebilen gerçek bir portföyün kesin High/Low'u değildir.
 
-3. **GitHub Pages'i aç:**
-   Repo → Settings → Pages → "Build and deployment" → Source: `Deploy from a branch`
-   → Branch: `main`, klasör: `/docs` → Save.
-   Birkaç dakika sonra siten şu adreste yayında olacak:
-   `https://KULLANICI_ADIN.github.io/REPO_ADIN/`
+İlk fiyat günü yalnızca 1.000 başlangıç noktasıdır; ilk günlük getiri ikinci işlem gününde hesaplanır.
 
-4. **GitHub Actions'ın otomatik çalışmasına izin ver:**
-   Repo → Settings → Actions → General → "Workflow permissions" →
-   `Read and write permissions` seçeneğini işaretle, kaydet.
-   (Script her çalıştığında `docs/data.json`'ı commit'leyip push edebilmesi için gerekli.)
+## Çalıştırma
 
-5. İlk veriyi hemen görmek için beklemek istemiyorsan:
-   Repo → Actions sekmesi → "BIST Breadth Tracker" → "Run workflow" ile elle tetikleyebilirsin.
+Python 3.10+:
 
-Bundan sonra iş gününde her 30 dakikada bir (10:00-18:30 İstanbul saati)
-otomatik çalışacak ve dashboard kendini güncelleyecek.
+```bash
+pip install -r requirements.txt
+python scripts/build_index.py
+```
 
-## Hisse listesini güncellemek
+Komut `docs/data/index.json` üretir. Yerelde görüntülemek için proje kökünde:
 
-`tickers.txt` içine `.IS` uzantısı OLMADAN, her satıra bir hisse kodu
-yazman yeterli (ör. `THYAO`, `GARAN`). Listeyi genişletmek/daraltmak
-istersen bu dosyayı düzenleyip push'laman yeterli — script otomatik
-olarak günceli okur.
+```bash
+python -m http.server 8000
+```
 
-Güncel BIST100/BIST All listesi için:
-https://www.borsaistanbul.com adresindeki endeks bileşenleri sayfasını
-veya KAP'ı referans alabilirsin.
+Ardından `http://localhost:8000/docs/` adresini açın.
 
-## Bilinen sınırlamalar
+## GitHub Pages
 
-- **Veri ~15 dakika gecikmelidir** (Yahoo Finance ücretsiz veri kaynağı).
-  Trade tetikleyici olarak değil, genel piyasa nabzını ölçmek için kullan.
-- Bazı BIST hisseleri Yahoo'da eksik/hatalı veri döndürebilir; script bunları
-  otomatik olarak atlar (`total_tracked` alanı kaç hissenin başarıyla
-  işlendiğini gösterir).
-- GitHub Actions'ın ücretsiz zamanlayıcısı (`cron`) bazen birkaç dakika
-  gecikmeli tetiklenebilir — bu GitHub'ın kendi altyapısından kaynaklanır,
-  kritik değildir.
-- 2000 kayıttan sonra en eski kayıtlar otomatik silinir (dosya şişmesin diye).
-  Bunu `scripts/fetch_breadth.py` içindeki `history[-2000:]` satırından
-  değiştirebilirsin.
+Repository → Settings → Pages → Deploy from a branch → `main` → `/docs`.
 
-## Sonraki adımlar (istersen)
+## Veri ve lisans notu
 
-- `positive_vs_open` / `negative_vs_open` trendini gün sonunda
-  `positive` / `negative` ile karşılaştırarak senin hipotezini
-  (sabah iyi → gün sonu kötü kapanan piyasa mı, yoksa tersi mi daha
-  sağlıklı) geriye dönük test edebilirsin — tüm veri `docs/data.json`
-  içinde tarih sırasıyla duruyor, Excel'e veya Python/pandas'a
-  kolayca aktarılabilir.
-- Stockbee Market Monitor'daki gibi 25-günlük hareketli ortalama
-  bazlı ek metrikler (T2108 benzeri) eklemek istersen, `data.json`
-  zaten zaman serisi olduğu için üzerine kolayca inşa edilebilir.
+Yahoo Finance, yfinance veya başka bir kaynağın verilerine erişebilmek, bunları herkese açık bir sitede yeniden yayımlama hakkı vermez. Veri sağlayıcısının kullanım ve yeniden dağıtım koşulları kontrol edilmelidir. Kurumsal ve kalıcı kullanım için lisanslı, düzeltilmiş tarihsel OHLC verisi tercih edilmelidir.
+
+Bugünkü BIST 100 listesini geçmişe uygulamak sağkalım yanlılığı yaratır. Gerçek 10 yıllık karşılaştırma için tarihsel endeks bileşenleri ve etkinlik tarihleri gerekir. Bu sürümde tarihsel bileşen arşivi varmış gibi davranılmaz.
+
+Bu proje Borsa İstanbul tarafından hesaplanan resmî bir endeks değildir; araştırma amaçlı sentetik bir göstergedir.
