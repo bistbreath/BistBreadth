@@ -90,7 +90,7 @@ def download_prices(symbols: list[str]) -> dict[str, pd.DataFrame]:
     return result
 
 
-def make_candles(members: list[str], prices: dict[str, pd.DataFrame]) -> list[dict]:
+def make_candles(members: list[str], prices: dict[str, pd.DataFrame]) -> tuple[list[dict], list[str]]:
     missing = [symbol for symbol in members if symbol not in prices]
     if missing:
         raise ValueError(f"Yahoo Finance returned no usable OHLC for {len(missing)} members: {missing[:12]}")
@@ -100,6 +100,10 @@ def make_candles(members: list[str], prices: dict[str, pd.DataFrame]) -> list[di
     if len(valid_dates) < 2:
         raise ValueError(f"Only {len(valid_dates)} complete trading dates for this universe")
     closes = closes.loc[valid_dates]
+    history_start = valid_dates[0]
+    history_start_blockers = sorted(
+        symbol for symbol in members if prices[symbol].index.min() == history_start
+    )
     candles = [{
         "time": valid_dates[0].strftime("%Y-%m-%d"),
         "open": BASE_VALUE, "high": BASE_VALUE, "low": BASE_VALUE, "close": BASE_VALUE,
@@ -124,7 +128,7 @@ def make_candles(members: list[str], prices: dict[str, pd.DataFrame]) -> list[di
         candles.append(candle)
         index_close = candle["close"]
         previous_close = closes.loc[date]
-    return candles
+    return candles, history_start_blockers
 
 
 def main() -> None:
@@ -145,13 +149,14 @@ def main() -> None:
         members = sorted(set(constituents.loc[constituents.index_code == code, "ticker"]))
         if len(members) < config["minimum"]:
             raise ValueError(f"{code}: expected at least {config['minimum']} constituents, got {len(members)}")
-        candles = make_candles(members, prices)
+        candles, history_start_blockers = make_candles(members, prices)
         payload["indexes"][code] = {
             **config,
             "code": code,
             "constituent_count": len(members),
             "membership_as_of": fetched_at[:10],
             "history_starts": candles[0]["time"],
+            "history_start_blockers": history_start_blockers,
             "candles": candles,
         }
         print(f"{code}: {len(members)} constituents, {len(candles)} candles")
