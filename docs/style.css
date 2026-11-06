@@ -20,8 +20,8 @@
 .fin-axis{fill:#93a4b9;font-size:11px;font-family:Inter,system-ui,sans-serif}
 .fin-value{fill:#e9eef5;font-size:10px;font-weight:700;font-family:Inter,system-ui,sans-serif}
 .fin-legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:3px 0 2px;color:#a9b8cc;font-size:11px}
-.fin-legend-item{display:inline-flex;align-items:center;gap:6px}
-.fin-legend-item i{display:inline-block;width:10px;height:10px;border-radius:2px}
+.fin-legend-item{display:inline-flex;align-items:center;gap:7px;margin:3px 8px;padding:5px 9px;border:1px solid #26364c;border-radius:14px;background:#111c2e}
+.fin-legend-item i{display:inline-block;width:10px;height:10px;flex:0 0 10px;border-radius:2px}
 .financial-chart-empty{padding:36px 10px;text-align:center;color:#e9bd66;font-size:13px}
 .financial-method{margin:14px 1px 0;color:var(--muted);font-size:11px;line-height:1.7}
 .financial-method b{color:#c4d4e9}
