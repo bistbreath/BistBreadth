@@ -96,7 +96,7 @@ function drawFinancialChart(title, subtitle, rows, definitions, unit, options = 
   const labelEvery = Math.max(1, Math.ceil(rows.length / 14));
   const numberLabel = value => options.percent
     ? `%${pretty(value,1)}`
-    : options.ratio ? `${pretty(value,1)}x` : pretty(value,0);
+    : options.ratio ? `${pretty(value,1)}x` : pretty(value,2);
   let svg = `<svg class="financial-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeSvg(title)}">`;
 
   for (let i=0;i<=4;i++) {
@@ -169,7 +169,7 @@ function showFinancialTooltip(mark, event) {
   const isRatio = mark.dataset.tipRatio === '1';
   const unit = mark.dataset.tipUnit;
   const formatValue = value => isPercent ? `%${pretty(value,1)}`
-    : isRatio ? `${pretty(value,2)}x` : `${pretty(value,0)} ${unit}`;
+    : isRatio ? `${pretty(value,2)}x` : `${pretty(value,2)} ${unit}`;
   const signed = (value,digits=2) => `${value >= 0 ? '+' : ''}${pretty(value,digits)}`;
   let growthText = 'Geçen yılın aynı çeyrek verisi bulunmuyor.';
   let delta = null;
@@ -183,7 +183,7 @@ function showFinancialTooltip(mark, event) {
     } else {
       growthText = isPercent
         ? `Oransal büyüme hesaplanamıyor • marj farkı ${signed(delta,1)} puan`
-        : `Oransal büyüme hesaplanamıyor • dönem farkı ${signed(delta,isRatio?2:0)} ${isRatio ? 'x' : unit}`;
+        : `Oransal büyüme hesaplanamıyor • dönem farkı ${signed(delta,2)} ${isRatio ? 'x' : unit}`;
     }
   }
   const tone = delta == null ? '' : delta >= 0 ? 'positive' : 'negative';
