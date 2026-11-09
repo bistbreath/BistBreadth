@@ -285,8 +285,28 @@ function drawFnfkChart(company, ticker) {
     const index=Math.round(i*(points.length-1)/(labels-1));
     svg+=`<text x="${x(index)}" y="${height-17}" text-anchor="middle" class="fin-axis">${dailyLabel(points[index].time)}</text>`;
   }
+  svg+='<line class="fnfk-crosshair" x1="0" y1="'+margin.top+'" x2="0" y2="'+(height-margin.bottom)+'" stroke="#a9c8ff" stroke-dasharray="4 4" style="display:none;pointer-events:none"/><circle class="fnfk-hover-dot" cx="0" cy="0" r="4" fill="#ffffff" stroke="#82aaff" stroke-width="2" style="display:none;pointer-events:none"/>';
   svg+='</svg>';
-  host.innerHTML=svg;
+  host.innerHTML=svg+'<div class="fnfk-hover-tooltip" role="status" aria-live="polite" hidden></div>';
+  const svgNode=host.querySelector('svg');
+  const tip=host.querySelector('.fnfk-hover-tooltip');
+  const crosshair=host.querySelector('.fnfk-crosshair');
+  const dot=host.querySelector('.fnfk-hover-dot');
+  svgNode.addEventListener('pointermove',event=>{
+    const rect=svgNode.getBoundingClientRect();
+    const viewX=(event.clientX-rect.left)/rect.width*width;
+    const index=Math.max(0,Math.min(points.length-1,Math.round((viewX-margin.left)/plotW*(points.length-1))));
+    const point=points[index], px=x(index), py=y(point.ratio);
+    crosshair.setAttribute('x1',px);crosshair.setAttribute('x2',px);crosshair.style.display='';
+    dot.setAttribute('cx',px);dot.setAttribute('cy',py);dot.style.display='';
+    tip.innerHTML='<b>'+escapeSvg(point.time)+'</b><span>F/NFK <strong>'+pretty(point.ratio,2)+'x</strong></span><span>Kapanış <strong>'+pretty(point.price,2)+' ₺</strong></span>';
+    tip.hidden=false;
+    const hostRect=host.getBoundingClientRect();
+    const left=Math.max(8,Math.min(hostRect.width-190,event.clientX-hostRect.left+14));
+    const top=Math.max(4,Math.min(hostRect.height-92,event.clientY-hostRect.top-72));
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  });
+  svgNode.addEventListener('pointerleave',()=>{tip.hidden=true;crosshair.style.display='none';dot.style.display='none';});
   const last=points[points.length-1];
   const caption=document.getElementById('fnfk-caption');
   caption.textContent=`${points.length.toLocaleString('tr-TR')} günlük gözlem • Son oran ${pretty(last.ratio,2)}x • F/NFK = kapanış fiyatı / TTM net faaliyet kârı hisse başına`;
@@ -362,7 +382,7 @@ function renderFinancialScore(rows, company) {
     return '<div class="score-part"><div><span>'+part.label+'</span><b>'+(value==null?'Veri yok':value+'/100')+'</b></div><div class="score-track"><i style="width:'+(value??0)+'%;background:'+(part.key==='liquidity'?'#67b8d5':color)+'"></i></div></div>';
   }).join('');
   const coverage=latest.scoreCoverage;
-  host.innerHTML='<div class="score-top"><div><h3>Çeyreklik finansal kalite puanı</h3><p>'+company.name+' • Son değerlendirilen dönem '+latest.label+'</p></div><div class="score-total" style="--score-color:'+color+'"><b>'+score+'</b><span>/ 100</span></div></div><div class="score-meter"><i style="width:'+score+'%;background:'+color+'"></i></div><div class="score-rating" style="color:'+color+'">'+name+'</div><div class="score-breakdown">'+parts+'</div><div class="score-history"><span>Çeyreklik puan geçmişi</span><div class="score-spark">'+rows.filter(row=>Number.isFinite(row.score)).map(row=>'<span title="'+row.label+': '+Math.round(row.score)+'/100" style="height:'+Math.max(4,row.score)+'%"></span>').join('')+'</div></div><p class="score-method">Puan: büyüme seviyesi %45 (satış büyümesi %35, net faaliyet kârı büyümesi %65; son 4 aynı-çeyrek yıllık değişimin medyanı), pozitif büyüme düzenliliği %25, (nakit + finansal yatırımlar) / kısa vadeli finansal borç %30. Tek dönemlik sıçramalar medyan ve sınırlı büyüme dönüşümüyle yumuşatılır. Büyüme yalnızca önceki yıl karşılaştırma tabanı pozitif olduğunda hesaplanır. Eksik bileşenler kalan ağırlıklara orantılı dağıtılır; dönemsel nakit karşılama 1,5x ve üzerinde tam puandır. Bu gösterge yatırım tavsiyesi değildir.</p>';
+  host.innerHTML='<div class="score-top"><div><h3>Çeyreklik finansal kalite puanı</h3><p>'+company.name+' • Son değerlendirilen dönem '+latest.label+'</p></div><div class="score-total" style="--score-color:'+color+'"><b>'+score+'</b><span>/ 100</span></div></div><div class="score-meter"><i style="width:'+score+'%;background:'+color+'"></i></div><div class="score-rating" style="color:'+color+'">'+name+'</div><div class="score-breakdown">'+parts+'</div><div class="score-history"><span>Çeyreklik puan geçmişi</span><div class="score-spark">'+rows.filter(row=>Number.isFinite(row.score)).map(row=>'<span tabindex="0" data-tip="'+escapeSvg(row.label)+' • '+Math.round(row.score)+'/100 puan" aria-label="'+escapeSvg(row.label)+': '+Math.round(row.score)+'/100" title="'+row.label+': '+Math.round(row.score)+'/100" style="height:'+Math.max(4,row.score)+'%"></span>').join('')+'</div></div><p class="score-method">Puan: büyüme seviyesi %45 (satış büyümesi %35, net faaliyet kârı büyümesi %65; son 4 aynı-çeyrek yıllık değişimin medyanı), pozitif büyüme düzenliliği %25, (nakit + finansal yatırımlar) / kısa vadeli finansal borç %30. Tek dönemlik sıçramalar medyan ve sınırlı büyüme dönüşümüyle yumuşatılır. Büyüme yalnızca önceki yıl karşılaştırma tabanı pozitif olduğunda hesaplanır. Eksik bileşenler kalan ağırlıklara orantılı dağıtılır; dönemsel nakit karşılama 1,5x ve üzerinde tam puandır. Bu gösterge yatırım tavsiyesi değildir.</p>';
 }
 function renderFinancials() {
   if (!window.financialData) return;
@@ -440,3 +460,10 @@ document.querySelectorAll('[data-daily-range]').forEach(button=>button.addEventL
   button.classList.add('active');
   renderFinancials();
 }));
+
+(function addFinancialHoverStyles(){
+  if(document.getElementById('financial-hover-styles'))return;
+  const style=document.createElement('style');style.id='financial-hover-styles';
+  style.textContent='.score-spark{position:relative}.score-spark span{position:relative;cursor:crosshair}.score-spark span:hover,.score-spark span:focus{outline:2px solid #fff;outline-offset:2px;z-index:2}.score-spark span::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);display:none;white-space:nowrap;padding:8px 10px;border:1px solid #466184;border-radius:7px;background:#08111f;color:#eef5ff;font-size:13px;font-weight:700;z-index:20;box-shadow:0 5px 18px #0008}.score-spark span:hover::after,.score-spark span:focus::after{display:block}#fnfk-chart{position:relative}.fnfk-hover-tooltip{position:absolute;z-index:10;min-width:154px;padding:9px 11px;border:1px solid #466184;border-radius:8px;background:#08111fee;color:#dce8fa;font-size:13px;line-height:1.5;box-shadow:0 6px 20px #0008;pointer-events:none}.fnfk-hover-tooltip b,.fnfk-hover-tooltip strong{color:#fff}.fnfk-hover-tooltip span{display:block}';
+  document.head.appendChild(style);
+})();
