@@ -20,7 +20,7 @@ import yfinance as yf
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "data" / "indices.json"
 FINANCIAL_PRICE_OUTPUT = ROOT / "docs" / "data" / "financial_prices.json"
-FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT"]
+FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT", "BRSAN", "KBORU"]
 MEMBERS_URL = "https://www.borsaistanbul.com/datum/hisse_endeks_ds.csv"
 BASE_VALUE = 1000.0
 PERIOD = "5y"
