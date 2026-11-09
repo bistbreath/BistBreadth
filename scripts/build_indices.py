@@ -306,7 +306,6 @@ def main() -> None:
     history = load_historical_members()
     history, current_review_date = apply_current_members(history, current, fetched_at)
 
-    all_symbols = sorted(set(current.values().__iter__().__next__()))
     all_symbols = sorted(set().union(
         *[set(members) for dates in history.values() for members in dates.values()]
     ))
