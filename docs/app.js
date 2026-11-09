@@ -83,6 +83,7 @@ function showCandleTooltip(param) {
     <span>Yüksek <b>${fmt(candle.high)}</b></span>
     <span>Düşük <b>${fmt(candle.low)}</b></span>
     <span>Kapanış <b>${fmt(candle.close)}</b></span>
+    <span>Fiyat verisi bulunan hisse <b>${candle.constituent_count}/${candle.universe_count}</b></span>
     <div class="tooltip-delta">
       <small>Önceki mum kapanışına göre</small>
       <b class="${deltaClass}">${previous ? `${signed(difference)} (${percent >= 0 ? '+' : ''}${percent.toFixed(2).replace('.', ',')}%)` : '—'}</b>
@@ -115,12 +116,10 @@ function renderIndex(code) {
   const previous = candles.length > 1 ? candles[candles.length - 2] : null;
   document.getElementById('index-name').textContent = selectedIndex.short_name;
   document.getElementById('subtitle').textContent =
-    `${selectedIndex.constituent_count} hissenin eşit ağırlıklı sentetik fiyat endeksi`;
+    `Günlük tarihsel bileşenlerle eşit ağırlıklı sentetik fiyat endeksi • Son listede ${selectedIndex.constituent_count} hisse`;
   document.getElementById('chart-title').textContent = `${selectedIndex.short_name} günlük mum grafiği`;
-  const blockers = selectedIndex.history_start_blockers || [];
-  const blockerNote = blockers.length ? ` • Ortak başlangıcı belirleyen: ${blockers.join(', ')}` : '';
   document.getElementById('history-note').textContent =
-    `Tüm ${selectedIndex.constituent_count} hissede ortak fiyat geçmişi: ${selectedIndex.history_starts}${blockerNote} • Başlangıç 1.000`;
+    `Tarihsel BIST bileşen kayıtları • ${selectedIndex.history_membership_snapshots} üyelik dönemi • Geniş endekslere ilk fiyat gününde eklenen yeni hisseler • Başlangıç 1.000`;
   document.getElementById('value').textContent = fmt(last.close);
   document.getElementById('date').textContent = dateFmt(last.time);
   document.getElementById('count').textContent = selectedIndex.constituent_count;
