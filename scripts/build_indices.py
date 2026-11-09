@@ -219,11 +219,15 @@ def add_broad_universe_ipo_dates(
         if last_review < first_quote:
             additions.setdefault(first_quote, set()).add(ticker)
 
-    # Attach the IPO-effective dates to the immediately preceding all-share
-    # snapshot. The additions become active from their quote date onward.
-    for date, tickers in additions.items():
-        history.setdefault(date, set())
-        history[date].update(tickers)
+    # An IPO date is an additive membership event, not a replacement
+    # snapshot. Carry the active basket forward and add the new listings.
+    for date, tickers in sorted(additions.items()):
+        if date in history:
+            history[date].update(tickers)
+            continue
+        prior_dates = [snapshot_date for snapshot_date in history if snapshot_date < date]
+        active = set(history[max(prior_dates)]) if prior_dates else set()
+        history[date] = active | tickers
     return dict(sorted(history.items()))
 
 
@@ -270,11 +274,11 @@ def build_candles(
             factors["high"] = max(factors["high"], factors["open"], factors["close"])
             factors["low"] = min(factors["low"], factors["open"], factors["close"])
             rows.append(factors)
-        # Keep a per-symbol close even on dates when its index basket is below
-        # the minimum quote coverage, so the next return spans the gap.
-        for ticker in current_members:
-            data = prices.get(ticker)
-            if data is not None and date in data.index:
+        # Track every available quote, including symbols outside the current
+        # basket. If a ticker joins or rejoins at a review, its return starts
+        # from the immediately preceding session rather than a stale old close.
+        for ticker, data in prices.items():
+            if date in data.index:
                 last_close[ticker] = float(data.loc[date, "close"])
         if len(rows) < minimum:
             continue
