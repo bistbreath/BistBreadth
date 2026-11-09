@@ -1,5 +1,164 @@
 {
-  "updatedAt": null,
+  "updatedAt": "2026-11-09",
   "sourcePolicy": "Manual, on-demand review only. Do not poll or fetch KAP disclosures automatically.",
-  "companies": {}
+  "companies": {
+    "BRSAN": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-11-06",
+          "type": "2026 beklenti revizyonu",
+          "direction": "olumlu",
+          "title": "2026 FAVÖK marjı ve ciro beklentisi yukarı güncellendi",
+          "summary": "Şirketin 3Ç 2026 yatırımcı sunumuna göre 9A 2026 performansı beklentilerle uyumlu; FAVÖK marjı %10,4 oldu. 2026 satış hacmi beklentisi 1,15–1,25 milyon ton aralığında korundu.",
+          "revision": "2026 FAVÖK marjı beklentisi önceki %8–10 aralığından %10–11'e, gelir beklentisi 2,1–2,3 milyar ABD dolarından 2,2–2,4 milyar ABD dolarına yükseltildi. Satış hacmi beklentisi değişmedi.",
+          "analysis": "Marj ve gelir hedeflerinin artırılması olumlu bir revizyon. Hedefler şirket beklentisidir; gerçekleşme siparişlerin sevkiyatına, ürün karmasına, fiyatlara ve maliyetlere bağlıdır.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1694468"
+        },
+        {
+          "date": "2026-10-23",
+          "type": "Operasyonel değerlendirme",
+          "direction": "nötr",
+          "title": "Türkiye operasyonlarının faaliyet yapısı değerlendiriliyor",
+          "summary": "Şirket Türkiye operasyonlarının faaliyet yapısına ilişkin değerlendirme çalışmaları başlattığını açıkladı.",
+          "analysis": "KAP açıklamasında tamamlanmış bir karar, takvim veya finansal etki belirtilmiyor. Sürecin sonucu ve olası uygulama planı açıklığa kavuşmayı bekliyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1687005"
+        }
+      ]
+    },
+    "FONET": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-11-04",
+          "type": "Sözleşme imzalandı",
+          "direction": "olumlu",
+          "title": "Düzce İl Sağlık Müdürlüğü ile 36 aylık hizmet sözleşmesi",
+          "summary": "Hastane bilgi yönetim sistemi ve yoğun bakım bilgi yönetim sistemi hizmet alımı için 99.660.056 TL tutarında sözleşme imzalandı. Hizmet başlangıcı 1 Ocak 2027 olarak bildirildi.",
+          "revision": "19 Ekim 2026 tarihli ihale sonucu duyurusunu takiben sözleşme imzalandı; gelişme ihale aşamasından sözleşme aşamasına geçişi gösteriyor.",
+          "analysis": "Üç yıllık sözleşme gelir görünürlüğüne katkı sağlayabilir. KAP açıklamasında sözleşmeye özgü kâr marjı veya dönemsel gelir dağılımı verilmediğinden kârlılık katkısı tutar bazında hesaplanamıyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1692525"
+        }
+      ]
+    },
+    "YEOTK": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-09-21",
+          "type": "Enerji depolama projesi",
+          "direction": "olumlu",
+          "title": "Azerbaycan'da 250 MWh enerji depolama sistemi için EPC-F sözleşmesi",
+          "summary": "Azerenerji ile projenin finansman dahil toplam sözleşme bedeli 58,6 milyon ABD doları olarak açıklandı. Finansman geri ödemesinin yerel bankalar aracılığıyla dört yıla yayılması öngörülüyor.",
+          "analysis": "Proje yeni iş hacmi ve enerji depolama alanında referans sağlayabilir. EPC-F yapısının finansman ve işletme sermayesi ihtiyacı doğurabileceği dikkate alınmalı; KAP açıklamasında proje marjı ve gelir kaydetme takvimi açıklanmadı.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1665639"
+        },
+        {
+          "date": "2026-07-17",
+          "type": "Yurt dışı güneş enerjisi projeleri",
+          "direction": "olumlu",
+          "title": "İngiltere'de toplam 196 MWp üç güneş santrali projesi",
+          "summary": "Bağlı ortaklık Rey Renewable, Bluefield proje şirketleri için anahtar teslim üç güneş enerjisi santralinin tedarik, kurulum, test ve devreye alma işlerini üstlendi; ayrıca iki yıllık işletme ve bakım hizmeti bulunuyor.",
+          "analysis": "Proje portföyü ve sonraki dönem hizmet gelirleri için fırsat sunuyor. Açıklamada sözleşme bedeli, marj ve kesin gelir takvimi yer almıyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1634304"
+        }
+      ]
+    },
+    "TCKRC": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-10-26",
+          "type": "Kapasite yatırımı",
+          "direction": "olumlu",
+          "title": "Bursa Başköy tesisinin inşaat bitiş hedefi öne çekildi",
+          "summary": "Enerji ve savunma sanayine yönelik ürün çeşitliliğini destekleyecek yeni tesis için inşaatın tamamlanma hedefi 2027 yıl sonundan 2026 yıl sonuna çekildi. Ekipman tedariki, montaj ve devreye alma aşamaları ayrıca devam ediyor.",
+          "revision": "İnşaat hedef tarihi öne alındı; üretime başlama tarihi ise izin, test ve devreye alma süreçlerine bağlı ve henüz netleştirilmedi.",
+          "analysis": "Tesisin daha erken tamamlanması büyüme kapasitesini destekleyebilir; ancak üretim başlangıcı, kapasite, yatırımın finansmanı ve satış/kâr katkısı henüz sayısallaştırılmış değil. Bu nedenle inşaat bitişini üretim başlangıcıyla eş tutmamak gerekir.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1687211"
+        },
+        {
+          "date": "2026-10-27",
+          "type": "Faaliyet raporu ve beklentiler",
+          "direction": "nötr",
+          "title": "3Ç 2026 faaliyet raporu yayımlandı",
+          "summary": "Şirketin 3Ç 2026 yatırımcı sunumu/faaliyet raporu KAP'ta yayımlandı. Yeni Başköy tesisinin devreye alınma takvimi ve açıklanacak dönemsel hedefler izlenmesi gereken başlıklar.",
+          "analysis": "Bu notta şirketin KAP raporunda açıkça doğrulanmış, yeni bir hedef revizyonu ayrıştırılmadı. Tesisin gerçek üretim başlangıcı ve ek kapasitenin finansal katkısı konusunda açıklama bekleniyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1688325"
+        }
+      ]
+    },
+    "KBORU": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-06-18",
+          "type": "Kapasite artışı tamamlandı",
+          "direction": "olumlu",
+          "title": "Malatya CTP tesisinde ek üretim hattı devreye alındı",
+          "summary": "Malatya CTP tesisindeki ek hat kurulumu tamamlandı. Şirket, yatırımın yıllık yaklaşık 40 milyon ABD doları gelir katkısı potansiyeli olduğunu; 2026 katkısının sınırlı, tam etkinin ise 2027'den itibaren beklendiğini bildirdi.",
+          "analysis": "Potansiyel katkı şirket açıklamasına dayalı beklentidir; gerçekleşme kapasite kullanımına, siparişlere, ürün karmasına ve kur/maliyet koşullarına bağlıdır.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1618555"
+        },
+        {
+          "date": "2026-09-15",
+          "type": "İhracat sözleşmeleri",
+          "direction": "olumlu",
+          "title": "Moldova ve Polonya'ya toplam 5,74 milyon avroluk satış",
+          "summary": "Dünya Bankası finansmanlı Moldova sulama projesi ile Polonya enerji santrali için HDPE/CTP boru ve saha mühendisliği işlerini kapsayan sözleşmelerin toplamı 5.744.160 avro (açıklama tarihindeki karşılığı 322,4 milyon TL) olarak duyuruldu. Teslimatlar 2026 boyunca kademeli yapılacak.",
+          "revision": "Şirket, işlerin 2026 satış hedefinin yaklaşık %2,5'ine karşılık gelmesini beklediğini bildirdi.",
+          "analysis": "İhracat siparişleri satış görünürlüğünü artırabilir. Katkı tahmini şirketin satış hedefi bazındadır; sözleşme kâr marjı açıklanmamıştır.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1662851"
+        },
+        {
+          "date": "2026-06-22",
+          "type": "Yeni tesis yatırımı",
+          "direction": "nötr",
+          "title": "Gaziantep'te yeni üretim tesisi kurulum çalışmaları başladı",
+          "summary": "Başpınar OSB'de 8.400 m² kapalı alana ve 30.000 m² araziye sahip tesis için kurulum/yerleşim çalışmaları başlatıldı.",
+          "analysis": "KAP açıklamasında tesisin kapasitesi, üretime başlama tarihi veya finansal katkısı henüz sayısallaştırılmadı. Takvim ve yatırım tutarı için yeni açıklama bekleniyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1619309"
+        }
+      ]
+    },
+    "CVKMD": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-09-24",
+          "type": "Üretim aşaması",
+          "direction": "olumlu",
+          "title": "Sarıalan Altın Madeni tam kapasite üretime geçti",
+          "summary": "Deneme üretiminin başarılı sonuçlanmasının ardından tesisin 24 Eylül 2026 itibarıyla tam kapasite üretime geçtiği açıklandı. Şirket, 15 Eylül'e kadar konsantre içinde 14.450 ons üretim bildirildiğini duyurdu.",
+          "revision": "Deneme üretiminden tam kapasiteye geçiş gerçekleşti; ancak yıllık üretim kapasitesi, satış takvimi ve kârlılığa katkı bu açıklamada sayısallaştırılmadı.",
+          "analysis": "Üretimin ölçeklenmesi olumlu bir operasyonel kilometre taşıdır. Düzenli üretim, tenör/geri kazanım, satış fiyatı ve işletme maliyetlerinin sonuçlara etkisi sonraki raporlarda izlenmeli.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1667734"
+        },
+        {
+          "date": "2026-06-15",
+          "type": "Stratejik ortaklık görüşmeleri",
+          "direction": "nötr",
+          "title": "Maden sahalarındaki yatırımlar için potansiyel ortakla görüşmeler başladı",
+          "summary": "Şirket, bağlı ortaklığın maden sahalarındaki yatırımları hızlandırmak amacıyla potansiyel bir stratejik ortakla görüşmelere başlandığını açıkladı.",
+          "analysis": "Görüşmeler henüz bağlayıcı anlaşma değil. Ortaklık yapısı, yatırım tutarı, üretim takvimi ve finansal katkı konusunda sonuç açıklaması bekleniyor.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1616977"
+        }
+      ]
+    },
+    "MEGMT": {
+      "reviewedAt": "2026-11-09",
+      "items": [
+        {
+          "date": "2026-10-27",
+          "type": "Yeni tesis / kapasite artışı",
+          "direction": "olumlu",
+          "title": "ABD Güney Carolina tesisinde ticari üretim ve satış başladı",
+          "summary": "Mega Metal Inc. tesisindeki deneme üretiminin tamamlandığı; ticari üretim ve satışların başladığı bildirildi. Üretimin müşteri siparişleri ve operasyon planı doğrultusunda kademeli artırılması hedefleniyor.",
+          "revision": "2027 yılı içinde yıllık 24.000 ton kapasite seviyesine ulaşılması hedefleniyor.",
+          "analysis": "Ticari faaliyete geçiş büyüme için somut bir adım. Kademeli kapasite artışının gerçekleşmesi sipariş akışına ve operasyonel devreye almaya bağlı; açıklamada kesin üretim rampası, ciro veya marj hedefi verilmedi.",
+          "sourceUrl": "https://www.kap.org.tr/tr/Bildirim/1688185"
+        }
+      ]
+    }
+  }
 }
