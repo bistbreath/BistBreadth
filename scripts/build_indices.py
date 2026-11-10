@@ -350,6 +350,21 @@ def main() -> None:
             f"{len(candles)} candles from {candles[0]['time']}"
         )
 
+    # Never replace published charts with a provider response whose latest
+    # candle is older than the data already on the site.
+    if OUTPUT.exists():
+        published = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        for code in INDEXES:
+            published_candles = published.get("indexes", {}).get(code, {}).get("candles", [])
+            new_candles = payload["indexes"][code]["candles"]
+            published_latest = published_candles[-1]["time"] if published_candles else ""
+            new_latest = new_candles[-1]["time"] if new_candles else ""
+            if published_latest and new_latest < published_latest:
+                raise RuntimeError(
+                    f"Refusing stale {code} refresh: latest available {new_latest}, "
+                    f"published chart already has {published_latest}"
+                )
+
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
