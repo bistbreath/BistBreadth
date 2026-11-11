@@ -73,3 +73,5 @@
 .score-method{border-top:1px solid var(--line);padding-top:10px}
 .score-empty{padding:14px;color:var(--muted);font-size:13px}
 @media(max-width:650px){.financial-score-card{padding:15px}.score-breakdown{grid-template-columns:1fr;gap:11px}.score-top h3{font-size:15px}.score-total{width:66px;height:66px;padding-top:18px}.score-total b{font-size:26px}.score-history{align-items:flex-start;flex-direction:column;gap:7px}.score-spark{width:100%;height:28px;flex:auto}}
+
+.site-nav{display:flex;gap:8px;align-items:center;margin-left:auto}.site-nav a{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:8px;color:var(--muted);text-decoration:none;font-size:12px;white-space:nowrap}.site-nav a:hover,.site-nav a.active{color:var(--text);border-color:var(--accent);background:#1b2c43}@media(max-width:760px){.top{flex-wrap:wrap}.site-nav{order:3;width:100%;margin-left:0}.status{margin-left:auto}}
