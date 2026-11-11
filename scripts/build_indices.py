@@ -21,6 +21,7 @@ import yfinance as yf
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "data" / "indices.json"
 FINANCIAL_PRICE_OUTPUT = ROOT / "docs" / "data" / "financial_prices.json"
+RS_RATING_OUTPUT = ROOT / "docs" / "data" / "rs_ratings.json"
 FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT", "BRSAN", "KBORU"]
 MEMBERS_URL = "https://www.borsaistanbul.com/datum/hisse_endeks_ds.csv"
 HISTORICAL_MEMBERS_URL = (
@@ -29,6 +30,14 @@ HISTORICAL_MEMBERS_URL = (
 )
 BASE_VALUE = 1000.0
 PERIOD = "5y"
+SECTOR_INDEXES = [
+    ("XBANK", "Bankacılık"), ("XSGRT", "Sigorta"), ("XGMYO", "Gayrimenkul Yatırım Ortaklığı"),
+    ("XHOLD", "Holding ve Yatırım"), ("XBLSM", "Bilişim"), ("XGIDA", "Gıda ve İçecek"),
+    ("XULAS", "Ulaştırma"), ("XTRZM", "Turizm"), ("XELKT", "Elektrik"),
+    ("XMADN", "Madencilik"), ("XKMYA", "Kimya, Petrol ve Plastik"),
+    ("XTEKS", "Tekstil ve Deri"), ("XILTM", "İletişim"),
+    ("XUSIN", "Sınai"), ("XUHIZ", "Hizmetler"), ("XUMAL", "Mali"),
+]
 INDEXES = {
     "XU100": {"name": "BIST 100 Eşit Ağırlık", "short_name": "BIST 100", "color": "#75adf5", "minimum": 50},
     "XU030": {"name": "BIST 30 Eşit Ağırlık", "short_name": "BIST 30", "color": "#42c7a5", "minimum": 20},
@@ -37,7 +46,7 @@ INDEXES = {
 }
 
 
-def load_current_members() -> tuple[dict[str, set[str]], str]:
+def load_current_members() -> tuple[dict[str, set[str]], str, dict[str, str]]:
     response = requests.get(MEMBERS_URL, timeout=45)
     response.raise_for_status()
     text = response.content.decode("utf-8-sig", errors="replace")
@@ -59,7 +68,11 @@ def load_current_members() -> tuple[dict[str, set[str]], str]:
     for code, config in INDEXES.items():
         if len(current[code]) < config["minimum"]:
             raise ValueError(f"Current BIST membership missing/too small for {code}: {len(current[code])}")
-    return current, datetime.now(timezone.utc).isoformat()
+    sectors: dict[str, str] = {}
+    for index_code, label in SECTOR_INDEXES:
+        for ticker in frame.loc[frame.index_code == index_code, "ticker"]:
+            sectors.setdefault(ticker, label)
+    return current, datetime.now(timezone.utc).isoformat(), sectors
 
 
 def load_historical_members() -> dict[str, dict[pd.Timestamp, set[str]]]:
@@ -190,6 +203,77 @@ def download_financial_prices(symbols: list[str]) -> dict[str, list[dict]]:
     return result
 
 
+
+def build_rs_ratings(
+    prices: dict[str, pd.DataFrame],
+    universe: set[str],
+    sectors: dict[str, str],
+    updated_at: str,
+) -> dict:
+    """Rank current XUTUM shares by 1/3/6-month relative performance vs XU100."""
+    benchmark = prices.get("XU100")
+    if benchmark is None or benchmark.empty or "close" not in benchmark:
+        raise ValueError("Yahoo Finance returned no XU100 benchmark prices")
+    benchmark_close = pd.to_numeric(benchmark["close"], errors="coerce").dropna()
+    if benchmark_close.empty:
+        raise ValueError("XU100 benchmark has no usable closing prices")
+    as_of = benchmark_close.index.max()
+    periods = {"1m": 1, "3m": 3, "6m": 6}
+    period_values: dict[str, dict[str, float]] = {period: {} for period in periods}
+
+    for period, months in periods.items():
+        cutoff = as_of - pd.DateOffset(months=months)
+        benchmark_start = benchmark_close.loc[benchmark_close.index <= cutoff]
+        benchmark_end = benchmark_close.loc[benchmark_close.index <= as_of]
+        if benchmark_start.empty or benchmark_end.empty:
+            continue
+        b_start_date, b_start = benchmark_start.index[-1], float(benchmark_start.iloc[-1])
+        b_end_date, b_end = benchmark_end.index[-1], float(benchmark_end.iloc[-1])
+        if (cutoff - b_start_date).days > 10 or (as_of - b_end_date).days > 7 or b_start <= 0:
+            continue
+        benchmark_return = b_end / b_start
+        for ticker in universe:
+            data = prices.get(ticker)
+            if data is None or data.empty or "close" not in data:
+                continue
+            close = pd.to_numeric(data["close"], errors="coerce").dropna()
+            start = close.loc[close.index <= cutoff]
+            end = close.loc[close.index <= as_of]
+            if start.empty or end.empty or (cutoff - start.index[-1]).days > 10 or (as_of - end.index[-1]).days > 7:
+                relative[ticker][period] = None
+                continue
+            start_value, end_value = float(start.iloc[-1]), float(end.iloc[-1])
+            value = (end_value / start_value / benchmark_return - 1) * 100 if start_value > 0 else None
+            if value is not None:
+                period_values[period][ticker] = value
+
+    ratings: dict[str, dict[str, int | None]] = {ticker: {} for ticker in universe}
+    for period in periods:
+        values = period_values[period]
+        count = len(values)
+        if count == 1:
+            ratings[next(iter(values))][period] = 50
+        elif count > 1:
+            ranks = pd.Series(values).rank(method="average", ascending=True)
+            for ticker, rank in ranks.items():
+                ratings[ticker][period] = int(round((float(rank) - 1) / (count - 1) * 100))
+        for ticker in universe:
+            ratings[ticker].setdefault(period, None)
+
+    rows = [
+        {"ticker": ticker, "sector": sectors.get(ticker, "—"), "ratings": ratings[ticker]}
+        for ticker in sorted(universe)
+    ]
+    return {
+        "updated_at": updated_at,
+        "as_of": as_of.strftime("%Y-%m-%d"),
+        "benchmark": "XU100",
+        "universe": "XUTUM",
+        "method": "Her dönem için hisse getirisi / XU100 getirisi; mevcut XUTUM hisseleri arasında yüzde sıralaması (0–100).",
+        "rows": rows,
+    }
+
+
 def add_broad_universe_ipo_dates(
     history: dict[pd.Timestamp, set[str]],
     prices: dict[str, pd.DataFrame],
@@ -306,17 +390,18 @@ def build_candles(
 
 
 def main() -> None:
-    current, fetched_at = load_current_members()
+    current, fetched_at, sectors = load_current_members()
     history = load_historical_members()
     history, current_review_date = apply_current_members(history, current, fetched_at)
 
     all_symbols = sorted(set().union(
         *[set(members) for dates in history.values() for members in dates.values()]
-    ))
+    ) | {"XU100"})
     prices = download_prices(all_symbols)
     # IPO dates refine broad-market membership between review snapshots.
     for code in ("XTUMY", "XUTUM"):
         history[code] = add_broad_universe_ipo_dates(history[code], prices)
+    rs_ratings = build_rs_ratings(prices, current["XUTUM"], sectors, fetched_at)
     financial_prices = download_financial_prices(FINANCIAL_TICKERS)
     for ticker in FINANCIAL_TICKERS:
         print(f"{ticker}: {len(financial_prices.get(ticker, []))} daily closes")
@@ -367,12 +452,12 @@ def main() -> None:
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
+    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")\n    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
         "daily_prices": financial_prices,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {OUTPUT} and {FINANCIAL_PRICE_OUTPUT}")
+    print(f"Wrote {OUTPUT}, {FINANCIAL_PRICE_OUTPUT}, and {RS_RATING_OUTPUT}")
 
 
 if __name__ == "__main__":
