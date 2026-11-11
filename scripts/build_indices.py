@@ -451,7 +451,8 @@ def main() -> None:
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")\n    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
+    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
         "daily_prices": financial_prices,
