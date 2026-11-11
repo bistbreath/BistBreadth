@@ -9,7 +9,7 @@ GitHub Pages interface for daily equal-weight synthetic charts of:
 
 ## Data pipeline
 
-GitHub Actions downloads the live constituent list from Borsa İstanbul, historical membership review snapshots, and adjusted daily OHLC prices through Yahoo Finance using yfinance. It recalculates the four series with a 1,000 starting value and daily equal weighting, then commits the output to `docs/data/indices.json`. The workflow runs on weekdays after the BIST session and can also be started manually from Actions → Refresh BIST equal-weight charts → Run workflow.
+GitHub Actions downloads the live constituent list from Borsa İstanbul, historical membership review snapshots, and adjusted daily OHLC prices through Yahoo Finance using yfinance. It recalculates the four series with a 1,000 starting value and daily equal weighting, then commits the outputs to `docs/data/indices.json`, `docs/data/financial_prices.json`, and `docs/data/rs_ratings.json`. The workflow runs on weekdays after the BIST session and can also be started manually from Actions → Refresh BIST equal-weight charts → Run workflow.
 
 To run it locally with Python 3.10+:
 
