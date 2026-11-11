@@ -240,7 +240,6 @@ def build_rs_ratings(
             start = close.loc[close.index <= cutoff]
             end = close.loc[close.index <= as_of]
             if start.empty or end.empty or (cutoff - start.index[-1]).days > 10 or (as_of - end.index[-1]).days > 7:
-                relative[ticker][period] = None
                 continue
             start_value, end_value = float(start.iloc[-1]), float(end.iloc[-1])
             value = (end_value / start_value / benchmark_return - 1) * 100 if start_value > 0 else None
