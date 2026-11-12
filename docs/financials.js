@@ -196,122 +196,6 @@ function showFinancialTooltip(mark, event) {
   tooltip.style.top = `${top}px`;
 }
 
-function quarterAvailableDate(period) {
-  const [year, month] = period.split('/').map(Number);
-  const end = new Date(Date.UTC(year, month, 0));
-  end.setUTCDate(end.getUTCDate() + (month === 12 ? 75 : 60));
-  return end.toISOString().slice(0,10);
-}
-
-function buildFnfkSeries(company, prices) {
-  const quarters = company.periods || [];
-  const shares = Number(company.shares_outstanding);
-  if (!(shares > 0)) return [];
-  return (prices || []).map(point => {
-    const known = quarters.filter(q => quarterAvailableDate(q.period) <= point.time);
-    if (known.length < 4) return null;
-    const latest = known[known.length-1];
-    const endIndex = quarters.indexOf(latest);
-    const lastFour = quarters.slice(endIndex-3,endIndex+1);
-    const continuous = lastFour.length === 4 && lastFour.every((q,i) => {
-      if (i===0) return true;
-      const [py,pm]=lastFour[i-1].period.split('/').map(Number);
-      const [cy,cm]=q.period.split('/').map(Number);
-      return (cy*4+Math.ceil(cm/3))-(py*4+Math.ceil(pm/3))===1;
-    });
-    if (!continuous || !lastFour.every(q => Number.isFinite(q.netOperatingProfit))) return null;
-    const ttm = lastFour.reduce((sum,q)=>sum+q.netOperatingProfit,0);
-    const perShare = ttm/shares;
-    if (!Number.isFinite(perShare) || perShare === 0) return null;
-    return {time:point.time,price:point.close,ttm,perShare,ratio:point.close/perShare};
-  }).filter(Boolean);
-}
-
-function dailyLabel(time) {
-  const [year,month]=time.split('-');
-  return `${year}/${Number(month)}`;
-}
-
-function drawFnfkChart(company, ticker) {
-  const host=document.getElementById('fnfk-chart');
-  if (!window.financialPriceData) {
-    host.innerHTML='<div class="financial-chart-empty">Günlük fiyat geçmişi hazırlanıyor…</div>';
-    return;
-  }
-  const all=buildFnfkSeries(company,window.financialPriceData.daily_prices?.[ticker]);
-  const range=document.querySelector('[data-daily-range].active')?.dataset.dailyRange || 'all';
-  let points=all;
-  if (points.length && range!=='all') {
-    const months=range==='1y'?12:36;
-    const cutoff=new Date(points[points.length-1].time+'T00:00:00Z');
-    cutoff.setUTCMonth(cutoff.getUTCMonth()-months);
-    const key=cutoff.toISOString().slice(0,10);
-    points=points.filter(p=>p.time>=key);
-  }
-  if (points.length<2) {
-    host.innerHTML='<div class="financial-chart-empty">Bu hisse için yeterli günlük F/NFK geçmişi bulunamadı.</div>';
-    return;
-  }
-  const width=980,height=350,margin={left:72,right:22,top:20,bottom:48};
-  const plotW=width-margin.left-margin.right,plotH=height-margin.top-margin.bottom;
-  const values=points.map(p=>p.ratio);
-  let min=Math.min(...values),max=Math.max(...values);
-  if(min===max){min-=1;max+=1;}
-  const pad=(max-min)*0.08;min-=pad;max+=pad;
-  const y=v=>margin.top+(max-v)/(max-min)*plotH;
-  const x=i=>margin.left+i*plotW/(points.length-1);
-  const average=values.reduce((a,b)=>a+b,0)/values.length;
-  const band=Math.abs(average)*0.2;
-  const upper=average+band,lower=average-band;
-  let path='';
-  points.forEach((p,i)=>{path+=`${i?'L':'M'} ${x(i).toFixed(2)} ${y(p.ratio).toFixed(2)} `;});
-  let svg=`<svg class="financial-svg fnfk-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeSvg(ticker)} günlük fiyat net faaliyet kârı katsayısı">`;
-  for(let i=0;i<=4;i++){
-    const value=max-(max-min)*i/4, yy=y(value);
-    svg+=`<line x1="${margin.left}" y1="${yy}" x2="${width-margin.right}" y2="${yy}" class="fin-grid"/><text x="${margin.left-9}" y="${yy+4}" text-anchor="end" class="fin-axis">${pretty(value,1)}x</text>`;
-  }
-  const levels=[
-    {value:upper,color:'#3dc8f4',label:'Ort. %20 üstü'},
-    {value:average,color:'#75d27b',label:'Ortalama'},
-    {value:lower,color:'#3dc8f4',label:'Ort. %20 altı'},
-  ];
-  levels.forEach(level=>{
-    const yy=y(level.value);
-    svg+=`<line x1="${margin.left}" y1="${yy}" x2="${width-margin.right}" y2="${yy}" class="fnfk-level" stroke="${level.color}"/><text x="${margin.left+7}" y="${yy-7}" class="fnfk-level-label" fill="${level.color}">${level.label}: ${pretty(level.value,2)}</text>`;
-  });
-  svg+=`<path d="${path}" fill="none" stroke="#82aaff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><title>${escapeSvg(ticker)} F/NFK günlük</title></path>`;
-  const labels=5;
-  for(let i=0;i<labels;i++){
-    const index=Math.round(i*(points.length-1)/(labels-1));
-    svg+=`<text x="${x(index)}" y="${height-17}" text-anchor="middle" class="fin-axis">${dailyLabel(points[index].time)}</text>`;
-  }
-  svg+='<line class="fnfk-crosshair" x1="0" y1="'+margin.top+'" x2="0" y2="'+(height-margin.bottom)+'" stroke="#a9c8ff" stroke-dasharray="4 4" style="display:none;pointer-events:none"/><circle class="fnfk-hover-dot" cx="0" cy="0" r="4" fill="#ffffff" stroke="#82aaff" stroke-width="2" style="display:none;pointer-events:none"/>';
-  svg+='</svg>';
-  host.innerHTML=svg+'<div class="fnfk-hover-tooltip" role="status" aria-live="polite" hidden></div>';
-  const svgNode=host.querySelector('svg');
-  const tip=host.querySelector('.fnfk-hover-tooltip');
-  const crosshair=host.querySelector('.fnfk-crosshair');
-  const dot=host.querySelector('.fnfk-hover-dot');
-  svgNode.addEventListener('pointermove',event=>{
-    const rect=svgNode.getBoundingClientRect();
-    const viewX=(event.clientX-rect.left)/rect.width*width;
-    const index=Math.max(0,Math.min(points.length-1,Math.round((viewX-margin.left)/plotW*(points.length-1))));
-    const point=points[index], px=x(index), py=y(point.ratio);
-    crosshair.setAttribute('x1',px);crosshair.setAttribute('x2',px);crosshair.style.display='';
-    dot.setAttribute('cx',px);dot.setAttribute('cy',py);dot.style.display='';
-    tip.innerHTML='<b>'+escapeSvg(point.time)+'</b><span>F/NFK <strong>'+pretty(point.ratio,2)+'x</strong></span><span>Kapanış <strong>'+pretty(point.price,2)+' ₺</strong></span>';
-    tip.hidden=false;
-    const hostRect=host.getBoundingClientRect();
-    const left=Math.max(8,Math.min(hostRect.width-190,event.clientX-hostRect.left+14));
-    const top=Math.max(4,Math.min(hostRect.height-92,event.clientY-hostRect.top-72));
-    tip.style.left=left+'px';tip.style.top=top+'px';
-  });
-  svgNode.addEventListener('pointerleave',()=>{tip.hidden=true;crosshair.style.display='none';dot.style.display='none';});
-  const last=points[points.length-1];
-  const caption=document.getElementById('fnfk-caption');
-  caption.textContent=`${points.length.toLocaleString('tr-TR')} günlük gözlem • Son oran ${pretty(last.ratio,2)}x • F/NFK = kapanış fiyatı / TTM net faaliyet kârı hisse başına`;
-}
-
 function median(values) {
   if (!values.length) return null;
   const sorted=[...values].sort((a,b)=>a-b), mid=Math.floor(sorted.length/2);
@@ -425,20 +309,13 @@ function renderFinancials() {
   financialContainer.innerHTML = charts.join('');
   const latest = rows.at(-1);
   financialStatus.textContent = `${company.name} • ${rows.length} dönem gösteriliyor • Son dönem ${latest?.label || '—'}`;
-  drawFnfkChart(company,ticker);
 }
 
-Promise.all([
-  fetch('./data/financials.json',{cache:'no-store'}).then(response=>{
-    if(!response.ok) throw new Error('Finansal veri dosyası yüklenemedi.');
-    return response.json();
-  }),
-  fetch('./data/financial_prices.json',{cache:'no-store'}).then(response=>
-    response.ok ? response.json() : null
-  ).catch(()=>null)
-]).then(([fundamentals,prices])=>{
+fetch('./data/financials.json',{cache:'no-store'}).then(response=>{
+  if(!response.ok) throw new Error('Finansal veri dosyası yüklenemedi.');
+  return response.json();
+}).then(fundamentals=>{
   window.financialData=fundamentals;
-  window.financialPriceData=prices;
   renderFinancials();
 }).catch(error=>{
   financialStatus.textContent=error.message;
@@ -455,15 +332,11 @@ financialContainer.addEventListener('pointerleave', () => {
 });
 financialSelect.addEventListener('change', renderFinancials);
 financialRange.addEventListener('change', renderFinancials);
-document.querySelectorAll('[data-daily-range]').forEach(button=>button.addEventListener('click',()=>{
-  document.querySelectorAll('[data-daily-range]').forEach(item=>item.classList.remove('active'));
-  button.classList.add('active');
-  renderFinancials();
-}));
+
 
 (function addFinancialHoverStyles(){
   if(document.getElementById('financial-hover-styles'))return;
   const style=document.createElement('style');style.id='financial-hover-styles';
-  style.textContent='.score-spark{position:relative;overflow:visible;z-index:3}.score-spark span{position:relative;cursor:crosshair}.score-spark span:hover,.score-spark span:focus{outline:2px solid #fff;outline-offset:2px;z-index:2}.score-spark span::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);bottom:auto;transform:translateX(-50%);display:none;white-space:nowrap;padding:8px 10px;border:1px solid #466184;border-radius:7px;background:#08111f;color:#eef5ff;font-size:13px;font-weight:700;z-index:20;box-shadow:0 5px 18px #0008}.score-spark span:hover::after,.score-spark span:focus::after{display:block}#fnfk-chart{position:relative}.fnfk-hover-tooltip{position:absolute;z-index:10;min-width:154px;padding:9px 11px;border:1px solid #466184;border-radius:8px;background:#08111fee;color:#dce8fa;font-size:13px;line-height:1.5;box-shadow:0 6px 20px #0008;pointer-events:none}.fnfk-hover-tooltip b,.fnfk-hover-tooltip strong{color:#fff}.fnfk-hover-tooltip span{display:block}';
+  style.textContent='.score-spark{position:relative;overflow:visible;z-index:3}.score-spark span{position:relative;cursor:crosshair}.score-spark span:hover,.score-spark span:focus{outline:2px solid #fff;outline-offset:2px;z-index:2}.score-spark span::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);bottom:auto;transform:translateX(-50%);display:none;white-space:nowrap;padding:8px 10px;border:1px solid #466184;border-radius:7px;background:#08111f;color:#eef5ff;font-size:13px;font-weight:700;z-index:20;box-shadow:0 5px 18px #0008}.score-spark span:hover::after,.score-spark span:focus::after{display:block}';
   document.head.appendChild(style);
 })();

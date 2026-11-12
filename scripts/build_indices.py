@@ -20,9 +20,7 @@ import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "data" / "indices.json"
-FINANCIAL_PRICE_OUTPUT = ROOT / "docs" / "data" / "financial_prices.json"
 RS_RATING_OUTPUT = ROOT / "docs" / "data" / "rs_ratings.json"
-FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT", "BRSAN", "KBORU", "TAVHL", "INDES", "AYGAZ", "ARDYZ"]
 MEMBERS_URL = "https://www.borsaistanbul.com/datum/hisse_endeks_ds.csv"
 HISTORICAL_MEMBERS_URL = (
     "https://raw.githubusercontent.com/GocmenCo/bist-constituents/master/"
@@ -162,46 +160,6 @@ def download_prices(symbols: list[str]) -> dict[str, pd.DataFrame]:
         if start + 35 < len(symbols):
             time.sleep(2)
     return result
-
-
-def download_financial_prices(symbols: list[str]) -> dict[str, list[dict]]:
-    raw = yf.download(
-        [f"{symbol}.IS" for symbol in symbols],
-        period=PERIOD,
-        interval="1d",
-        auto_adjust=False,
-        actions=False,
-        progress=False,
-        threads=True,
-        group_by="ticker",
-        timeout=45,
-    )
-    result: dict[str, list[dict]] = {}
-    for symbol in symbols:
-        yahoo_symbol = f"{symbol}.IS"
-        if isinstance(raw.columns, pd.MultiIndex):
-            if yahoo_symbol in raw.columns.get_level_values(0):
-                data = raw[yahoo_symbol].copy()
-            elif yahoo_symbol in raw.columns.get_level_values(-1):
-                data = raw.xs(yahoo_symbol, axis=1, level=-1).copy()
-            else:
-                continue
-        else:
-            data = raw.copy()
-        data.columns = [str(column).lower() for column in data.columns]
-        if "close" not in data.columns:
-            continue
-        close = pd.to_numeric(data["close"], errors="coerce").dropna()
-        if close.empty:
-            continue
-        close.index = pd.to_datetime(close.index).tz_localize(None).normalize()
-        close = close[~close.index.duplicated(keep="last")]
-        result[symbol] = [
-            {"time": date.strftime("%Y-%m-%d"), "close": round(float(value), 6)}
-            for date, value in close.items() if float(value) > 0
-        ]
-    return result
-
 
 
 def build_rs_ratings(
@@ -431,10 +389,6 @@ def main() -> None:
     for code in ("XTUMY", "XUTUM"):
         history[code] = add_broad_universe_ipo_dates(history[code], prices)
     rs_ratings = build_rs_ratings(prices, current["XUTUM"], sectors, fetched_at)
-    financial_prices = download_financial_prices(FINANCIAL_TICKERS)
-    for ticker in FINANCIAL_TICKERS:
-        print(f"{ticker}: {len(financial_prices.get(ticker, []))} daily closes")
-
     payload = {
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance (yfinance), auto-adjusted daily OHLC",
@@ -464,8 +418,7 @@ def main() -> None:
             f"{len(candles)} candles from {candles[0]['time']}"
         )
 
-    # Keep published index/RS files when Yahoo returns an older benchmark
-    # close, but still publish independently downloaded financial prices.
+    # Keep published index/RS files when Yahoo returns an older benchmark close.
     write_indexes = True
     if OUTPUT.exists():
         published = json.loads(OUTPUT.read_text(encoding="utf-8"))
@@ -503,12 +456,7 @@ def main() -> None:
         rs_ratings["sector_as_of"] = rs_ratings.get("as_of", "")
     RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
-        "updated_at": fetched_at,
-        "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
-        "daily_prices": financial_prices,
-    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {FINANCIAL_PRICE_OUTPUT}, {RS_RATING_OUTPUT}" + (f", {OUTPUT}" if write_indexes else ""))
+    print(f"Wrote {RS_RATING_OUTPUT}" + (f", {OUTPUT}" if write_indexes else ""))
 
 
 if __name__ == "__main__":
