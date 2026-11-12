@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "data" / "indices.json"
 FINANCIAL_PRICE_OUTPUT = ROOT / "docs" / "data" / "financial_prices.json"
 RS_RATING_OUTPUT = ROOT / "docs" / "data" / "rs_ratings.json"
-FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT", "BRSAN", "KBORU"]
+FINANCIAL_TICKERS = ["FONET", "YEOTK", "TCKRC", "CVKMD", "MEGMT", "BRSAN", "KBORU", "TAVHL", "INDES", "AYGAZ", "ARDYZ"]
 MEMBERS_URL = "https://www.borsaistanbul.com/datum/hisse_endeks_ds.csv"
 HISTORICAL_MEMBERS_URL = (
     "https://raw.githubusercontent.com/GocmenCo/bist-constituents/master/"
