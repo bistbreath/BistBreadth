@@ -508,7 +508,7 @@ def main() -> None:
         "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
         "daily_prices": financial_prices,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {FINANCIAL_PRICE_OUTPUT}" + (f", {OUTPUT}" if write_indexes else "") + (f", {RS_RATING_OUTPUT}" if write_rs_ratings else ""))
+    print(f"Wrote {FINANCIAL_PRICE_OUTPUT}, {RS_RATING_OUTPUT}" + (f", {OUTPUT}" if write_indexes else ""))
 
 
 if __name__ == "__main__":
