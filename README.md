@@ -31,6 +31,10 @@ Membership records are quarterly, not daily. IPO admission dates use the first q
 
 Borsa İstanbul provides the live component list and index methodology. The historical membership snapshots are archived from BIST review workbooks at [GocmenCo/bist-constituents](https://github.com/GocmenCo/bist-constituents). Yahoo Finance/yfinance is a third-party price source; availability, delay, and redistribution rights depend on its terms. The site is for research, not investment advice, and is not affiliated with Borsa İstanbul.
 
+## RS Rating
+
+The separate RS Rating page shows 1-, 3-, and 6-month relative strength versus XU100 for current XUTUM shares and sectors. Stock ratings are cross-sectional percentiles of relative performance. Sector performance is the equal-weighted average of the classified current XUTUM members' relative returns; sector ratings are percentiles across sectors. Sector assignment comes from BIST sector-index membership data.
+
 ## Site files
 
 - `docs/`: GitHub Pages site

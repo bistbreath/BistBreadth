@@ -210,7 +210,7 @@ def build_rs_ratings(
     sectors: dict[str, str],
     updated_at: str,
 ) -> dict:
-    """Rank current XUTUM shares by 1/3/6-month relative performance vs XU100."""
+    """Rank current XUTUM shares and sectors by 1/3/6-month relative strength vs XU100."""
     benchmark = prices.get("XU100")
     if benchmark is None or benchmark.empty or "close" not in benchmark:
         raise ValueError("Yahoo Finance returned no XU100 benchmark prices")
@@ -220,6 +220,7 @@ def build_rs_ratings(
     as_of = benchmark_close.index.max()
     periods = {"1m": 1, "3m": 3, "6m": 6}
     period_values: dict[str, dict[str, float]] = {period: {} for period in periods}
+    sector_values: dict[str, dict[str, float]] = {period: {} for period in periods}
 
     for period, months in periods.items():
         cutoff = as_of - pd.DateOffset(months=months)
@@ -246,6 +247,16 @@ def build_rs_ratings(
             if value is not None:
                 period_values[period][ticker] = value
 
+        grouped: dict[str, list[float]] = {}
+        for ticker, relative_return in period_values[period].items():
+            sector = sectors.get(ticker)
+            if sector and sector != "—":
+                grouped.setdefault(sector, []).append(relative_return)
+        sector_values[period] = {
+            sector: sum(values) / len(values)
+            for sector, values in grouped.items() if values
+        }
+
     ratings: dict[str, dict[str, int | None]] = {ticker: {} for ticker in universe}
     for period in periods:
         values = period_values[period]
@@ -259,17 +270,36 @@ def build_rs_ratings(
         for ticker in universe:
             ratings[ticker].setdefault(period, None)
 
+    sector_names = sorted({sectors.get(ticker) for ticker in universe if sectors.get(ticker) and sectors.get(ticker) != "—"})
+    sector_ratings: dict[str, dict[str, int | None]] = {sector: {} for sector in sector_names}
+    for period in periods:
+        values = sector_values[period]
+        count = len(values)
+        if count == 1:
+            sector_ratings[next(iter(values))][period] = 50
+        elif count > 1:
+            ranks = pd.Series(values).rank(method="average", ascending=True)
+            for sector, rank in ranks.items():
+                sector_ratings[sector][period] = int(round((float(rank) - 1) / (count - 1) * 100))
+        for sector in sector_names:
+            sector_ratings[sector].setdefault(period, None)
+
     rows = [
         {"ticker": ticker, "sector": sectors.get(ticker, "—"), "ratings": ratings[ticker]}
         for ticker in sorted(universe)
+    ]
+    sector_rows = [
+        {"sector": sector, "ratings": sector_ratings[sector]}
+        for sector in sector_names
     ]
     return {
         "updated_at": updated_at,
         "as_of": as_of.strftime("%Y-%m-%d"),
         "benchmark": "XU100",
         "universe": "XUTUM",
-        "method": "Her dönem için hisse getirisi / XU100 getirisi; mevcut XUTUM hisseleri arasında yüzde sıralaması (0–100).",
+        "method": "Hisse ve sektör RS değerleri XU100'e göre göreli performans üzerinden hesaplanır. Sektör getirisi, sınıflandırılmış güncel XUTUM hisselerinin eşit ağırlıklı ortalamasıdır.",
         "rows": rows,
+        "sector_rows": sector_rows,
     }
 
 
@@ -456,17 +486,22 @@ def main() -> None:
     if write_indexes:
         OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    write_rs_ratings = True
     if RS_RATING_OUTPUT.exists():
         published_rs = json.loads(RS_RATING_OUTPUT.read_text(encoding="utf-8"))
         if published_rs.get("as_of", "") > rs_ratings.get("as_of", ""):
+            sector_as_of = rs_ratings.get("as_of", "")
             print(
-                f"Keeping published RS ratings as of {published_rs['as_of']}; "
-                f"provider benchmark is older ({rs_ratings.get('as_of')})"
+                f"Keeping published stock RS ratings as of {published_rs['as_of']}; "
+                f"sector ratings use provider data as of {sector_as_of}"
             )
-            write_rs_ratings = False
-    if write_rs_ratings:
-        RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+            rs_ratings["rows"] = published_rs.get("rows", [])
+            rs_ratings["as_of"] = published_rs["as_of"]
+            rs_ratings["sector_as_of"] = sector_as_of
+        else:
+            rs_ratings["sector_as_of"] = rs_ratings.get("as_of", "")
+    else:
+        rs_ratings["sector_as_of"] = rs_ratings.get("as_of", "")
+    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
         "updated_at": fetched_at,
