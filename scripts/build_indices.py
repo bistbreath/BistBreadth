@@ -434,8 +434,9 @@ def main() -> None:
             f"{len(candles)} candles from {candles[0]['time']}"
         )
 
-    # Never replace published charts with a provider response whose latest
-    # candle is older than the data already on the site.
+    # Keep published index/RS files when Yahoo returns an older benchmark
+    # close, but still publish independently downloaded financial prices.
+    write_indexes = True
     if OUTPUT.exists():
         published = json.loads(OUTPUT.read_text(encoding="utf-8"))
         for code in INDEXES:
@@ -444,20 +445,35 @@ def main() -> None:
             published_latest = published_candles[-1]["time"] if published_candles else ""
             new_latest = new_candles[-1]["time"] if new_candles else ""
             if published_latest and new_latest < published_latest:
-                raise RuntimeError(
-                    f"Refusing stale {code} refresh: latest available {new_latest}, "
-                    f"published chart already has {published_latest}"
+                print(
+                    f"Keeping published {code} chart: latest provider candle {new_latest} "
+                    f"is older than published {published_latest}"
                 )
+                write_indexes = False
+                break
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    if write_indexes:
+        OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+    write_rs_ratings = True
+    if RS_RATING_OUTPUT.exists():
+        published_rs = json.loads(RS_RATING_OUTPUT.read_text(encoding="utf-8"))
+        if published_rs.get("as_of", "") > rs_ratings.get("as_of", ""):
+            print(
+                f"Keeping published RS ratings as of {published_rs['as_of']}; "
+                f"provider benchmark is older ({rs_ratings.get('as_of')})"
+            )
+            write_rs_ratings = False
+    if write_rs_ratings:
+        RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
     FINANCIAL_PRICE_OUTPUT.write_text(json.dumps({
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance split-adjusted close; dividends not adjusted",
         "daily_prices": financial_prices,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {OUTPUT}, {FINANCIAL_PRICE_OUTPUT}, and {RS_RATING_OUTPUT}")
+    print(f"Wrote {FINANCIAL_PRICE_OUTPUT}" + (f", {OUTPUT}" if write_indexes else "") + (f", {RS_RATING_OUTPUT}" if write_rs_ratings else ""))
 
 
 if __name__ == "__main__":
