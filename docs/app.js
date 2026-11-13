@@ -11,6 +11,8 @@ let series;
 let data;
 let selectedIndex;
 let tooltip;
+let selectedRange = 'all';
+let pollingIndexData = false;
 
 const fmt = n => Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const dateFmt = value => new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' }).format(new Date(value + 'T00:00:00'));
@@ -190,15 +192,16 @@ function renderIndex(code) {
   document.getElementById('empty').style.display = 'none';
   document.getElementById('panel').style.display = '';
   ensureChart();
-  document.querySelectorAll('[data-range]').forEach(button => button.classList.toggle('active', button.dataset.range === 'all'));
-  showRange('all');
+  document.querySelectorAll('[data-range]').forEach(button => button.classList.toggle('active', button.dataset.range === selectedRange));
+  showRange(selectedRange);
 }
 
 document.querySelectorAll('[data-range]').forEach(button => {
   button.addEventListener('click', () => {
     document.querySelectorAll('[data-range]').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
-    showRange(button.dataset.range);
+    selectedRange = button.dataset.range;
+    showRange(selectedRange);
   });
 });
 
@@ -208,6 +211,34 @@ document.getElementById('index-select').addEventListener('change', event => {
   } catch (error) {
     setStatus(error.message, false);
   }
+});
+
+async function refreshIndexData() {
+  if (pollingIndexData || document.visibilityState === 'hidden' || !data) return;
+  pollingIndexData = true;
+  try {
+    const response = await fetch(`./data/indices.json?refresh=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) return;
+    const latest = await response.json();
+    if (!latest.updated_at || latest.updated_at === data.updated_at) return;
+    data = latest;
+    const picker = document.getElementById('index-select');
+    const available = Object.keys(data.indexes || {});
+    [...picker.options].forEach(option => { option.disabled = !available.includes(option.value); });
+    if (!available.includes(picker.value)) picker.value = available[0];
+    renderIndex(picker.value);
+    const updated = new Date(data.updated_at);
+    setStatus(`Veri güncellendi ${new Intl.DateTimeFormat('tr-TR', { dateStyle: 'short', timeStyle: 'short' }).format(updated)}`);
+  } catch (_) {
+    // Keep showing the last published data and retry on the next poll.
+  } finally {
+    pollingIndexData = false;
+  }
+}
+
+setInterval(refreshIndexData, 60_000);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') refreshIndexData();
 });
 
 fetch('./data/indices.json', { cache: 'no-store' })

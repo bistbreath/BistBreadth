@@ -8,7 +8,7 @@
  const viewButtons=[...document.querySelectorAll("[data-view]")];
  const exportButton=document.getElementById("rs-export-tv");
  const tableHead=document.querySelector(".rs-table thead");
- let stockRows=[],sectorRows=[],period="3m",view="stocks",expandedSector="",asOf="",sectorAsOf="";
+ let stockRows=[],sectorRows=[],period="3m",view="stocks",expandedSector="",asOf="",sectorAsOf="",updatedAt="",refreshing=false;
  const numberFormat=new Intl.NumberFormat("tr-TR",{maximumFractionDigits:0});
  const val=(row,key)=>row.ratings?.[key]==null?"—":numberFormat.format(row.ratings[key]);
  const tone=(row,key)=>row.ratings?.[key]==null?"":row.ratings[key]>=70?"strong":row.ratings[key]<30?"weak":"";
@@ -76,13 +76,28 @@
    link.href=url;link.download="bist-rs-1-ay-80-ustu.txt";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
    statusNode.textContent=symbols.length+" hisse TradingView için TXT olarak indirildi.";
  });
- fetch("data/rs_ratings.json?v="+Date.now()).then(response=>{if(!response.ok)throw new Error("RS verisi henüz yayımlanmamış");return response.json()}).then(data=>{
-   stockRows=data.rows||[];
-   sectorRows=data.sector_rows||[];
-   asOf=data.as_of;
-   sectorAsOf=data.sector_as_of||data.as_of;
-   if(exportButton)exportButton.disabled=false;
-   if(!sectorRows.length)viewButtons.find(button=>button.dataset.view==="sectors").disabled=true;
-   render();
- }).catch(error=>{statusNode.textContent=error.message;metaNode.textContent="Veri kaynağı bekleniyor."});
+ async function refreshRatings(silent=false){
+   if(refreshing||document.visibilityState==="hidden")return;
+   refreshing=true;
+   try{
+     const response=await fetch("data/rs_ratings.json?refresh="+Date.now(),{cache:"no-store"});
+     if(!response.ok)throw new Error("RS verisi henüz yayımlanmamış");
+     const data=await response.json();
+     if(data.updated_at===updatedAt)return;
+     updatedAt=data.updated_at||data.as_of||"";
+     stockRows=data.rows||[];
+     sectorRows=data.sector_rows||[];
+     asOf=data.as_of;
+     sectorAsOf=data.sector_as_of||data.as_of;
+     if(exportButton)exportButton.disabled=false;
+     const sectorButton=viewButtons.find(button=>button.dataset.view==="sectors");
+     if(sectorButton)sectorButton.disabled=!sectorRows.length;
+     render();
+   }catch(error){
+     if(!silent){statusNode.textContent=error.message;metaNode.textContent="Veri kaynağı bekleniyor."}
+   }finally{refreshing=false}
+ }
+ refreshRatings();
+ setInterval(()=>refreshRatings(true),60000);
+ document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")refreshRatings(true)});
 })();

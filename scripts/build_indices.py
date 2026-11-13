@@ -502,6 +502,13 @@ def main() -> None:
                 write_indexes = False
                 break
 
+    if write_indexes and OUTPUT.exists():
+        published = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        compared_keys = ("indexes", "price_source", "membership_source", "method", "membership_cadence")
+        if all(published.get(key) == payload.get(key) for key in compared_keys):
+            print("Keeping published index data: prices and memberships are unchanged")
+            write_indexes = False
+
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     if write_indexes:
         OUTPUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -521,7 +528,17 @@ def main() -> None:
             rs_ratings["sector_as_of"] = rs_ratings.get("as_of", "")
     else:
         rs_ratings["sector_as_of"] = rs_ratings.get("as_of", "")
-    RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_rs = True
+    if RS_RATING_OUTPUT.exists():
+        published_rs = json.loads(RS_RATING_OUTPUT.read_text(encoding="utf-8"))
+        published_values = {key: value for key, value in published_rs.items() if key != "updated_at"}
+        calculated_values = {key: value for key, value in rs_ratings.items() if key != "updated_at"}
+        if published_values == calculated_values:
+            rs_ratings["updated_at"] = published_rs.get("updated_at", rs_ratings["updated_at"])
+            print("Keeping published RS ratings: scores and dates are unchanged")
+            write_rs = False
+    if write_rs:
+        RS_RATING_OUTPUT.write_text(json.dumps(rs_ratings, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     print(f"Wrote {RS_RATING_OUTPUT}" + (f", {OUTPUT}" if write_indexes else ""))
 
