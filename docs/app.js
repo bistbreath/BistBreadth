@@ -128,17 +128,30 @@ function renderFollowThrough(report) {
     return;
   }
 
-  period.textContent = `${dateFmt(report.mover_date)} hareketi → ${dateFmt(report.follow_through_date)} takibi • Önceki seansa göre en az %4 yükselenler`;
+  period.textContent = `${dateFmt(report.mover_date)} hareketi → ${dateFmt(report.follow_through_date)} takibi • ≥%4 yükselenler • Fiyat kapsamı ${report.priced_member_count}/${report.member_count}`;
   const resolved = report.following_through_count + report.below_count;
-  rate.textContent = report.rate_percent == null ? '—' : `${report.rate_percent.toFixed(2).replace('.', ',')}%`;
-  summary.textContent = `${report.following_through_count} / ${report.candidate_count} hissede bugünkü kapanış dünkü kapanışı korudu${report.awaiting_count ? ` • ${report.awaiting_count} hisse beklemede` : ''}`;
-  positive.textContent = report.following_through_count;
-  negative.textContent = report.below_count;
-  pending.textContent = report.awaiting_count;
-  const denominator = report.candidate_count || 1;
-  positiveBar.style.width = `${report.following_through_count / denominator * 100}%`;
-  negativeBar.style.width = `${report.below_count / denominator * 100}%`;
-  pendingBar.style.width = `${report.awaiting_count / denominator * 100}%`;
+  const enoughCoverage = report.status !== 'insufficient_coverage';
+  rate.textContent = !enoughCoverage || report.rate_percent == null ? '—' : `${report.rate_percent.toFixed(2).replace('.', ',')}%`;
+  if (!enoughCoverage) {
+    summary.textContent = `Yeterli dünkü hisse fiyatı yok (${report.priced_member_count}/${report.member_count}); oran hesaplanamadı.`;
+    positive.textContent = negative.textContent = pending.textContent = '—';
+    [positiveBar, negativeBar, pendingBar].forEach(node => { node.style.width = '0%'; });
+  } else if (report.status === 'no_movers') {
+    summary.textContent = 'Dünkü kapanışı en az %4 yükselen hisse bulunamadı.';
+    positive.textContent = report.following_through_count;
+    negative.textContent = report.below_count;
+    pending.textContent = report.awaiting_count;
+    [positiveBar, negativeBar, pendingBar].forEach(node => { node.style.width = '0%'; });
+  } else {
+    summary.textContent = `${report.following_through_count} / ${report.candidate_count} hissede bugünkü kapanış dünkü kapanışı korudu${report.awaiting_count ? ` • ${report.awaiting_count} hisse beklemede` : ''}`;
+    positive.textContent = report.following_through_count;
+    negative.textContent = report.below_count;
+    pending.textContent = report.awaiting_count;
+    const denominator = report.candidate_count || 1;
+    positiveBar.style.width = `${report.following_through_count / denominator * 100}%`;
+    negativeBar.style.width = `${report.below_count / denominator * 100}%`;
+    pendingBar.style.width = `${report.awaiting_count / denominator * 100}%`;
+  }
   document.getElementById('follow-through-bar').setAttribute(
     'aria-label',
     `${report.following_through_count} kapanışı korudu, ${report.below_count} altına indi, ${report.awaiting_count} fiyat bekleniyor`

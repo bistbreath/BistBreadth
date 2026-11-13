@@ -379,6 +379,7 @@ def build_candles(
 def build_follow_through(
     history: dict[pd.Timestamp, set[str]],
     prices: dict[str, pd.DataFrame],
+    minimum_coverage: int,
     threshold_pct: float = 4.0,
 ) -> dict | None:
     """Track the next session's close for constituents up at least 4% yesterday."""
@@ -398,11 +399,12 @@ def build_follow_through(
         return None
 
     following = below = awaiting = 0
-    candidates = 0
+    candidates = priced_members = 0
     for ticker in active_members:
         ticker_prices = prices.get(ticker)
         if ticker_prices is None or reference_date not in ticker_prices.index or mover_date not in ticker_prices.index:
             continue
+        priced_members += 1
         prior_close = float(ticker_prices.loc[reference_date, "close"])
         mover_close = float(ticker_prices.loc[mover_date, "close"])
         if prior_close <= 0 or mover_close < prior_close * (1 + threshold_pct / 100):
@@ -416,16 +418,25 @@ def build_follow_through(
             below += 1
 
     resolved = following + below
+    sufficient_coverage = priced_members >= minimum_coverage
+    status = (
+        "insufficient_coverage" if not sufficient_coverage
+        else "no_movers" if candidates == 0
+        else "ready"
+    )
     return {
         "reference_date": reference_date.strftime("%Y-%m-%d"),
         "mover_date": mover_date.strftime("%Y-%m-%d"),
         "follow_through_date": follow_date.strftime("%Y-%m-%d"),
         "threshold_pct": threshold_pct,
+        "status": status,
+        "member_count": len(active_members),
+        "priced_member_count": priced_members,
         "candidate_count": candidates,
         "following_through_count": following,
         "below_count": below,
         "awaiting_count": awaiting,
-        "rate_percent": round(following / resolved * 100, 4) if resolved else None,
+        "rate_percent": round(following / resolved * 100, 4) if resolved and sufficient_coverage else None,
         "rate_denominator": resolved,
     }
 
@@ -456,7 +467,7 @@ def main() -> None:
     }
     for code, config in INDEXES.items():
         candles = build_candles(history[code], prices, config["minimum"])
-        follow_through = build_follow_through(history[code], prices)
+        follow_through = build_follow_through(history[code], prices, config["minimum"])
         payload["indexes"][code] = {
             **config,
             "code": code,
