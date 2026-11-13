@@ -3,12 +3,10 @@ name: Refresh BIST equal-weight charts
 on:
   workflow_dispatch:
   schedule:
-    # During BIST trading, offset from :00 to reduce GitHub schedule delays.
-    - cron: "7,22,37,52 10-17 * * 1-5"
-      timezone: "Europe/Istanbul"
-    # One final run after the 18:10 closing session.
-    - cron: "15 18 * * 1-5"
-      timezone: "Europe/Istanbul"
+    # 07:07–14:52 UTC = 10:07–17:52 in Istanbul (UTC+3).
+    - cron: "7,22,37,52 7-14 * * 1-5"
+    # Final run after the 18:10 BIST closing session (18:15 Istanbul).
+    - cron: "15 15 * * 1-5"
   push:
     branches: [main]
     paths:
