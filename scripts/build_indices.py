@@ -376,6 +376,60 @@ def build_candles(
     return candles
 
 
+def build_follow_through(
+    history: dict[pd.Timestamp, set[str]],
+    prices: dict[str, pd.DataFrame],
+    threshold_pct: float = 4.0,
+) -> dict | None:
+    """Track the next session's close for constituents up at least 4% yesterday."""
+    benchmark = prices.get("XU100")
+    if benchmark is None or benchmark.empty:
+        return None
+    sessions = sorted(benchmark.index)
+    if len(sessions) < 3:
+        return None
+    reference_date, mover_date, follow_date = sessions[-3:]
+    active_members: set[str] = set()
+    for snapshot_date in sorted(history):
+        if snapshot_date > mover_date:
+            break
+        active_members = set(history[snapshot_date])
+    if not active_members:
+        return None
+
+    following = below = awaiting = 0
+    candidates = 0
+    for ticker in active_members:
+        ticker_prices = prices.get(ticker)
+        if ticker_prices is None or reference_date not in ticker_prices.index or mover_date not in ticker_prices.index:
+            continue
+        prior_close = float(ticker_prices.loc[reference_date, "close"])
+        mover_close = float(ticker_prices.loc[mover_date, "close"])
+        if prior_close <= 0 or mover_close < prior_close * (1 + threshold_pct / 100):
+            continue
+        candidates += 1
+        if follow_date not in ticker_prices.index:
+            awaiting += 1
+        elif float(ticker_prices.loc[follow_date, "close"]) >= mover_close:
+            following += 1
+        else:
+            below += 1
+
+    resolved = following + below
+    return {
+        "reference_date": reference_date.strftime("%Y-%m-%d"),
+        "mover_date": mover_date.strftime("%Y-%m-%d"),
+        "follow_through_date": follow_date.strftime("%Y-%m-%d"),
+        "threshold_pct": threshold_pct,
+        "candidate_count": candidates,
+        "following_through_count": following,
+        "below_count": below,
+        "awaiting_count": awaiting,
+        "rate_percent": round(following / resolved * 100, 4) if resolved else None,
+        "rate_denominator": resolved,
+    }
+
+
 def main() -> None:
     current, fetched_at, sectors = load_current_members()
     history = load_historical_members()
@@ -402,6 +456,7 @@ def main() -> None:
     }
     for code, config in INDEXES.items():
         candles = build_candles(history[code], prices, config["minimum"])
+        follow_through = build_follow_through(history[code], prices)
         payload["indexes"][code] = {
             **config,
             "code": code,
@@ -412,6 +467,7 @@ def main() -> None:
             "membership_method": "point-in-time",
             "history_membership_snapshots": len(history[code]),
             "candles": candles,
+            "follow_through": follow_through,
         }
         print(
             f"{code}: {len(current[code])} current members, "

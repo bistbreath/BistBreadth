@@ -107,6 +107,44 @@ function showRange(range) {
   chart.timeScale().fitContent();
 }
 
+function renderFollowThrough(report) {
+  const section = document.getElementById('follow-through');
+  const period = document.getElementById('follow-through-period');
+  const rate = document.getElementById('follow-through-rate');
+  const summary = document.getElementById('follow-through-summary');
+  const positive = document.getElementById('follow-through-positive');
+  const negative = document.getElementById('follow-through-negative');
+  const pending = document.getElementById('follow-through-pending');
+  const positiveBar = document.getElementById('follow-through-bar-positive');
+  const negativeBar = document.getElementById('follow-through-bar-negative');
+  const pendingBar = document.getElementById('follow-through-bar-pending');
+
+  if (!report) {
+    period.textContent = 'Takip hesabı için yeterli seans verisi yok.';
+    rate.textContent = '—';
+    summary.textContent = 'Uygun fiyat verisi geldiğinde hesaplanacak.';
+    [positive, negative, pending].forEach(node => { node.textContent = '—'; });
+    [positiveBar, negativeBar, pendingBar].forEach(node => { node.style.width = '0%'; });
+    return;
+  }
+
+  period.textContent = `${dateFmt(report.mover_date)} hareketi → ${dateFmt(report.follow_through_date)} takibi • Önceki seansa göre en az %4 yükselenler`;
+  const resolved = report.following_through_count + report.below_count;
+  rate.textContent = report.rate_percent == null ? '—' : `${report.rate_percent.toFixed(2).replace('.', ',')}%`;
+  summary.textContent = `${report.following_through_count} / ${report.candidate_count} hissede bugünkü kapanış dünkü kapanışı korudu${report.awaiting_count ? ` • ${report.awaiting_count} hisse beklemede` : ''}`;
+  positive.textContent = report.following_through_count;
+  negative.textContent = report.below_count;
+  pending.textContent = report.awaiting_count;
+  const denominator = report.candidate_count || 1;
+  positiveBar.style.width = `${report.following_through_count / denominator * 100}%`;
+  negativeBar.style.width = `${report.below_count / denominator * 100}%`;
+  pendingBar.style.width = `${report.awaiting_count / denominator * 100}%`;
+  document.getElementById('follow-through-bar').setAttribute(
+    'aria-label',
+    `${report.following_through_count} kapanışı korudu, ${report.below_count} altına indi, ${report.awaiting_count} fiyat bekleniyor`
+  );
+}
+
 function renderIndex(code) {
   selectedIndex = data.indexes[code];
   if (!selectedIndex?.candles?.length) throw new Error(`${code} için henüz mum verisi bulunamadı.`);
@@ -120,6 +158,7 @@ function renderIndex(code) {
   document.getElementById('chart-title').textContent = `${selectedIndex.short_name} günlük mum grafiği`;
   document.getElementById('history-note').textContent =
     `Tarihsel BIST bileşen kayıtları • ${selectedIndex.history_membership_snapshots} üyelik dönemi • Geniş endekslere ilk fiyat gününde eklenen yeni hisseler • Başlangıç 1.000`;
+  renderFollowThrough(selectedIndex.follow_through);
   document.getElementById('value').textContent = fmt(last.close);
   document.getElementById('date').textContent = dateFmt(last.time);
   document.getElementById('count').textContent = selectedIndex.constituent_count;
