@@ -22,6 +22,7 @@ function buildFinancialRows(company) {
     const netProfit = millions(row.netProfit);
     const cash = millions(row.cash);
     const investments = millions(row.financialInvestments);
+    const equity = millions(row.equity);
     const shortDebt = millions(row.shortTermDebt);
     const longDebt = millions(row.longTermDebt);
     const totalCash = cash == null || investments == null ? null : cash + investments;
@@ -30,6 +31,8 @@ function buildFinancialRows(company) {
       ? null : shortDebt + longDebt - totalCash;
 
     let ebitdaTtm = null;
+    let operatingProfitTtm = null;
+    let netProfitTtm = null;
     if (index >= 3) {
       const lastFour = source.slice(index - 3, index + 1);
       const consecutive = lastFour.every((item, i) => {
@@ -38,17 +41,40 @@ function buildFinancialRows(company) {
         const [cy, cm] = item.period.split('/').map(Number);
         return (cy * 4 + Math.ceil(cm / 3)) - (py * 4 + Math.ceil(pm / 3)) === 1;
       });
-      if (consecutive && lastFour.every(item =>
-        Number.isFinite(item.operatingProfit) && Number.isFinite(item.depreciationAmortization))) {
-        ebitdaTtm = lastFour.reduce((sum, item) =>
-          sum + item.operatingProfit + item.depreciationAmortization, 0) / 1e6;
+      if (consecutive) {
+        if (lastFour.every(item =>
+          Number.isFinite(item.operatingProfit) && Number.isFinite(item.depreciationAmortization))) {
+          ebitdaTtm = lastFour.reduce((sum, item) =>
+            sum + item.operatingProfit + item.depreciationAmortization, 0) / 1e6;
+        }
+        if (lastFour.every(item => Number.isFinite(item.netOperatingProfit))) {
+          operatingProfitTtm = lastFour.reduce((sum, item) => sum + item.netOperatingProfit, 0) / 1e6;
+        }
+        if (lastFour.every(item => Number.isFinite(item.netProfit))) {
+          netProfitTtm = lastFour.reduce((sum, item) => sum + item.netProfit, 0) / 1e6;
+        }
+      }
+    }
+    let operatingRoe = null;
+    let netProfitRoe = null;
+    if (index >= 4) {
+      const priorYear = source[index - 4];
+      const [py, pm] = priorYear.period.split('/').map(Number);
+      const [cy, cm] = row.period.split('/').map(Number);
+      const sameQuarterLastYear = (cy * 4 + Math.ceil(cm / 3)) - (py * 4 + Math.ceil(pm / 3)) === 4;
+      const priorEquity = millions(priorYear.equity);
+      const averageEquity = equity != null && priorEquity != null ? (equity + priorEquity) / 2 : null;
+      if (sameQuarterLastYear && averageEquity > 0) {
+        operatingRoe = operatingProfitTtm != null ? operatingProfitTtm / averageEquity * 100 : null;
+        netProfitRoe = netProfitTtm != null ? netProfitTtm / averageEquity * 100 : null;
       }
     }
     const ratio = netDebt != null && ebitdaTtm > 0 ? netDebt / ebitdaTtm : null;
     return {
       ...row, label: quarterLabel(row.period), sales, grossProfit: gross,
-      netOperatingProfit: netOperating, netProfit, cash, investments,
+      netOperatingProfit: netOperating, netProfit, equity, cash, investments,
       shortDebt, longDebt, cashAndInvestments: totalCash, netCash, netDebt, ebitdaTtm, netDebtEbitda: ratio,
+      operatingRoe, netProfitRoe,
       grossMargin: sales && gross != null ? gross / sales * 100 : null,
       operatingMargin: sales && netOperating != null ? netOperating / sales * 100 : null,
       netMargin: sales && netProfit != null ? netProfit / sales * 100 : null,
@@ -294,6 +320,12 @@ function renderFinancials() {
     drawFinancialChart('Net kâr marjı', 'Ana ortaklık payı / satış gelirleri', rows, [
       bar('netMargin','Net kâr marjı','#8e79ad'),
       {key:'netMarginSma4',label:'4Ç ortalaması',color:'#e9eef5',type:'line'},
+    ], '%', {percent:true}),
+    drawFinancialChart('Net faaliyet kârına göre özkaynak kârlılığı (TTM)', 'Son 4 çeyrek net faaliyet kârı / bu dönem ve bir yıl önceki aynı dönem özkaynak ortalaması', rows, [
+      {key:'operatingRoe',label:'Net faaliyet kârı / ortalama özkaynak',color:'#75b7b2',type:'line'},
+    ], '%', {percent:true}),
+    drawFinancialChart('Net kâra göre özkaynak kârlılığı (TTM)', 'Son 4 çeyrek net kâr / bu dönem ve bir yıl önceki aynı dönem özkaynak ortalaması', rows, [
+      {key:'netProfitRoe',label:'Net kâr / ortalama özkaynak',color:'#8e79ad',type:'line'},
     ], '%', {percent:true}),
     drawFinancialChart('Nakit ve finansal yatırımlar / kısa vadeli finansal borçlar', 'Nakit ve yatırımlar toplamı ile bilanço dönemi sonu kısa vadeli borç karşılaştırması', rows, [
       bar('cashAndInvestments','Nakit + finansal yatırımlar','#75b7b2'),
