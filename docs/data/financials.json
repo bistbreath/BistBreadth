@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19",
+  "updated_at": "2026-11-20",
   "method": {
     "netOperatingProfit": "Brüt kâr + faaliyet giderleri (giderler eksi değerlerle kaynak tablodan alınır).",
     "netDebt": "Kısa ve uzun vadeli finansal borçlar - nakit ve nakit benzerleri - kısa ve uzun vadeli finansal yatırımlar.",
@@ -4906,6 +4906,443 @@
       "shares_outstanding": 936000000,
       "share_nominal_value": 1
     },
+    "GENIL": {
+      "name": "Gen İlaç ve Sağlık Ürünleri",
+      "currency": "TRY",
+      "periods": [
+        {
+          "period": "2018/12",
+          "quarter": [
+            2018,
+            4
+          ],
+          "cash": 5934388,
+          "financialInvestments": 1378012,
+          "shortTermDebt": 106486206,
+          "longTermDebt": 60353722,
+          "equity": 112587000
+        },
+        {
+          "period": "2019/12",
+          "quarter": [
+            2019,
+            4
+          ],
+          "cash": 53683803,
+          "financialInvestments": 1378012,
+          "shortTermDebt": 82266808,
+          "longTermDebt": 50003274,
+          "equity": 245483593
+        },
+        {
+          "period": "2020/12",
+          "quarter": [
+            2020,
+            4
+          ],
+          "sales": 782005358,
+          "grossProfit": 111851229,
+          "netProfit": 94163801,
+          "operatingProfit": 84614994,
+          "depreciationAmortization": 5466287,
+          "netOperatingProfit": 75986567,
+          "cash": 58650155,
+          "financialInvestments": 0,
+          "shortTermDebt": 120227492,
+          "longTermDebt": 47162208,
+          "equity": 557361088
+        },
+        {
+          "period": "2021/6",
+          "quarter": [
+            2021,
+            2
+          ],
+          "sales": 754657798,
+          "grossProfit": 111883251,
+          "netProfit": 51122457,
+          "operatingProfit": 73839396,
+          "depreciationAmortization": 10331112,
+          "netOperatingProfit": 71177871,
+          "cash": 8541598,
+          "financialInvestments": 1903195,
+          "shortTermDebt": 140580889,
+          "longTermDebt": 28238429,
+          "equity": 591803587
+        },
+        {
+          "period": "2021/9",
+          "quarter": [
+            2021,
+            3
+          ],
+          "sales": 453392043,
+          "grossProfit": 96120692,
+          "netProfit": 65266011,
+          "operatingProfit": 30961256,
+          "depreciationAmortization": 11088112,
+          "netOperatingProfit": 57901569,
+          "cash": 551565648,
+          "financialInvestments": 3745695,
+          "shortTermDebt": 101882388,
+          "longTermDebt": 29266472,
+          "equity": 1179145707
+        },
+        {
+          "period": "2021/12",
+          "quarter": [
+            2021,
+            4
+          ],
+          "sales": 487061346,
+          "grossProfit": 122813027,
+          "netProfit": 111456739,
+          "operatingProfit": 7449363,
+          "depreciationAmortization": 12004070,
+          "netOperatingProfit": 51400978,
+          "cash": 519439682,
+          "financialInvestments": 104940035,
+          "shortTermDebt": 122535927,
+          "longTermDebt": 28571853,
+          "equity": 1284221467
+        },
+        {
+          "period": "2022/3",
+          "quarter": [
+            2022,
+            1
+          ],
+          "sales": 1231772128,
+          "grossProfit": 255040258,
+          "netProfit": 168084515,
+          "operatingProfit": 134551108,
+          "depreciationAmortization": 14961071,
+          "netOperatingProfit": 176179673,
+          "cash": 447896680,
+          "financialInvestments": 121021835,
+          "shortTermDebt": 139030841,
+          "longTermDebt": 30533106,
+          "equity": 1437685602
+        },
+        {
+          "period": "2022/6",
+          "quarter": [
+            2022,
+            2
+          ],
+          "sales": 1736274109,
+          "grossProfit": 285356829,
+          "netProfit": 249493362,
+          "operatingProfit": 232678135,
+          "depreciationAmortization": 13243863,
+          "netOperatingProfit": 189339680,
+          "cash": 578764960,
+          "financialInvestments": 134016488,
+          "shortTermDebt": 147767726,
+          "longTermDebt": 27732294,
+          "equity": 1575948266
+        },
+        {
+          "period": "2022/9",
+          "quarter": [
+            2022,
+            3
+          ],
+          "sales": 1324249697,
+          "grossProfit": 292217694,
+          "netProfit": 245588014,
+          "operatingProfit": 175617417,
+          "depreciationAmortization": 13312920,
+          "netOperatingProfit": 180444969,
+          "cash": 695422941,
+          "financialInvestments": 129352005,
+          "shortTermDebt": 194032571,
+          "longTermDebt": 26790022,
+          "equity": 1820989700
+        },
+        {
+          "period": "2022/12",
+          "quarter": [
+            2022,
+            4
+          ],
+          "cash": 1514636467.4773047,
+          "financialInvestments": 2284577746.276904,
+          "shortTermDebt": 909265525.9823976,
+          "longTermDebt": 310206267.3616744,
+          "equity": 11620670578.54839
+        },
+        {
+          "period": "2023/3",
+          "quarter": [
+            2023,
+            1
+          ],
+          "sales": 3323835846.6415596,
+          "grossProfit": 947489797.9193205,
+          "netProfit": -296446257.9255074,
+          "operatingProfit": 158345491.64214057,
+          "depreciationAmortization": 145708587.0693443,
+          "netOperatingProfit": 345331358.3182138,
+          "cash": 834895246,
+          "financialInvestments": 121220660,
+          "shortTermDebt": 558427419,
+          "longTermDebt": 78361177,
+          "equity": 2898314646
+        },
+        {
+          "period": "2023/6",
+          "quarter": [
+            2023,
+            2
+          ],
+          "sales": 3733448186.508219,
+          "grossProfit": 953493676.6626858,
+          "netProfit": -267337851.71470594,
+          "operatingProfit": -40050613.5720415,
+          "depreciationAmortization": 114983427.98718163,
+          "netOperatingProfit": 403325230.04844177,
+          "financialInvestments": 153380829,
+          "shortTermDebt": 720821739,
+          "longTermDebt": 77024969,
+          "equity": 2698873931
+        },
+        {
+          "period": "2023/9",
+          "quarter": [
+            2023,
+            3
+          ],
+          "sales": 6453574562.80373,
+          "grossProfit": 1053534797.7047656,
+          "netProfit": 565655031.8761367,
+          "operatingProfit": 434993338.8248523,
+          "depreciationAmortization": 141736549.85230815,
+          "netOperatingProfit": 419219921.736287,
+          "cash": 901302096,
+          "financialInvestments": 178323371,
+          "shortTermDebt": 870404636,
+          "longTermDebt": 67907888,
+          "equity": 3013477068
+        },
+        {
+          "period": "2023/12",
+          "quarter": [
+            2023,
+            4
+          ],
+          "sales": 5640217647.0627,
+          "grossProfit": 1273039039.9796052,
+          "netProfit": 1066105599.669089,
+          "operatingProfit": 503724424.2466556,
+          "depreciationAmortization": 222424355.48113835,
+          "netOperatingProfit": 647335633.5140698,
+          "cash": 158243767.17451718,
+          "financialInvestments": 2509328739.979885,
+          "shortTermDebt": 2874027603.153471,
+          "longTermDebt": 151213842.23918352,
+          "equity": 11414643561.222965
+        },
+        {
+          "period": "2024/3",
+          "quarter": [
+            2024,
+            1
+          ],
+          "sales": 6328305018.478868,
+          "grossProfit": 1288355625.78808,
+          "netProfit": 330140846.5214852,
+          "operatingProfit": 631202638.2433585,
+          "depreciationAmortization": 166374512.22441277,
+          "netOperatingProfit": 587170615.2731493,
+          "cash": 1480105833.9888623,
+          "financialInvestments": 1287759808.6494558,
+          "shortTermDebt": 2961276721.147645,
+          "longTermDebt": 99702486.82542881,
+          "equity": 11659336676.999752
+        },
+        {
+          "period": "2024/6",
+          "quarter": [
+            2024,
+            2
+          ],
+          "sales": 5942339930.300176,
+          "grossProfit": 1121417605.5339115,
+          "netProfit": -341780103.15514493,
+          "operatingProfit": 444394691.6153339,
+          "depreciationAmortization": 157587287.13453016,
+          "netOperatingProfit": 539860988.8257504,
+          "cash": 353091949.2873898,
+          "financialInvestments": 1132960492.4841657,
+          "shortTermDebt": 1916532931.4106047,
+          "longTermDebt": 516673153.1352701,
+          "equity": 11088259157.751194
+        },
+        {
+          "period": "2024/9",
+          "quarter": [
+            2024,
+            3
+          ],
+          "sales": 6532194962.561995,
+          "grossProfit": 1276245709.998312,
+          "netProfit": 193285393.8701486,
+          "operatingProfit": 611489050.0926626,
+          "depreciationAmortization": 123154083.47481918,
+          "netOperatingProfit": 583226862.929495,
+          "cash": 967859826.7723345,
+          "financialInvestments": 1223913293.2417984,
+          "shortTermDebt": 2141475099.8452399,
+          "longTermDebt": 597078565.2252828,
+          "equity": 11070442480.4435
+        },
+        {
+          "period": "2024/12",
+          "quarter": [
+            2024,
+            4
+          ],
+          "sales": 5183491119.710632,
+          "grossProfit": 949880727.6779399,
+          "netProfit": 60283547.56562394,
+          "operatingProfit": 88846187.43474698,
+          "depreciationAmortization": 152423668.32111865,
+          "netOperatingProfit": 80387134.33999825,
+          "cash": 883537200.9389791,
+          "financialInvestments": 1295918972.3500588,
+          "shortTermDebt": 1160248385.9360054,
+          "longTermDebt": 706740009.095812,
+          "equity": 11891174276.452602
+        },
+        {
+          "period": "2025/3",
+          "quarter": [
+            2025,
+            1
+          ],
+          "sales": 5703824013.668502,
+          "grossProfit": 1224336907.499112,
+          "netProfit": 472833884.96192545,
+          "operatingProfit": 795127193.0487708,
+          "depreciationAmortization": 170323213.03775278,
+          "netOperatingProfit": 360426421.4872774,
+          "cash": 464154046.9604596,
+          "financialInvestments": 1436039710.2160635,
+          "shortTermDebt": 2229157916.654015,
+          "longTermDebt": 593996860.4966682,
+          "equity": 12349618177.898682
+        },
+        {
+          "period": "2025/6",
+          "quarter": [
+            2025,
+            2
+          ],
+          "sales": 5981776995.757081,
+          "grossProfit": 1246461567.314273,
+          "netProfit": 108495541.98541301,
+          "operatingProfit": 496402359.5482284,
+          "depreciationAmortization": 170876730.80237988,
+          "netOperatingProfit": 470572311.37166405,
+          "cash": 608165701.7030047,
+          "financialInvestments": 1489782114.9617202,
+          "shortTermDebt": 2102897060.1316023,
+          "longTermDebt": 509278225.10505503,
+          "equity": 12445066158.7018
+        },
+        {
+          "period": "2025/9",
+          "quarter": [
+            2025,
+            3
+          ],
+          "sales": 6941954520.574417,
+          "grossProfit": 1343827811.186615,
+          "netProfit": 279923530.05266154,
+          "operatingProfit": 692385631.4030008,
+          "depreciationAmortization": 170404102.15986735,
+          "netOperatingProfit": 682828631.1410586,
+          "cash": 540634586.3392651,
+          "financialInvestments": 1600462572.3463128,
+          "shortTermDebt": 2515307291.897738,
+          "longTermDebt": 483994868.3778757,
+          "equity": 12660651332.264498
+        },
+        {
+          "period": "2025/12",
+          "quarter": [
+            2025,
+            4
+          ],
+          "sales": 5218308797.344982,
+          "grossProfit": 1185980827.602539,
+          "netProfit": 151233813.0784465,
+          "operatingProfit": 367857277.9347477,
+          "depreciationAmortization": 172692343.0866766,
+          "netOperatingProfit": 173921985.40535676,
+          "cash": 116819985,
+          "financialInvestments": 4111023132,
+          "shortTermDebt": 3599546741,
+          "longTermDebt": 298148078,
+          "equity": 12840786793
+        },
+        {
+          "period": "2026/3",
+          "quarter": [
+            2026,
+            1
+          ],
+          "sales": 7483344961.596088,
+          "grossProfit": 2203915273.128195,
+          "netProfit": 423800789.62030536,
+          "operatingProfit": 1357393568.6974285,
+          "depreciationAmortization": 160147008.2132365,
+          "netOperatingProfit": 1297809046.8806386,
+          "cash": 311176904.37510675,
+          "financialInvestments": 2962145260.023923,
+          "shortTermDebt": 5103219884.148574,
+          "longTermDebt": 333883279.8026504,
+          "equity": 13263794141.476324
+        },
+        {
+          "period": "2026/6",
+          "quarter": [
+            2026,
+            2
+          ],
+          "sales": 7354476621.293716,
+          "grossProfit": 1568767794.8722792,
+          "netProfit": 517637225.88871735,
+          "operatingProfit": 806724473.8338978,
+          "depreciationAmortization": 4808607.431953251,
+          "netOperatingProfit": 802667768.3349164,
+          "cash": 83857950.01785918,
+          "financialInvestments": 2210094825.7273445,
+          "shortTermDebt": 5394220434.383159,
+          "longTermDebt": 226278830.34739596,
+          "equity": 13779715653.343002
+        },
+        {
+          "period": "2026/9",
+          "quarter": [
+            2026,
+            3
+          ],
+          "sales": 5705118149.110195,
+          "grossProfit": 1880691017.999526,
+          "netProfit": 120725571.49097729,
+          "operatingProfit": 1002977391.4686737,
+          "depreciationAmortization": 329110212.35481024,
+          "netOperatingProfit": 1063989080.7844452,
+          "cash": 458936661,
+          "financialInvestments": 2208253462,
+          "shortTermDebt": 5453641827,
+          "longTermDebt": 143618361,
+          "equity": 13794705420
+        }
+      ]
+    },
     "INDES": {
       "name": "İndeks Bilgisayar",
       "currency": "TRY",
@@ -7208,6 +7645,756 @@
         }
       ]
     },
+    "PGSUS": {
+      "name": "Pegasus Hava Taşımacılığı",
+      "currency": "TRY",
+      "periods": [
+        {
+          "period": "2016/6",
+          "quarter": [
+            2016,
+            2
+          ],
+          "sales": 797680256,
+          "grossProfit": -29730113,
+          "netProfit": -13631039,
+          "operatingProfit": -79505366,
+          "depreciationAmortization": 51196694,
+          "netOperatingProfit": -112618571,
+          "cash": 426708114,
+          "shortTermDebt": 206707353,
+          "longTermDebt": 1088606180,
+          "equity": 1296243419
+        },
+        {
+          "period": "2016/9",
+          "quarter": [
+            2016,
+            3
+          ],
+          "sales": 1371242244,
+          "grossProfit": 422580339,
+          "netProfit": 242830906,
+          "operatingProfit": 280404127,
+          "depreciationAmortization": 57300760,
+          "netOperatingProfit": 341774503,
+          "cash": 657182882,
+          "shortTermDebt": 252424229,
+          "longTermDebt": 1565194078,
+          "equity": 1608439721
+        },
+        {
+          "period": "2016/12",
+          "quarter": [
+            2016,
+            4
+          ],
+          "sales": 847447834,
+          "grossProfit": -110322055,
+          "netProfit": -172730414,
+          "operatingProfit": -100960257,
+          "depreciationAmortization": 68815580,
+          "netOperatingProfit": -199259927,
+          "cash": 692270625,
+          "shortTermDebt": 338293216,
+          "longTermDebt": 2338272374,
+          "equity": 1569321345
+        },
+        {
+          "period": "2017/3",
+          "quarter": [
+            2017,
+            1
+          ],
+          "sales": 885822496,
+          "grossProfit": -144634394,
+          "netProfit": -203240680,
+          "operatingProfit": -202058502,
+          "depreciationAmortization": 82707240,
+          "netOperatingProfit": -221763545,
+          "cash": 244280654,
+          "shortTermDebt": 498957926,
+          "longTermDebt": 2099415422,
+          "equity": 1442147872
+        },
+        {
+          "period": "2017/6",
+          "quarter": [
+            2017,
+            2
+          ],
+          "sales": 1223442026,
+          "grossProfit": 132745080,
+          "netProfit": 160669798,
+          "operatingProfit": 34626713,
+          "depreciationAmortization": 80045051,
+          "netOperatingProfit": 41192427,
+          "cash": 1200234131,
+          "shortTermDebt": 842238107,
+          "longTermDebt": 1955014397,
+          "equity": 1641960571
+        },
+        {
+          "period": "2017/9",
+          "quarter": [
+            2017,
+            3
+          ],
+          "sales": 2052853486,
+          "grossProfit": 775068885,
+          "netProfit": 536763181,
+          "operatingProfit": 723603285,
+          "depreciationAmortization": 85401655,
+          "netOperatingProfit": 682279594,
+          "cash": 1823035764,
+          "shortTermDebt": 961061567,
+          "longTermDebt": 2064771175,
+          "equity": 2299298503
+        },
+        {
+          "period": "2017/12",
+          "quarter": [
+            2017,
+            4
+          ],
+          "sales": 1186455401,
+          "grossProfit": 11619529,
+          "netProfit": 8055518,
+          "operatingProfit": -94429294,
+          "depreciationAmortization": 81920946,
+          "netOperatingProfit": -96508282,
+          "cash": 1988110247,
+          "shortTermDebt": 897254906,
+          "longTermDebt": 2711225518,
+          "equity": 2484638206
+        },
+        {
+          "period": "2018/3",
+          "quarter": [
+            2018,
+            1
+          ],
+          "sales": 1194745297,
+          "grossProfit": -42261115,
+          "netProfit": -112936945,
+          "operatingProfit": -132169187,
+          "depreciationAmortization": 95380152,
+          "netOperatingProfit": -147236025,
+          "cash": 2053879874,
+          "shortTermDebt": 1099051166,
+          "longTermDebt": 3110856417,
+          "equity": 2519250835
+        },
+        {
+          "period": "2018/6",
+          "quarter": [
+            2018,
+            2
+          ],
+          "sales": 1697654435,
+          "grossProfit": 183764542,
+          "netProfit": 15699369,
+          "operatingProfit": 151658250,
+          "depreciationAmortization": 113113346,
+          "netOperatingProfit": 67865432,
+          "cash": 2081409310,
+          "shortTermDebt": 1024300213,
+          "longTermDebt": 4063850916,
+          "equity": 2706183073
+        },
+        {
+          "period": "2018/9",
+          "quarter": [
+            2018,
+            3
+          ],
+          "sales": 3351381307,
+          "grossProfit": 1131677467,
+          "netProfit": 742405439,
+          "operatingProfit": 762208422,
+          "depreciationAmortization": 163101069,
+          "netOperatingProfit": 986425650,
+          "cash": 3436659515,
+          "shortTermDebt": 1346294724,
+          "longTermDebt": 5970520688,
+          "equity": 4528828868
+        },
+        {
+          "period": "2018/12",
+          "quarter": [
+            2018,
+            4
+          ],
+          "sales": 2032962326,
+          "grossProfit": -10002738,
+          "netProfit": -137789238,
+          "operatingProfit": 10024089,
+          "depreciationAmortization": 166534465,
+          "netOperatingProfit": -89641783,
+          "cash": 2741044971,
+          "financialInvestments": 0,
+          "shortTermDebt": 1457225786,
+          "longTermDebt": 5064858596,
+          "equity": 3715447648
+        },
+        {
+          "period": "2019/3",
+          "quarter": [
+            2019,
+            1
+          ],
+          "sales": 1765904482,
+          "grossProfit": 25679284,
+          "netProfit": -213853278,
+          "operatingProfit": -55595749,
+          "depreciationAmortization": 355711042,
+          "netOperatingProfit": -111424693,
+          "cash": 2328371342,
+          "shortTermDebt": 1866597475,
+          "longTermDebt": 6965543751,
+          "equity": 3470173926
+        },
+        {
+          "period": "2019/6",
+          "quarter": [
+            2019,
+            2
+          ],
+          "sales": 2630441893,
+          "grossProfit": 556898732,
+          "netProfit": 324371823,
+          "operatingProfit": 404971144,
+          "depreciationAmortization": 386538483,
+          "netOperatingProfit": 409307786,
+          "cash": 2987383011,
+          "shortTermDebt": 2181049768,
+          "longTermDebt": 7522914299,
+          "equity": 3951934432
+        },
+        {
+          "period": "2019/9",
+          "quarter": [
+            2019,
+            3
+          ],
+          "sales": 4117149653,
+          "grossProfit": 1775762697,
+          "netProfit": 1200029072,
+          "operatingProfit": 1529708867,
+          "depreciationAmortization": 395157165,
+          "netOperatingProfit": 1637560805,
+          "cash": 3925269721,
+          "financialInvestments": 146508950,
+          "shortTermDebt": 2208728401,
+          "longTermDebt": 7985443730,
+          "equity": 4761864000
+        },
+        {
+          "period": "2019/12",
+          "quarter": [
+            2019,
+            4
+          ],
+          "sales": 2511728495,
+          "grossProfit": 340703417,
+          "netProfit": 22821501,
+          "operatingProfit": 182898746,
+          "depreciationAmortization": 410561102,
+          "netOperatingProfit": 149081366,
+          "cash": 4187316581,
+          "financialInvestments": 150906344,
+          "shortTermDebt": 2294863850,
+          "longTermDebt": 8460811498,
+          "equity": 5342169207
+        },
+        {
+          "period": "2020/3",
+          "quarter": [
+            2020,
+            1
+          ],
+          "sales": 1878316894,
+          "grossProfit": -80959655,
+          "netProfit": -401505032,
+          "operatingProfit": -187054825,
+          "depreciationAmortization": 428247054,
+          "netOperatingProfit": -218245361,
+          "cash": 3309611019,
+          "financialInvestments": 197129926,
+          "shortTermDebt": 3115921351,
+          "longTermDebt": 9078405251,
+          "equity": 4945633308
+        },
+        {
+          "period": "2020/6",
+          "quarter": [
+            2020,
+            2
+          ],
+          "sales": 151299768,
+          "grossProfit": -533539997,
+          "netProfit": -927091103,
+          "operatingProfit": -837102629,
+          "depreciationAmortization": 480951922,
+          "netOperatingProfit": -600235127,
+          "cash": 4136964648,
+          "financialInvestments": 211314283,
+          "shortTermDebt": 3777994575,
+          "longTermDebt": 11747685810,
+          "equity": 4730960362
+        },
+        {
+          "period": "2020/9",
+          "quarter": [
+            2020,
+            3
+          ],
+          "sales": 1489823963,
+          "grossProfit": -59244214,
+          "netProfit": 103412931,
+          "operatingProfit": 2680078,
+          "depreciationAmortization": 543647691,
+          "netOperatingProfit": -157038544,
+          "cash": 4038687699,
+          "financialInvestments": 243926611,
+          "shortTermDebt": 3450546298,
+          "longTermDebt": 13794066916,
+          "equity": 5864992283
+        },
+        {
+          "period": "2020/12",
+          "quarter": [
+            2020,
+            4
+          ],
+          "sales": 1284119284,
+          "grossProfit": -584958760,
+          "netProfit": -739913853,
+          "operatingProfit": -339446413,
+          "depreciationAmortization": 730557125,
+          "netOperatingProfit": -726583864,
+          "cash": 3605570830,
+          "financialInvestments": 234035538,
+          "shortTermDebt": 3896689493,
+          "longTermDebt": 15115403578,
+          "equity": 5386417638
+        },
+        {
+          "period": "2021/3",
+          "quarter": [
+            2021,
+            1
+          ],
+          "sales": 1089931621,
+          "grossProfit": -570014990,
+          "netProfit": -933239330,
+          "operatingProfit": -684584514,
+          "depreciationAmortization": 584897408,
+          "netOperatingProfit": -670294910,
+          "cash": 3888665456,
+          "financialInvestments": 259332970,
+          "shortTermDebt": 5080733790,
+          "longTermDebt": 16772935643,
+          "equity": 4991530531
+        },
+        {
+          "period": "2021/6",
+          "quarter": [
+            2021,
+            2
+          ],
+          "sales": 1544523040,
+          "grossProfit": -382545635,
+          "netProfit": -662453368,
+          "operatingProfit": -504806374,
+          "depreciationAmortization": 653732247,
+          "netOperatingProfit": -514370559,
+          "cash": 6051510665,
+          "financialInvestments": 1210909762,
+          "shortTermDebt": 5375942294,
+          "longTermDebt": 20720209650,
+          "equity": 4686859802
+        },
+        {
+          "period": "2021/9",
+          "quarter": [
+            2021,
+            3
+          ],
+          "sales": 4537657907,
+          "grossProfit": 1286037917,
+          "netProfit": 592915670,
+          "operatingProfit": 1046266614,
+          "depreciationAmortization": 659851593,
+          "netOperatingProfit": 1079305944,
+          "cash": 6565576472,
+          "financialInvestments": 1264714585,
+          "shortTermDebt": 5686378268,
+          "longTermDebt": 20127862821,
+          "equity": 5253470959
+        },
+        {
+          "period": "2021/12",
+          "quarter": [
+            2021,
+            4
+          ],
+          "sales": 3492294139,
+          "grossProfit": -215939122,
+          "netProfit": -969701321,
+          "operatingProfit": -468751445,
+          "depreciationAmortization": 917820281,
+          "netOperatingProfit": -440094709,
+          "cash": 6976779772,
+          "financialInvestments": 2739459491,
+          "shortTermDebt": 7767551375,
+          "longTermDebt": 28898415157,
+          "equity": 6869846081
+        },
+        {
+          "period": "2022/3",
+          "quarter": [
+            2022,
+            1
+          ],
+          "sales": 4063999678,
+          "grossProfit": -342276627,
+          "netProfit": -1099618375,
+          "operatingProfit": -668881215,
+          "depreciationAmortization": 976082676,
+          "netOperatingProfit": -631731304,
+          "cash": 6947768261,
+          "financialInvestments": 3543014989,
+          "shortTermDebt": 9220944363,
+          "longTermDebt": 31984532000,
+          "equity": 7386036232
+        },
+        {
+          "period": "2022/6",
+          "quarter": [
+            2022,
+            2
+          ],
+          "sales": 8351000351,
+          "grossProfit": 756285849,
+          "netProfit": -790502899,
+          "operatingProfit": 320553079,
+          "depreciationAmortization": 1183157501,
+          "netOperatingProfit": 417193252,
+          "cash": 9722621899,
+          "financialInvestments": 4102520009,
+          "shortTermDebt": 10005608299,
+          "longTermDebt": 38819232644,
+          "equity": 7153741674
+        },
+        {
+          "period": "2022/9",
+          "quarter": [
+            2022,
+            3
+          ],
+          "sales": 17840091248,
+          "grossProfit": 7743596908,
+          "netProfit": 4837793163,
+          "operatingProfit": 7240617141,
+          "depreciationAmortization": 1168606810,
+          "netOperatingProfit": 7020624538,
+          "cash": 11674436195,
+          "financialInvestments": 5380174526,
+          "shortTermDebt": 9943942760,
+          "longTermDebt": 44488948895,
+          "equity": 11662758161
+        },
+        {
+          "period": "2022/12",
+          "quarter": [
+            2022,
+            4
+          ],
+          "sales": 12477122419,
+          "grossProfit": 3419099583,
+          "netProfit": 4152473259,
+          "operatingProfit": 2783184706,
+          "depreciationAmortization": 1137460464,
+          "netOperatingProfit": 2828074613,
+          "cash": 10558266871,
+          "financialInvestments": 6538414161,
+          "shortTermDebt": 9886572635,
+          "longTermDebt": 51113367892,
+          "equity": 18044743319
+        },
+        {
+          "period": "2023/3",
+          "quarter": [
+            2023,
+            1
+          ],
+          "sales": 8793440699,
+          "grossProfit": 242715729,
+          "netProfit": -598119583,
+          "operatingProfit": -273839609,
+          "depreciationAmortization": 1475564359,
+          "netOperatingProfit": -271363404,
+          "cash": 10850065409,
+          "financialInvestments": 6780444162,
+          "shortTermDebt": 11248508790,
+          "longTermDebt": 55367476095,
+          "equity": 18025748224
+        },
+        {
+          "period": "2023/6",
+          "quarter": [
+            2023,
+            2
+          ],
+          "sales": 15109008411,
+          "grossProfit": 3906361674,
+          "netProfit": 1925019893,
+          "operatingProfit": 2628130390,
+          "depreciationAmortization": 1572244605,
+          "netOperatingProfit": 3175608660,
+          "cash": 15917049520,
+          "financialInvestments": 11010908676,
+          "shortTermDebt": 16178443445,
+          "longTermDebt": 74834040777,
+          "equity": 26823285597
+        },
+        {
+          "period": "2023/9",
+          "quarter": [
+            2023,
+            3
+          ],
+          "sales": 28072539861,
+          "grossProfit": 10763775823,
+          "netProfit": 7719239456,
+          "operatingProfit": 9896453586,
+          "depreciationAmortization": 2247698805,
+          "netOperatingProfit": 9808221254,
+          "cash": 22372651545,
+          "financialInvestments": 12014245514,
+          "shortTermDebt": 16753795919,
+          "longTermDebt": 80318136138,
+          "equity": 35480133002
+        },
+        {
+          "period": "2023/12",
+          "quarter": [
+            2023,
+            4
+          ],
+          "sales": 18556542630,
+          "grossProfit": 1905545737,
+          "netProfit": 11861362031,
+          "operatingProfit": 836604645,
+          "depreciationAmortization": 2507669865,
+          "netOperatingProfit": 1110222958,
+          "cash": 16078358927,
+          "financialInvestments": 20208861437,
+          "shortTermDebt": 18624575640,
+          "longTermDebt": 100893663449,
+          "equity": 54669186221
+        },
+        {
+          "period": "2024/3",
+          "quarter": [
+            2024,
+            1
+          ],
+          "sales": 17390800996,
+          "grossProfit": -561760072,
+          "netProfit": -3500974334,
+          "operatingProfit": -1325686017,
+          "depreciationAmortization": 2767509190,
+          "netOperatingProfit": -1585355280,
+          "cash": 28307772879,
+          "financialInvestments": 14530731225,
+          "shortTermDebt": 23635273888,
+          "longTermDebt": 106807701133,
+          "equity": 55195677560
+        },
+        {
+          "period": "2024/6",
+          "quarter": [
+            2024,
+            2
+          ],
+          "sales": 26573134299,
+          "grossProfit": 6516539663,
+          "netProfit": 3997161991,
+          "operatingProfit": 5264342447,
+          "depreciationAmortization": 2817080256,
+          "netOperatingProfit": 5259573288,
+          "cash": 30837871427,
+          "financialInvestments": 13704759459,
+          "shortTermDebt": 23983569261,
+          "longTermDebt": 112797336978,
+          "equity": 59674717347
+        },
+        {
+          "period": "2024/9",
+          "quarter": [
+            2024,
+            3
+          ],
+          "sales": 40082452433,
+          "grossProfit": 14317729678,
+          "netProfit": 10824093347,
+          "operatingProfit": 11966995371,
+          "depreciationAmortization": 3152081274,
+          "netOperatingProfit": 12884363382,
+          "cash": 47040611014,
+          "financialInvestments": 13015046953,
+          "shortTermDebt": 26989376894,
+          "longTermDebt": 130439916953,
+          "equity": 75387121101
+        },
+        {
+          "period": "2024/12",
+          "quarter": [
+            2024,
+            4
+          ],
+          "sales": 27776134550,
+          "grossProfit": 4662971012,
+          "netProfit": 1965156673,
+          "operatingProfit": 4901569174,
+          "depreciationAmortization": 3285517689,
+          "netOperatingProfit": 3184642600,
+          "cash": 46258554416,
+          "financialInvestments": 15719295560,
+          "shortTermDebt": 29250827916,
+          "longTermDebt": 137056673716,
+          "equity": 74919092796
+        },
+        {
+          "period": "2025/3",
+          "quarter": [
+            2025,
+            1
+          ],
+          "sales": 23587573000,
+          "grossProfit": -846190000,
+          "netProfit": -2634620000,
+          "operatingProfit": -3905836000,
+          "depreciationAmortization": 3699991000,
+          "netOperatingProfit": -2395982000,
+          "cash": 31241160946,
+          "financialInvestments": 27146553754,
+          "shortTermDebt": 28484085306,
+          "longTermDebt": 147849997227,
+          "equity": 80409897910
+        },
+        {
+          "period": "2025/6",
+          "quarter": [
+            2025,
+            2
+          ],
+          "sales": 38425497000,
+          "grossProfit": 8132826000,
+          "netProfit": 5132457000,
+          "operatingProfit": 2590123000,
+          "depreciationAmortization": 4418548000,
+          "netOperatingProfit": 6248948000,
+          "cash": 39529452848,
+          "financialInvestments": 21642904548,
+          "shortTermDebt": 26343854621,
+          "longTermDebt": 166085410756,
+          "equity": 97122362450
+        },
+        {
+          "period": "2025/9",
+          "quarter": [
+            2025,
+            3
+          ],
+          "sales": 52392025000,
+          "grossProfit": 15331071000,
+          "netProfit": 10828829000,
+          "operatingProfit": 12188495000,
+          "depreciationAmortization": 5131791000,
+          "netOperatingProfit": 13142882000,
+          "cash": 50433677329,
+          "financialInvestments": 24906463116,
+          "shortTermDebt": 35710933451,
+          "longTermDebt": 183613638996,
+          "equity": 112697676495
+        },
+        {
+          "period": "2025/12",
+          "quarter": [
+            2025,
+            4
+          ],
+          "sales": 39722459444,
+          "grossProfit": 3578042122,
+          "netProfit": 423552852,
+          "operatingProfit": 834759095,
+          "depreciationAmortization": 5765323952,
+          "netOperatingProfit": 1084510390,
+          "cash": 54845603000,
+          "financialInvestments": 23946239000,
+          "shortTermDebt": 46922312000,
+          "longTermDebt": 186262479000,
+          "equity": 116853872000
+        },
+        {
+          "period": "2026/3",
+          "quarter": [
+            2026,
+            1
+          ],
+          "sales": 32760718000,
+          "grossProfit": -3128828000,
+          "netProfit": -7758355000,
+          "operatingProfit": -4724611000,
+          "depreciationAmortization": 5676788000,
+          "netOperatingProfit": -5500833000,
+          "cash": 56606949000,
+          "financialInvestments": 21792421000,
+          "shortTermDebt": 48648475000,
+          "longTermDebt": 190217706000,
+          "equity": 115747897000
+        },
+        {
+          "period": "2026/6",
+          "quarter": [
+            2026,
+            2
+          ],
+          "sales": 45708013000,
+          "grossProfit": 913548000,
+          "netProfit": -4793480000,
+          "operatingProfit": -1793512000,
+          "depreciationAmortization": 6006250000,
+          "netOperatingProfit": -1820394000,
+          "cash": 60232800000,
+          "financialInvestments": 21851823000,
+          "shortTermDebt": 56037858000,
+          "longTermDebt": 199005719000,
+          "equity": 112660264000
+        },
+        {
+          "period": "2026/9",
+          "quarter": [
+            2026,
+            3
+          ],
+          "sales": 72158072000,
+          "grossProfit": 18723486000,
+          "netProfit": 11272632000,
+          "operatingProfit": 15877406000,
+          "depreciationAmortization": 6458115000,
+          "netOperatingProfit": 15698484000,
+          "cash": 87331919000,
+          "financialInvestments": 27207724000,
+          "shortTermDebt": 62121709000,
+          "longTermDebt": 220686462000,
+          "equity": 131735545000
+        }
+      ]
+    },
     "TAVHL": {
       "name": "TAV Havalimanları Holding",
       "currency": "TRY",
@@ -8282,6 +9469,1521 @@
       "source": "TCKRC (TRY).xlsx",
       "shares_outstanding": 170000000,
       "share_nominal_value": 1
+    },
+    "THYAO": {
+      "name": "Türk Hava Yolları",
+      "currency": "TRY",
+      "periods": [
+        {
+          "period": "2016/6",
+          "quarter": [
+            2016,
+            2
+          ],
+          "sales": 7077000000,
+          "grossProfit": 643000000,
+          "netProfit": -656000000,
+          "operatingProfit": -576000000,
+          "depreciationAmortization": 831000000,
+          "netOperatingProfit": -601000000,
+          "cash": 3014000000,
+          "financialInvestments": 282000000,
+          "shortTermDebt": 3491000000,
+          "longTermDebt": 24716000000,
+          "equity": 12852000000
+        },
+        {
+          "period": "2016/9",
+          "quarter": [
+            2016,
+            3
+          ],
+          "sales": 8662000000,
+          "grossProfit": 1760000000,
+          "netProfit": 548000000,
+          "operatingProfit": 762000000,
+          "depreciationAmortization": 862000000,
+          "netOperatingProfit": 672000000,
+          "cash": 4178000000,
+          "financialInvestments": 710000000,
+          "shortTermDebt": 5951000000,
+          "longTermDebt": 25746000000,
+          "equity": 13903000000
+        },
+        {
+          "period": "2016/12",
+          "quarter": [
+            2016,
+            4
+          ],
+          "sales": 7298000000,
+          "grossProfit": 667000000,
+          "netProfit": 1299000000,
+          "operatingProfit": -421000000,
+          "depreciationAmortization": 985000000,
+          "netOperatingProfit": -272000000,
+          "cash": 5159000000,
+          "financialInvestments": 1393000000,
+          "shortTermDebt": 8522000000,
+          "longTermDebt": 27526000000,
+          "equity": 17899000000
+        },
+        {
+          "period": "2017/3",
+          "quarter": [
+            2017,
+            1
+          ],
+          "sales": 7310000000,
+          "grossProfit": 403000000,
+          "netProfit": -1421000000,
+          "operatingProfit": -664000000,
+          "depreciationAmortization": 950000000,
+          "netOperatingProfit": -801000000,
+          "cash": 5584000000,
+          "financialInvestments": 1012000000,
+          "shortTermDebt": 9085000000,
+          "longTermDebt": 28786000000,
+          "equity": 16985000000
+        },
+        {
+          "period": "2017/6",
+          "quarter": [
+            2017,
+            2
+          ],
+          "sales": 9364000000,
+          "grossProfit": 1848000000,
+          "netProfit": -194000000,
+          "operatingProfit": 703000000,
+          "depreciationAmortization": 894000000,
+          "netOperatingProfit": 531000000,
+          "cash": 4307000000,
+          "financialInvestments": 4962000000,
+          "shortTermDebt": 8806000000,
+          "longTermDebt": 25887000000,
+          "equity": 16135000000
+        },
+        {
+          "period": "2017/9",
+          "quarter": [
+            2017,
+            3
+          ],
+          "sales": 12658000000,
+          "grossProfit": 4388000000,
+          "netProfit": 2438000000,
+          "operatingProfit": 3300000000,
+          "depreciationAmortization": 881000000,
+          "netOperatingProfit": 3118000000,
+          "cash": 8679000000,
+          "financialInvestments": 1417000000,
+          "shortTermDebt": 8374000000,
+          "longTermDebt": 25908000000,
+          "equity": 18866000000
+        },
+        {
+          "period": "2017/12",
+          "quarter": [
+            2017,
+            4
+          ],
+          "sales": 10447000000,
+          "grossProfit": 1197000000,
+          "netProfit": -184000000,
+          "operatingProfit": 229000000,
+          "depreciationAmortization": 1168000000,
+          "netOperatingProfit": -115000000,
+          "cash": 7132000000,
+          "financialInvestments": 929000000,
+          "shortTermDebt": 6514000000,
+          "longTermDebt": 27684000000,
+          "equity": 20171000000
+        },
+        {
+          "period": "2018/3",
+          "quarter": [
+            2018,
+            1
+          ],
+          "sales": 10532000000,
+          "grossProfit": 1588000000,
+          "netProfit": -314000000,
+          "operatingProfit": 156000000,
+          "depreciationAmortization": 1025000000,
+          "netOperatingProfit": 12000000,
+          "cash": 7500000000,
+          "financialInvestments": 494000000,
+          "shortTermDebt": 7545000000,
+          "longTermDebt": 29032000000,
+          "equity": 20074000000
+        },
+        {
+          "period": "2018/6",
+          "quarter": [
+            2018,
+            2
+          ],
+          "sales": 13843000000,
+          "grossProfit": 2900000000,
+          "netProfit": 441000000,
+          "operatingProfit": 925000000,
+          "depreciationAmortization": 1164000000,
+          "netOperatingProfit": 1146000000,
+          "cash": 11628000000,
+          "financialInvestments": 1229000000,
+          "shortTermDebt": 8793000000,
+          "longTermDebt": 35898000000,
+          "equity": 24943000000
+        },
+        {
+          "period": "2018/9",
+          "quarter": [
+            2018,
+            3
+          ],
+          "sales": 21992000000,
+          "grossProfit": 7115000000,
+          "netProfit": 3956000000,
+          "operatingProfit": 4868000000,
+          "depreciationAmortization": 1524000000,
+          "netOperatingProfit": 4958000000,
+          "cash": 16343000000,
+          "financialInvestments": 1107000000,
+          "shortTermDebt": 13244000000,
+          "longTermDebt": 47988000000,
+          "equity": 36639000000
+        },
+        {
+          "period": "2018/12",
+          "quarter": [
+            2018,
+            4
+          ],
+          "sales": 16486000000,
+          "grossProfit": 1966000000,
+          "netProfit": -38000000,
+          "operatingProfit": 243000000,
+          "depreciationAmortization": 1541000000,
+          "netOperatingProfit": 30000000,
+          "cash": 8606000000,
+          "financialInvestments": 3187000000,
+          "shortTermDebt": 12460000000,
+          "longTermDebt": 43342000000,
+          "equity": 31284000000
+        },
+        {
+          "period": "2019/3",
+          "quarter": [
+            2019,
+            1
+          ],
+          "sales": 14848000000,
+          "grossProfit": 1415000000,
+          "netProfit": -1253000000,
+          "operatingProfit": -809000000,
+          "depreciationAmortization": 1923000000,
+          "netOperatingProfit": -1093000000,
+          "cash": 10221000000,
+          "financialInvestments": 2100000000,
+          "shortTermDebt": 15838000000,
+          "longTermDebt": 54333000000,
+          "equity": 33171000000
+        },
+        {
+          "period": "2019/6",
+          "quarter": [
+            2019,
+            2
+          ],
+          "sales": 18668000000,
+          "grossProfit": 2498000000,
+          "netProfit": 133000000,
+          "operatingProfit": 74000000,
+          "depreciationAmortization": 2212000000,
+          "netOperatingProfit": 42000000,
+          "cash": 7896000000,
+          "financialInvestments": 3422000000,
+          "shortTermDebt": 16635000000,
+          "longTermDebt": 55044000000,
+          "equity": 33275000000
+        },
+        {
+          "period": "2019/9",
+          "quarter": [
+            2019,
+            3
+          ],
+          "sales": 22635000000,
+          "grossProfit": 6120000000,
+          "netProfit": 3707000000,
+          "operatingProfit": 3814000000,
+          "depreciationAmortization": 2195000000,
+          "netOperatingProfit": 3622000000,
+          "cash": 10123000000,
+          "financialInvestments": 1126000000,
+          "shortTermDebt": 16258000000,
+          "longTermDebt": 55467000000,
+          "equity": 37528000000
+        },
+        {
+          "period": "2019/12",
+          "quarter": [
+            2019,
+            4
+          ],
+          "sales": 18967000000,
+          "grossProfit": 3046000000,
+          "netProfit": 1948000000,
+          "operatingProfit": 1963000000,
+          "depreciationAmortization": 2294000000,
+          "netOperatingProfit": 798000000,
+          "cash": 12328000000,
+          "financialInvestments": 2909000000,
+          "shortTermDebt": 18450000000,
+          "longTermDebt": 60976000000,
+          "equity": 40795000000
+        },
+        {
+          "period": "2020/3",
+          "quarter": [
+            2020,
+            1
+          ],
+          "sales": 15330000000,
+          "grossProfit": 320000000,
+          "netProfit": -2023000000,
+          "operatingProfit": -2005000000,
+          "depreciationAmortization": 2505000000,
+          "netOperatingProfit": -1856000000,
+          "cash": 10134000000,
+          "financialInvestments": 1863000000,
+          "shortTermDebt": 22037000000,
+          "longTermDebt": 71095000000,
+          "equity": 41343000000
+        },
+        {
+          "period": "2020/6",
+          "quarter": [
+            2020,
+            2
+          ],
+          "sales": 6177000000,
+          "grossProfit": -678000000,
+          "netProfit": -2234000000,
+          "operatingProfit": -807000000,
+          "depreciationAmortization": 2753000000,
+          "netOperatingProfit": -1589000000,
+          "cash": 12047000000,
+          "financialInvestments": 686000000,
+          "shortTermDebt": 26300000000,
+          "longTermDebt": 73310000000,
+          "equity": 40815000000
+        },
+        {
+          "period": "2020/9",
+          "quarter": [
+            2020,
+            3
+          ],
+          "sales": 11018000000,
+          "grossProfit": 933000000,
+          "netProfit": -946000000,
+          "operatingProfit": 540000000,
+          "depreciationAmortization": 2975000000,
+          "netOperatingProfit": -412000000,
+          "cash": 9864000000,
+          "financialInvestments": 760000000,
+          "shortTermDebt": 31019000000,
+          "longTermDebt": 87559000000,
+          "equity": 43990000000
+        },
+        {
+          "period": "2020/12",
+          "quarter": [
+            2020,
+            4
+          ],
+          "sales": 13923000000,
+          "grossProfit": 2108000000,
+          "netProfit": -385000000,
+          "operatingProfit": 890000000,
+          "depreciationAmortization": 3405000000,
+          "netOperatingProfit": 480000000,
+          "cash": 13293000000,
+          "financialInvestments": 679000000,
+          "shortTermDebt": 32600000000,
+          "longTermDebt": 89994000000,
+          "equity": 39511000000
+        },
+        {
+          "period": "2021/3",
+          "quarter": [
+            2021,
+            1
+          ],
+          "sales": 13252000000,
+          "grossProfit": 1275000000,
+          "netProfit": 438000000,
+          "operatingProfit": -293000000,
+          "depreciationAmortization": 3086000000,
+          "netOperatingProfit": -520000000,
+          "cash": 14679000000,
+          "financialInvestments": 568000000,
+          "shortTermDebt": 34794000000,
+          "longTermDebt": 98460000000,
+          "equity": 47853000000
+        },
+        {
+          "period": "2021/6",
+          "quarter": [
+            2021,
+            2
+          ],
+          "sales": 18233000000,
+          "grossProfit": 2948000000,
+          "netProfit": -497000000,
+          "operatingProfit": 957000000,
+          "depreciationAmortization": 3579000000,
+          "netOperatingProfit": 820000000,
+          "cash": 19563000000,
+          "financialInvestments": 1368000000,
+          "shortTermDebt": 37305000000,
+          "longTermDebt": 104976000000,
+          "equity": 48873000000
+        },
+        {
+          "period": "2021/9",
+          "quarter": [
+            2021,
+            3
+          ],
+          "sales": 29033000000,
+          "grossProfit": 8449000000,
+          "netProfit": 6291000000,
+          "operatingProfit": 6164000000,
+          "depreciationAmortization": 3731000000,
+          "netOperatingProfit": 5949000000,
+          "cash": 26492000000,
+          "financialInvestments": 717000000,
+          "shortTermDebt": 40089000000,
+          "longTermDebt": 105042000000,
+          "equity": 57608000000
+        },
+        {
+          "period": "2021/12",
+          "quarter": [
+            2021,
+            4
+          ],
+          "sales": 36860000000,
+          "grossProfit": 9473000000,
+          "netProfit": 1981000000,
+          "operatingProfit": 6719000000,
+          "depreciationAmortization": 5077000000,
+          "netOperatingProfit": 6200000000,
+          "cash": 35679000000,
+          "financialInvestments": 1240000000,
+          "shortTermDebt": 53361000000,
+          "longTermDebt": 145647000000,
+          "equity": 90650000000
+        },
+        {
+          "period": "2022/3",
+          "quarter": [
+            2022,
+            1
+          ],
+          "sales": 42614000000,
+          "grossProfit": 7188000000,
+          "netProfit": 2220000000,
+          "operatingProfit": 2294000000,
+          "depreciationAmortization": 6208000000,
+          "netOperatingProfit": 2039000000,
+          "cash": 37249000000,
+          "financialInvestments": 10274000000,
+          "shortTermDebt": 61715000000,
+          "longTermDebt": 149067000000,
+          "equity": 105213000000
+        },
+        {
+          "period": "2022/6",
+          "quarter": [
+            2022,
+            2
+          ],
+          "sales": 71969000000,
+          "grossProfit": 15061000000,
+          "netProfit": 9155000000,
+          "operatingProfit": 8685000000,
+          "depreciationAmortization": 7141000000,
+          "netOperatingProfit": 8508000000,
+          "cash": 58670000000,
+          "financialInvestments": 15203000000,
+          "shortTermDebt": 67625000000,
+          "longTermDebt": 161982000000,
+          "equity": 134967000000
+        },
+        {
+          "period": "2022/9",
+          "quarter": [
+            2022,
+            3
+          ],
+          "sales": 108537000000,
+          "grossProfit": 33453000000,
+          "netProfit": 27118000000,
+          "operatingProfit": 25141000000,
+          "depreciationAmortization": 8469000000,
+          "netOperatingProfit": 25692000000,
+          "cash": 66757000000,
+          "financialInvestments": 18878000000,
+          "shortTermDebt": 69328000000,
+          "longTermDebt": 177730000000,
+          "equity": 181539000000
+        },
+        {
+          "period": "2022/12",
+          "quarter": [
+            2022,
+            4
+          ],
+          "sales": 88049000000,
+          "grossProfit": 19939000000,
+          "netProfit": 8936000000,
+          "operatingProfit": 12691000000,
+          "depreciationAmortization": 9135000000,
+          "netOperatingProfit": 11492000000,
+          "cash": 76192000000,
+          "financialInvestments": 14784000000,
+          "shortTermDebt": 70184000000,
+          "longTermDebt": 192799000000,
+          "equity": 181427000000
+        },
+        {
+          "period": "2023/3",
+          "quarter": [
+            2023,
+            1
+          ],
+          "sales": 82057000000,
+          "grossProfit": 12218000000,
+          "netProfit": 4418000000,
+          "operatingProfit": 2151000000,
+          "depreciationAmortization": 9378000000,
+          "netOperatingProfit": 2530000000,
+          "cash": 50176000000,
+          "financialInvestments": 56322000000,
+          "shortTermDebt": 77982000000,
+          "longTermDebt": 196758000000,
+          "equity": 191307000000
+        },
+        {
+          "period": "2023/6",
+          "quarter": [
+            2023,
+            2
+          ],
+          "sales": 107633000000,
+          "grossProfit": 27250000000,
+          "netProfit": 13754000000,
+          "operatingProfit": 17139000000,
+          "depreciationAmortization": 10323000000,
+          "netOperatingProfit": 15300000000,
+          "cash": 67704000000,
+          "financialInvestments": 90985000000,
+          "shortTermDebt": 101125000000,
+          "longTermDebt": 260237000000,
+          "equity": 268885000000
+        },
+        {
+          "period": "2023/9",
+          "quarter": [
+            2023,
+            3
+          ],
+          "sales": 169091000000,
+          "grossProfit": 57125000000,
+          "netProfit": 51331000000,
+          "operatingProfit": 46388000000,
+          "depreciationAmortization": 13490000000,
+          "netOperatingProfit": 42304000000,
+          "cash": 24908000000,
+          "financialInvestments": 163008000000,
+          "shortTermDebt": 104547000000,
+          "longTermDebt": 269628000000,
+          "equity": 343400000000
+        },
+        {
+          "period": "2023/12",
+          "quarter": [
+            2023,
+            4
+          ],
+          "sales": 145617000000,
+          "grossProfit": 22853000000,
+          "netProfit": 93500000000,
+          "operatingProfit": 5747000000,
+          "depreciationAmortization": 15283000000,
+          "netOperatingProfit": 6789000000,
+          "cash": 20115000000,
+          "financialInvestments": 169035000000,
+          "shortTermDebt": 109810000000,
+          "longTermDebt": 310362000000,
+          "equity": 457112000000
+        },
+        {
+          "period": "2024/3",
+          "quarter": [
+            2024,
+            1
+          ],
+          "sales": 147238000000,
+          "grossProfit": 16140000000,
+          "netProfit": 6931000000,
+          "operatingProfit": 1203000000,
+          "depreciationAmortization": 16408000000,
+          "netOperatingProfit": -908000000,
+          "cash": 27162000000,
+          "financialInvestments": 173248000000,
+          "shortTermDebt": 105944000000,
+          "longTermDebt": 325479000000,
+          "equity": 515521000000
+        },
+        {
+          "period": "2024/6",
+          "quarter": [
+            2024,
+            2
+          ],
+          "sales": 182875000000,
+          "grossProfit": 35246000000,
+          "netProfit": 30395000000,
+          "operatingProfit": 19104000000,
+          "depreciationAmortization": 17553000000,
+          "netOperatingProfit": 16512000000,
+          "cash": 33184000000,
+          "financialInvestments": 176845000000,
+          "shortTermDebt": 100395000000,
+          "longTermDebt": 325193000000,
+          "equity": 557767000000
+        },
+        {
+          "period": "2024/9",
+          "quarter": [
+            2024,
+            3
+          ],
+          "sales": 221815000000,
+          "grossProfit": 60939000000,
+          "netProfit": 51540000000,
+          "operatingProfit": 45048000000,
+          "depreciationAmortization": 18536000000,
+          "netOperatingProfit": 40552000000,
+          "cash": 62644000000,
+          "financialInvestments": 188909000000,
+          "shortTermDebt": 127784000000,
+          "longTermDebt": 367179000000,
+          "equity": 618691000000
+        },
+        {
+          "period": "2024/12",
+          "quarter": [
+            2024,
+            4
+          ],
+          "sales": 193502000000,
+          "grossProfit": 30583000000,
+          "netProfit": 24512000000,
+          "operatingProfit": 15038000000,
+          "depreciationAmortization": 19809000000,
+          "netOperatingProfit": 7794000000,
+          "cash": 95992000000,
+          "financialInvestments": 157283000000,
+          "shortTermDebt": 130410000000,
+          "longTermDebt": 359529000000,
+          "equity": 680012000000
+        },
+        {
+          "period": "2025/3",
+          "quarter": [
+            2025,
+            1
+          ],
+          "sales": 176712000000,
+          "grossProfit": 11731000000,
+          "netProfit": -1818000000,
+          "operatingProfit": -2879000000,
+          "depreciationAmortization": 20413000000,
+          "netOperatingProfit": -10246000000,
+          "cash": 88821000000,
+          "financialInvestments": 187201000000,
+          "shortTermDebt": 138728000000,
+          "longTermDebt": 398942000000,
+          "equity": 717436000000
+        },
+        {
+          "period": "2025/6",
+          "quarter": [
+            2025,
+            2
+          ],
+          "sales": 231324000000,
+          "grossProfit": 44415000000,
+          "netProfit": 26831000000,
+          "operatingProfit": 27408000000,
+          "depreciationAmortization": 22540000000,
+          "netOperatingProfit": 23531000000,
+          "cash": 98791000000,
+          "financialInvestments": 205724000000,
+          "shortTermDebt": 138324000000,
+          "longTermDebt": 446268000000,
+          "equity": 752120000000
+        },
+        {
+          "period": "2025/9",
+          "quarter": [
+            2025,
+            3
+          ],
+          "sales": 282789000000,
+          "grossProfit": 62541000000,
+          "netProfit": 56051000000,
+          "operatingProfit": 43078000000,
+          "depreciationAmortization": 24809000000,
+          "netOperatingProfit": 37727000000,
+          "cash": 100325000000,
+          "financialInvestments": 226379000000,
+          "shortTermDebt": 150890000000,
+          "longTermDebt": 493725000000,
+          "equity": 843951000000
+        },
+        {
+          "period": "2025/12",
+          "quarter": [
+            2025,
+            4
+          ],
+          "sales": 264647000000,
+          "grossProfit": 36873000000,
+          "netProfit": 37144000000,
+          "operatingProfit": 22522000000,
+          "depreciationAmortization": 26920000000,
+          "netOperatingProfit": 12523000000,
+          "cash": 86035000000,
+          "financialInvestments": 297692000000,
+          "shortTermDebt": 162436000000,
+          "longTermDebt": 601817000000,
+          "equity": 911256000000
+        },
+        {
+          "period": "2026/3",
+          "quarter": [
+            2026,
+            1
+          ],
+          "sales": 257961000000,
+          "grossProfit": 21568000000,
+          "netProfit": 9915000000,
+          "operatingProfit": -2451000000,
+          "depreciationAmortization": 28358000000,
+          "netOperatingProfit": -7097000000,
+          "cash": 71141000000,
+          "financialInvestments": 344180000000,
+          "shortTermDebt": 166590000000,
+          "longTermDebt": 647365000000,
+          "equity": 966363000000
+        },
+        {
+          "period": "2026/6",
+          "quarter": [
+            2026,
+            2
+          ],
+          "sales": 327108000000,
+          "grossProfit": 21019000000,
+          "netProfit": 8949000000,
+          "operatingProfit": -2647000000,
+          "depreciationAmortization": 30307000000,
+          "netOperatingProfit": -7637000000,
+          "cash": 80346000000,
+          "financialInvestments": 364716000000,
+          "shortTermDebt": 187257000000,
+          "longTermDebt": 726977000000,
+          "equity": 1018453000000
+        },
+        {
+          "period": "2026/9",
+          "quarter": [
+            2026,
+            3
+          ],
+          "sales": 395961000000,
+          "grossProfit": 67794000000,
+          "netProfit": 61466000000,
+          "operatingProfit": 44124000000,
+          "depreciationAmortization": 33894000000,
+          "netOperatingProfit": 35290000000,
+          "cash": 85290000000,
+          "financialInvestments": 415996000000,
+          "shortTermDebt": 198276000000,
+          "longTermDebt": 813564000000,
+          "equity": 1135049000000
+        }
+      ]
+    },
+    "TOASO": {
+      "name": "Tofaş Türk Otomobil Fabrikası",
+      "currency": "TRY",
+      "periods": [
+        {
+          "period": "2016/6",
+          "quarter": [
+            2016,
+            2
+          ],
+          "sales": 3652274000,
+          "grossProfit": 356977000,
+          "netProfit": 239373000,
+          "operatingProfit": 242418000,
+          "depreciationAmortization": 129218000,
+          "netOperatingProfit": 209199000,
+          "cash": 1634805000,
+          "financialInvestments": 22747000,
+          "shortTermDebt": 2251470000,
+          "longTermDebt": 2610913000,
+          "equity": 2708393000
+        },
+        {
+          "period": "2016/9",
+          "quarter": [
+            2016,
+            3
+          ],
+          "sales": 3111974000,
+          "grossProfit": 303563000,
+          "netProfit": 209564000,
+          "operatingProfit": 147519000,
+          "depreciationAmortization": 130612000,
+          "netOperatingProfit": 171586000,
+          "cash": 1701294000,
+          "financialInvestments": 248000,
+          "shortTermDebt": 2141889000,
+          "longTermDebt": 2765750000,
+          "equity": 2844291000
+        },
+        {
+          "period": "2016/12",
+          "quarter": [
+            2016,
+            4
+          ],
+          "sales": 4756140000,
+          "grossProfit": 485644000,
+          "netProfit": 280804000,
+          "operatingProfit": 260556000,
+          "depreciationAmortization": 152667000,
+          "netOperatingProfit": 289085000,
+          "cash": 2215727000,
+          "financialInvestments": 167444000,
+          "shortTermDebt": 2036967000,
+          "longTermDebt": 2978620000,
+          "equity": 2957451000
+        },
+        {
+          "period": "2017/3",
+          "quarter": [
+            2017,
+            1
+          ],
+          "sales": 4098261000,
+          "grossProfit": 420212000,
+          "netProfit": 262408000,
+          "operatingProfit": 217569000,
+          "depreciationAmortization": 158955000,
+          "netOperatingProfit": 272840000,
+          "cash": 2672982000,
+          "financialInvestments": 117994000,
+          "shortTermDebt": 1796618000,
+          "longTermDebt": 3164948000,
+          "equity": 2805274000
+        },
+        {
+          "period": "2017/6",
+          "quarter": [
+            2017,
+            2
+          ],
+          "sales": 4498540000,
+          "grossProfit": 467404000,
+          "netProfit": 312483000,
+          "operatingProfit": 276774000,
+          "depreciationAmortization": 184918000,
+          "netOperatingProfit": 301095000,
+          "cash": 2110626000,
+          "financialInvestments": 48378000,
+          "shortTermDebt": 1904891000,
+          "longTermDebt": 2922821000,
+          "equity": 3068165000
+        },
+        {
+          "period": "2017/9",
+          "quarter": [
+            2017,
+            3
+          ],
+          "sales": 3803582000,
+          "grossProfit": 439845000,
+          "netProfit": 283634000,
+          "operatingProfit": 227095000,
+          "depreciationAmortization": 156615000,
+          "netOperatingProfit": 270732000,
+          "cash": 2721313000,
+          "financialInvestments": 398779000,
+          "shortTermDebt": 2656111000,
+          "longTermDebt": 3128388000,
+          "equity": 3277684000
+        },
+        {
+          "period": "2017/12",
+          "quarter": [
+            2017,
+            4
+          ],
+          "sales": 5067423000,
+          "grossProfit": 698744000,
+          "netProfit": 424293000,
+          "operatingProfit": 337890000,
+          "depreciationAmortization": 196191000,
+          "netOperatingProfit": 460109000,
+          "cash": 2625681000,
+          "financialInvestments": 613811000,
+          "shortTermDebt": 2580311000,
+          "longTermDebt": 3230600000,
+          "equity": 3583037000
+        },
+        {
+          "period": "2018/3",
+          "quarter": [
+            2018,
+            1
+          ],
+          "sales": 4441125000,
+          "grossProfit": 491713000,
+          "netProfit": 324993000,
+          "operatingProfit": 266629000,
+          "depreciationAmortization": 188456000,
+          "netOperatingProfit": 326238000,
+          "cash": 2610101000,
+          "financialInvestments": 543000,
+          "shortTermDebt": 2011807000,
+          "longTermDebt": 3386181000,
+          "equity": 2987613000
+        },
+        {
+          "period": "2018/6",
+          "quarter": [
+            2018,
+            2
+          ],
+          "sales": 5050438000,
+          "grossProfit": 647000000,
+          "netProfit": 367981000,
+          "operatingProfit": 381027000,
+          "depreciationAmortization": 192270000,
+          "netOperatingProfit": 453925000,
+          "cash": 2385104000,
+          "financialInvestments": 517000,
+          "shortTermDebt": 1954413000,
+          "longTermDebt": 3259134000,
+          "equity": 3218600000
+        },
+        {
+          "period": "2018/9",
+          "quarter": [
+            2018,
+            3
+          ],
+          "sales": 4332782000,
+          "grossProfit": 723368000,
+          "netProfit": 310910000,
+          "operatingProfit": -38339000,
+          "depreciationAmortization": 197316000,
+          "netOperatingProfit": 533453000,
+          "cash": 1913631000,
+          "financialInvestments": 761905000,
+          "shortTermDebt": 3151548000,
+          "longTermDebt": 3639823000,
+          "equity": 2946180000
+        },
+        {
+          "period": "2018/12",
+          "quarter": [
+            2018,
+            4
+          ],
+          "sales": 4778986000,
+          "grossProfit": 654065000,
+          "netProfit": 326539000,
+          "operatingProfit": 570989000,
+          "depreciationAmortization": 197012000,
+          "netOperatingProfit": 443908000,
+          "cash": 1981012000,
+          "financialInvestments": 404170000,
+          "shortTermDebt": 2460751000,
+          "longTermDebt": 2971301000,
+          "equity": 3706555000
+        },
+        {
+          "period": "2019/3",
+          "quarter": [
+            2019,
+            1
+          ],
+          "sales": 3981450000,
+          "grossProfit": 582257000,
+          "netProfit": 324741000,
+          "operatingProfit": 366624000,
+          "depreciationAmortization": 216551000,
+          "netOperatingProfit": 392076000,
+          "cash": 2278398000,
+          "financialInvestments": 770324000,
+          "shortTermDebt": 3000272000,
+          "longTermDebt": 2945081000,
+          "equity": 3127734000
+        },
+        {
+          "period": "2019/6",
+          "quarter": [
+            2019,
+            2
+          ],
+          "sales": 5289026000,
+          "grossProfit": 671730000,
+          "netProfit": 408462000,
+          "operatingProfit": 462571000,
+          "depreciationAmortization": 152805000,
+          "netOperatingProfit": 483772000,
+          "cash": 2714382000,
+          "financialInvestments": 394570000,
+          "shortTermDebt": 2570182000,
+          "longTermDebt": 2429105000,
+          "equity": 3512651000
+        },
+        {
+          "period": "2019/9",
+          "quarter": [
+            2019,
+            3
+          ],
+          "sales": 4158611000,
+          "grossProfit": 550433000,
+          "netProfit": 297944000,
+          "operatingProfit": 405430000,
+          "depreciationAmortization": 189124000,
+          "netOperatingProfit": 380790000,
+          "cash": 2019881000,
+          "financialInvestments": 248083000,
+          "shortTermDebt": 2125264000,
+          "longTermDebt": 2256033000,
+          "equity": 3988415000
+        },
+        {
+          "period": "2019/12",
+          "quarter": [
+            2019,
+            4
+          ],
+          "sales": 5467827000,
+          "grossProfit": 694191000,
+          "netProfit": 450492000,
+          "operatingProfit": 425478000,
+          "depreciationAmortization": 201768000,
+          "netOperatingProfit": 462871000,
+          "cash": 2825487000,
+          "financialInvestments": 568000,
+          "shortTermDebt": 1846507000,
+          "longTermDebt": 2104213000,
+          "equity": 4329209000
+        },
+        {
+          "period": "2020/3",
+          "quarter": [
+            2020,
+            1
+          ],
+          "sales": 4447343000,
+          "grossProfit": 591563000,
+          "netProfit": 346175000,
+          "operatingProfit": 315862000,
+          "depreciationAmortization": 207942000,
+          "netOperatingProfit": 391111000,
+          "cash": 2796130000,
+          "financialInvestments": 568000,
+          "shortTermDebt": 2275730000,
+          "longTermDebt": 3362786000,
+          "equity": 3387452000
+        },
+        {
+          "period": "2020/6",
+          "quarter": [
+            2020,
+            2
+          ],
+          "sales": 3051481000,
+          "grossProfit": 495117000,
+          "netProfit": 288467000,
+          "operatingProfit": 306459000,
+          "depreciationAmortization": 209777000,
+          "netOperatingProfit": 332315000,
+          "cash": 2081829000,
+          "financialInvestments": 339000,
+          "shortTermDebt": 2067178000,
+          "longTermDebt": 3646348000,
+          "equity": 3553329000
+        },
+        {
+          "period": "2020/9",
+          "quarter": [
+            2020,
+            3
+          ],
+          "sales": 6860276000,
+          "grossProfit": 890397000,
+          "netProfit": 510324000,
+          "operatingProfit": 518621000,
+          "depreciationAmortization": 125270000,
+          "netOperatingProfit": 648185000,
+          "cash": 4018368000,
+          "financialInvestments": 484000,
+          "shortTermDebt": 2805207000,
+          "longTermDebt": 4367631000,
+          "equity": 3554445000
+        },
+        {
+          "period": "2020/12",
+          "quarter": [
+            2020,
+            4
+          ],
+          "sales": 9197647000,
+          "grossProfit": 1236531000,
+          "netProfit": 639204000,
+          "operatingProfit": 925221000,
+          "depreciationAmortization": 215766000,
+          "netOperatingProfit": 895146000,
+          "cash": 4249809000,
+          "financialInvestments": 1002000,
+          "shortTermDebt": 2827079000,
+          "longTermDebt": 3862706000,
+          "equity": 4468611000
+        },
+        {
+          "period": "2021/3",
+          "quarter": [
+            2021,
+            1
+          ],
+          "sales": 6446996000,
+          "grossProfit": 866036000,
+          "netProfit": 616664000,
+          "operatingProfit": 613889000,
+          "depreciationAmortization": 247241000,
+          "netOperatingProfit": 627948000,
+          "cash": 3006868000,
+          "financialInvestments": 677000,
+          "shortTermDebt": 3480422000,
+          "longTermDebt": 4282351000,
+          "equity": 3436983000
+        },
+        {
+          "period": "2021/6",
+          "quarter": [
+            2021,
+            2
+          ],
+          "sales": 7564209000,
+          "grossProfit": 1232144000,
+          "netProfit": 867180000,
+          "operatingProfit": 935542000,
+          "depreciationAmortization": 264535000,
+          "netOperatingProfit": 947545000,
+          "cash": 2415455000,
+          "financialInvestments": 636000,
+          "shortTermDebt": 3670735000,
+          "longTermDebt": 3763276000,
+          "equity": 4276281000
+        },
+        {
+          "period": "2021/9",
+          "quarter": [
+            2021,
+            3
+          ],
+          "sales": 5594866000,
+          "grossProfit": 950384000,
+          "netProfit": 580586000,
+          "operatingProfit": 759987000,
+          "depreciationAmortization": 295641000,
+          "netOperatingProfit": 679716000,
+          "cash": 3705606000,
+          "financialInvestments": 119000,
+          "shortTermDebt": 3744506000,
+          "longTermDebt": 4000040000,
+          "equity": 5001842000
+        },
+        {
+          "period": "2021/12",
+          "quarter": [
+            2021,
+            4
+          ],
+          "sales": 10078234000,
+          "grossProfit": 2779899000,
+          "netProfit": 1216886000,
+          "operatingProfit": 1786301000,
+          "depreciationAmortization": 391703000,
+          "netOperatingProfit": 2339797000,
+          "cash": 4214726000,
+          "financialInvestments": 240000,
+          "shortTermDebt": 4138262000,
+          "longTermDebt": 3620796000,
+          "equity": 5743391000
+        },
+        {
+          "period": "2022/3",
+          "quarter": [
+            2022,
+            1
+          ],
+          "sales": 10634319000,
+          "grossProfit": 1765469000,
+          "netProfit": 1129119000,
+          "operatingProfit": 1287781000,
+          "depreciationAmortization": 349850000,
+          "netOperatingProfit": 1388362000,
+          "cash": 4300717000,
+          "financialInvestments": 429000,
+          "shortTermDebt": 5132045000,
+          "longTermDebt": 3758597000,
+          "equity": 3655444000
+        },
+        {
+          "period": "2022/6",
+          "quarter": [
+            2022,
+            2
+          ],
+          "sales": 15415186000,
+          "grossProfit": 2750905000,
+          "netProfit": 1876310000,
+          "operatingProfit": 1987040000,
+          "depreciationAmortization": 376753000,
+          "netOperatingProfit": 2194739000,
+          "cash": 6442442000,
+          "financialInvestments": 181000,
+          "shortTermDebt": 5031419000,
+          "longTermDebt": 3160922000,
+          "equity": 5648373000
+        },
+        {
+          "period": "2022/9",
+          "quarter": [
+            2022,
+            3
+          ],
+          "sales": 16021927000,
+          "grossProfit": 2990818000,
+          "netProfit": 2058900000,
+          "operatingProfit": 2232659000,
+          "depreciationAmortization": 360833000,
+          "netOperatingProfit": 2321548000,
+          "cash": 8575483000,
+          "financialInvestments": 181000,
+          "shortTermDebt": 5237598000,
+          "longTermDebt": 2527571000,
+          "equity": 7976672000
+        },
+        {
+          "period": "2022/12",
+          "quarter": [
+            2022,
+            4
+          ],
+          "cash": 46527590976.400734,
+          "financialInvestments": 0,
+          "shortTermDebt": 19629669321.06401,
+          "longTermDebt": 7312284009.18586,
+          "equity": 60728724735.01921
+        },
+        {
+          "period": "2023/3",
+          "quarter": [
+            2023,
+            1
+          ],
+          "sales": 66048299683.32983,
+          "grossProfit": 10449999759.430689,
+          "netProfit": 5230138970.978188,
+          "operatingProfit": 6497257873.400914,
+          "depreciationAmortization": 2276088251.225772,
+          "netOperatingProfit": 6766080281.163631,
+          "cash": 15625148000,
+          "shortTermDebt": 6016112000,
+          "longTermDebt": 1921615000,
+          "equity": 11002209000
+        },
+        {
+          "period": "2023/6",
+          "quarter": [
+            2023,
+            2
+          ],
+          "sales": 77452128718.93988,
+          "grossProfit": 16025681169.107786,
+          "netProfit": 13017059189.471783,
+          "operatingProfit": 7855320892.2342615,
+          "depreciationAmortization": 2249182492.579446,
+          "netOperatingProfit": 12063444630.68439,
+          "cash": 16462202000,
+          "shortTermDebt": 6211960000,
+          "longTermDebt": 1159454000,
+          "equity": 15857905000
+        },
+        {
+          "period": "2023/9",
+          "quarter": [
+            2023,
+            3
+          ],
+          "sales": 73528999576.00565,
+          "grossProfit": 13697140095.070488,
+          "netProfit": 5086859302.141483,
+          "operatingProfit": 9506915032.164652,
+          "depreciationAmortization": 2306373449.694009,
+          "netOperatingProfit": 8887534445.140455,
+          "cash": 21581002000,
+          "shortTermDebt": 6689658000,
+          "longTermDebt": 1667235000,
+          "equity": 21230537000
+        },
+        {
+          "period": "2023/12",
+          "quarter": [
+            2023,
+            4
+          ],
+          "sales": 82751051533.22574,
+          "grossProfit": 14236689653.674011,
+          "netProfit": 12102346613.100945,
+          "operatingProfit": 9050327779.894772,
+          "depreciationAmortization": 2401764319.1006536,
+          "netOperatingProfit": 9235310489.689735,
+          "cash": 58300439588.10603,
+          "financialInvestments": 95825282.87794979,
+          "shortTermDebt": 15830579512.469505,
+          "longTermDebt": 11964180923.767487,
+          "equity": 86643362819.91397
+        },
+        {
+          "period": "2024/3",
+          "quarter": [
+            2024,
+            1
+          ],
+          "sales": 68725564935.39624,
+          "grossProfit": 11033309277.81698,
+          "netProfit": 5729296104.553714,
+          "operatingProfit": 6620087098.816476,
+          "depreciationAmortization": 2991928479.2313247,
+          "netOperatingProfit": 6176702718.801983,
+          "cash": 57626688757.823235,
+          "financialInvestments": 81769634.90958044,
+          "shortTermDebt": 17900291479.17476,
+          "longTermDebt": 15334046389.97042,
+          "equity": 72974664244.1119
+        },
+        {
+          "period": "2024/6",
+          "quarter": [
+            2024,
+            2
+          ],
+          "sales": 44763715354.05167,
+          "grossProfit": 5729208240.213654,
+          "netProfit": 2424397500.391102,
+          "operatingProfit": 3030409011.148822,
+          "depreciationAmortization": 2737269998.277879,
+          "netOperatingProfit": 2385917103.461817,
+          "cash": 34699473816.74997,
+          "financialInvestments": 150006467.08691025,
+          "shortTermDebt": 21463274810.437683,
+          "longTermDebt": 12136800755.813206,
+          "equity": 75283149683.1358
+        },
+        {
+          "period": "2024/9",
+          "quarter": [
+            2024,
+            3
+          ],
+          "sales": 37088253537.00244,
+          "grossProfit": 2315683725.606554,
+          "netProfit": 539547590.2696371,
+          "operatingProfit": -1875294435.7058172,
+          "depreciationAmortization": 2293392368.3963223,
+          "netOperatingProfit": -1834008759.0276575,
+          "cash": 35650390090.4733,
+          "financialInvestments": 137722273.74750614,
+          "shortTermDebt": 20457575696.90757,
+          "longTermDebt": 12268231943.99801,
+          "equity": 76288575201.03638
+        },
+        {
+          "period": "2024/12",
+          "quarter": [
+            2024,
+            4
+          ],
+          "sales": 45122481262.39761,
+          "grossProfit": 2680760861.5630646,
+          "netProfit": -196818036.11920834,
+          "operatingProfit": -1067199182.8468761,
+          "depreciationAmortization": 2065505859.4079924,
+          "netOperatingProfit": -1716001324.7426872,
+          "cash": 32081951467.071926,
+          "financialInvestments": 132121991.22335206,
+          "shortTermDebt": 17797066431.66936,
+          "longTermDebt": 27603893893.71264,
+          "equity": 76644627482.4197
+        },
+        {
+          "period": "2025/3",
+          "quarter": [
+            2025,
+            1
+          ],
+          "sales": 35783787062.927605,
+          "grossProfit": 2215592181.0542955,
+          "netProfit": -207651098.08527455,
+          "operatingProfit": -1293251942.5413191,
+          "depreciationAmortization": 2530482935.289159,
+          "netOperatingProfit": -1419088520.6492138,
+          "cash": 39217029965.59708,
+          "financialInvestments": 117747885.24346043,
+          "shortTermDebt": 17820923547.64798,
+          "longTermDebt": 26025672715.78407,
+          "equity": 66463313721.25334
+        },
+        {
+          "period": "2025/6",
+          "quarter": [
+            2025,
+            2
+          ],
+          "sales": 96845438953.26892,
+          "grossProfit": 7084902645.731078,
+          "netProfit": 2442129481.056954,
+          "operatingProfit": 364482583.3085625,
+          "depreciationAmortization": 2402768249.216138,
+          "netOperatingProfit": 893774462.2311144,
+          "cash": 22292722790.716984,
+          "financialInvestments": 116290546.07508536,
+          "shortTermDebt": 21941773091.115753,
+          "longTermDebt": 28174354740.850597,
+          "equity": 67277564795.253784
+        },
+        {
+          "period": "2025/9",
+          "quarter": [
+            2025,
+            3
+          ],
+          "sales": 113159426983.80348,
+          "grossProfit": 5496165173.214626,
+          "netProfit": 1567649617.0283208,
+          "operatingProfit": 303419359.2327566,
+          "depreciationAmortization": 2530729815.4947033,
+          "netOperatingProfit": -215316941.58190155,
+          "cash": 24309816765.46232,
+          "financialInvestments": 105452370.13025583,
+          "shortTermDebt": 19474234343.00403,
+          "longTermDebt": 30299049544.19373,
+          "equity": 68490272005.80896
+        },
+        {
+          "period": "2025/12",
+          "quarter": [
+            2025,
+            4
+          ],
+          "sales": 151297749647.73608,
+          "grossProfit": 10846666021.40945,
+          "netProfit": 6583259968.408054,
+          "operatingProfit": 5107175632.180474,
+          "depreciationAmortization": 1836137653.3650951,
+          "netOperatingProfit": 3869271000.2276697,
+          "cash": 24822774000,
+          "financialInvestments": 212946000,
+          "shortTermDebt": 20205966000,
+          "longTermDebt": 46513728000,
+          "equity": 74628617000
+        },
+        {
+          "period": "2026/3",
+          "quarter": [
+            2026,
+            1
+          ],
+          "sales": 107448584484.79071,
+          "grossProfit": 8057269677.785753,
+          "netProfit": 3376275443.216778,
+          "operatingProfit": 1902222690.9952562,
+          "depreciationAmortization": 1531664340.7883646,
+          "netOperatingProfit": 1355661919.3413134,
+          "cash": 23714438555.6955,
+          "financialInvestments": 186946771.1819259,
+          "shortTermDebt": 28371671476.92889,
+          "longTermDebt": 50000408577.80715,
+          "equity": 66613932511.06877
+        },
+        {
+          "period": "2026/6",
+          "quarter": [
+            2026,
+            2
+          ],
+          "sales": 105585564650.59827,
+          "grossProfit": 7021976439.040777,
+          "netProfit": 3264543870.353051,
+          "operatingProfit": 1142745065.2379334,
+          "depreciationAmortization": 1617060344.9723904,
+          "netOperatingProfit": 597734038.9397602,
+          "cash": 11621692441.534779,
+          "financialInvestments": 234195237.88464284,
+          "shortTermDebt": 31220988359.542095,
+          "longTermDebt": 43061994049.66977,
+          "equity": 69401593854.19763
+        },
+        {
+          "period": "2026/9",
+          "quarter": [
+            2026,
+            3
+          ],
+          "sales": 80506605864.61102,
+          "grossProfit": 7727911883.17347,
+          "netProfit": 4331917686.430171,
+          "operatingProfit": 2507490243.7668104,
+          "depreciationAmortization": 867487314.2392449,
+          "netOperatingProfit": 1564131041.7189264,
+          "cash": 18048736000,
+          "financialInvestments": 236605000,
+          "shortTermDebt": 32438271000,
+          "longTermDebt": 37203308000,
+          "equity": 72780928000
+        }
+      ]
     },
     "YEOTK": {
       "name": "Yeo Teknoloji",
