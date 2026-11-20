@@ -173,7 +173,12 @@ function drawFinancialChart(title, subtitle, rows, definitions, unit, options = 
       const value = row[def.key];
       if (!Number.isFinite(value)) return;
       const cx = margin.left + slot * index + slot / 2;
-      svg += `<circle cx="${cx}" cy="${y(value)}" r="3.5" fill="${def.color}" ${tooltipAttributes(row,def,value,unit,options)}><title>${escapeSvg(row.label)} • ${escapeSvg(def.label)}: ${escapeSvg(numberLabel(value))}</title></circle>`;
+      const pointY = y(value);
+      svg += `<circle cx="${cx}" cy="${pointY}" r="3.5" fill="${def.color}" ${tooltipAttributes(row,def,value,unit,options)}><title>${escapeSvg(row.label)} • ${escapeSvg(def.label)}: ${escapeSvg(numberLabel(value))}</title></circle>`;
+      if (options.showPointValues) {
+        const labelY = Math.max(margin.top + 11, Math.min(height - margin.bottom - 3, pointY + (index % 2 ? 16 : -9)));
+        svg += `<text x="${cx}" y="${labelY}" text-anchor="middle" fill="${def.color}" font-size="10" font-weight="700" pointer-events="none" paint-order="stroke" stroke="#111c2e" stroke-width="3" stroke-linejoin="round">${escapeSvg(pretty(value,1))}</text>`;
+      }
     });
   });
 
@@ -323,10 +328,10 @@ function renderFinancials() {
     ], '%', {percent:true}),
     drawFinancialChart('Net faaliyet kârına göre özkaynak kârlılığı (TTM)', 'Son 4 çeyrek net faaliyet kârı / bu dönem ve bir yıl önceki aynı dönem özkaynak ortalaması', rows, [
       {key:'operatingRoe',label:'Net faaliyet kârı / ortalama özkaynak',color:'#75b7b2',type:'line'},
-    ], '%', {percent:true}),
+    ], '%', {percent:true,showPointValues:true}),
     drawFinancialChart('Net kâra göre özkaynak kârlılığı (TTM)', 'Son 4 çeyrek net kâr / bu dönem ve bir yıl önceki aynı dönem özkaynak ortalaması', rows, [
       {key:'netProfitRoe',label:'Net kâr / ortalama özkaynak',color:'#8e79ad',type:'line'},
-    ], '%', {percent:true}),
+    ], '%', {percent:true,showPointValues:true}),
     drawFinancialChart('Nakit ve finansal yatırımlar / kısa vadeli finansal borçlar', 'Nakit ve yatırımlar toplamı ile bilanço dönemi sonu kısa vadeli borç karşılaştırması', rows, [
       bar('cashAndInvestments','Nakit + finansal yatırımlar','#75b7b2'),
       {key:'shortDebt',label:'Kısa vadeli finansal borçlar',color:'#ef8c2f',type:'line'},
