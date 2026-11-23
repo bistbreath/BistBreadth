@@ -31,7 +31,8 @@ function buildFinancialRows(company) {
       ? null : shortDebt + longDebt - totalCash;
 
     let ebitdaTtm = null;
-    let operatingProfitTtm = null;
+    let salesTtm = null;
+    let netOperatingProfitTtm = null;
     let netProfitTtm = null;
     if (index >= 3) {
       const lastFour = source.slice(index - 3, index + 1);
@@ -47,8 +48,11 @@ function buildFinancialRows(company) {
           ebitdaTtm = lastFour.reduce((sum, item) =>
             sum + item.operatingProfit + item.depreciationAmortization, 0) / 1e6;
         }
+        if (lastFour.every(item => Number.isFinite(item.sales))) {
+          salesTtm = lastFour.reduce((sum, item) => sum + item.sales, 0) / 1e6;
+        }
         if (lastFour.every(item => Number.isFinite(item.netOperatingProfit))) {
-          operatingProfitTtm = lastFour.reduce((sum, item) => sum + item.netOperatingProfit, 0) / 1e6;
+          netOperatingProfitTtm = lastFour.reduce((sum, item) => sum + item.netOperatingProfit, 0) / 1e6;
         }
         if (lastFour.every(item => Number.isFinite(item.netProfit))) {
           netProfitTtm = lastFour.reduce((sum, item) => sum + item.netProfit, 0) / 1e6;
@@ -65,7 +69,7 @@ function buildFinancialRows(company) {
       const priorEquity = millions(priorYear.equity);
       const averageEquity = equity != null && priorEquity != null ? (equity + priorEquity) / 2 : null;
       if (sameQuarterLastYear && averageEquity > 0) {
-        operatingRoe = operatingProfitTtm != null ? operatingProfitTtm / averageEquity * 100 : null;
+        operatingRoe = netOperatingProfitTtm != null ? netOperatingProfitTtm / averageEquity * 100 : null;
         netProfitRoe = netProfitTtm != null ? netProfitTtm / averageEquity * 100 : null;
       }
     }
@@ -74,7 +78,7 @@ function buildFinancialRows(company) {
       ...row, label: quarterLabel(row.period), sales, grossProfit: gross,
       netOperatingProfit: netOperating, netProfit, equity, cash, investments,
       shortDebt, longDebt, cashAndInvestments: totalCash, netCash, netDebt, ebitdaTtm, netDebtEbitda: ratio,
-      operatingRoe, netProfitRoe,
+      salesTtm, netOperatingProfitTtm, netProfitTtm, operatingRoe, netProfitRoe,
       grossMargin: sales && gross != null ? gross / sales * 100 : null,
       operatingMargin: sales && netOperating != null ? netOperating / sales * 100 : null,
       netMargin: sales && netProfit != null ? netProfit / sales * 100 : null,
@@ -85,8 +89,22 @@ function buildFinancialRows(company) {
       const last = rows.slice(index - 3, index + 1).map(item => item[key]);
       return last.every(value => value != null) ? last.reduce((a,b) => a+b,0)/4 : null;
     };
+    const priorYearGrowth = key => {
+      if (index < 4) return null;
+      const prior = rows[index - 4];
+      const [py, pq] = prior.quarter || [];
+      const [cy, cq] = row.quarter || [];
+      const sameQuarter = Number.isFinite(py) && Number.isFinite(pq) &&
+        Number.isFinite(cy) && Number.isFinite(cq) && (cy * 4 + cq) - (py * 4 + pq) === 4;
+      const previousValue = prior[key], currentValue = row[key];
+      return sameQuarter && Number.isFinite(previousValue) && previousValue > 0 &&
+        Number.isFinite(currentValue) ? (currentValue / previousValue - 1) * 100 : null;
+    };
     return {
       ...row,
+      salesTtmGrowth: priorYearGrowth('salesTtm'),
+      netOperatingProfitTtmGrowth: priorYearGrowth('netOperatingProfitTtm'),
+      netProfitTtmGrowth: priorYearGrowth('netProfitTtm'),
       grossMarginSma4: average4('grossMargin'),
       operatingMarginSma4: average4('operatingMargin'),
       netMarginSma4: average4('netMargin'),
@@ -100,6 +118,121 @@ function tooltipAttributes(row, definition, value, unit, options) {
   const priorRow = financialAllRows.find(item => item.period === priorPeriod);
   const priorValue = priorRow?.[definition.key];
   return `data-fin-tooltip="1" data-tip-period="${escapeSvg(row.label)}" data-tip-series="${escapeSvg(definition.label)}" data-tip-value="${value}" data-tip-prior="${Number.isFinite(priorValue) ? priorValue : ''}" data-tip-unit="${escapeSvg(unit)}" data-tip-percent="${options.percent ? '1' : '0'}" data-tip-ratio="${options.ratio ? '1' : '0'}"`;
+}
+
+function drawTtmFinancialChart(title, subtitle, rows, amountKey, growthKey, amountLabel, amountColor) {
+  const width = 980, height = 330;
+  const margin = { left: 94, right: 88, top: 38, bottom: 54 };
+  const plotW = width - margin.left - margin.right;
+  const plotH = height - margin.top - margin.bottom;
+  const amounts = rows.map(row => row[amountKey]).filter(Number.isFinite);
+  const growths = rows.map(row => row[growthKey]).filter(Number.isFinite);
+  if (!amounts.length) {
+    return '<article class="financial-chart-card"><h3>' + escapeSvg(title) +
+      '</h3><p>' + escapeSvg(subtitle) +
+      '</p><div class="financial-chart-empty">Bu dönemler için karşılaştırılabilir TTM verisi bulunamadı.</div></article>';
+  }
+
+  const bounds = values => {
+    let min = Math.min(0, ...values), max = Math.max(0, ...values);
+    if (min === max) { min -= 1; max += 1; }
+    const pad = (max - min) * 0.08;
+    if (min < 0) min -= pad;
+    if (max > 0) max += pad;
+    return [min, max];
+  };
+  const [amountMin, amountMax] = bounds(amounts);
+  const [growthMin, growthMax] = bounds(growths.length ? growths : [0, 1]);
+  const yAmount = value => margin.top + (amountMax - value) / (amountMax - amountMin) * plotH;
+  const yGrowth = value => margin.top + (growthMax - value) / (growthMax - growthMin) * plotH;
+  const slot = plotW / Math.max(rows.length, 1);
+  const labelEvery = rows.length > 24 ? Math.ceil(rows.length / 16) : 1;
+  const amountText = value => pretty(value, Math.abs(value) >= 100000 ? 0 : 2);
+  const growthText = value => '%' + pretty(value, 1);
+  const growthColor = '#59c4ec';
+  let svg = '<svg class="financial-svg" viewBox="0 0 ' + width + ' ' + height +
+    '" role="img" aria-label="' + escapeSvg(title) + '">';
+  svg += '<text x="' + margin.left + '" y="16" class="fin-axis">TTM tutar (milyon TL)</text>';
+  svg += '<text x="' + (width - margin.right) + '" y="16" text-anchor="end" class="fin-axis">Yıllık büyüme (%)</text>';
+  svg += '<line x1="' + margin.left + '" y1="30" x2="' + (margin.left + 20) +
+    '" y2="30" stroke="' + amountColor + '" stroke-width="3"/><text x="' + (margin.left + 26) +
+    '" y="34" class="fin-axis">TTM ' + escapeSvg(amountLabel) + '</text>';
+  svg += '<line x1="' + (width - margin.right - 150) + '" y1="30" x2="' + (width - margin.right - 130) +
+    '" y2="30" stroke="' + growthColor + '" stroke-width="3" stroke-dasharray="5 3"/><text x="' +
+    (width - margin.right - 124) + '" y="34" class="fin-axis">Yıllık büyüme</text>';
+
+  for (let i = 0; i <= 4; i++) {
+    const fraction = i / 4;
+    const yy = margin.top + plotH * fraction;
+    const amountValue = amountMax - (amountMax - amountMin) * fraction;
+    const growthValue = growthMax - (growthMax - growthMin) * fraction;
+    const amountDigits = Math.abs(amountValue) >= 100000 ? 0 : 2;
+    svg += '<line x1="' + margin.left + '" y1="' + yy + '" x2="' + (width - margin.right) +
+      '" y2="' + yy + '" class="fin-grid"/>';
+    svg += '<text x="' + (margin.left - 9) + '" y="' + (yy + 4) +
+      '" text-anchor="end" class="fin-axis">' + escapeSvg(pretty(amountValue, amountDigits)) + '</text>';
+    if (growths.length) {
+      svg += '<text x="' + (width - margin.right + 9) + '" y="' + (yy + 4) +
+        '" class="fin-axis">' + escapeSvg('%' + pretty(growthValue, 0)) + '</text>';
+    }
+  }
+  svg += '<line x1="' + margin.left + '" y1="' + yAmount(0) + '" x2="' + (width - margin.right) +
+    '" y2="' + yAmount(0) + '" class="fin-zero"/>';
+  if (growths.length && growthMin < 0 && growthMax > 0) {
+    svg += '<line x1="' + margin.left + '" y1="' + yGrowth(0) + '" x2="' + (width - margin.right) +
+      '" y2="' + yGrowth(0) + '" stroke="' + growthColor + '" stroke-width="1" stroke-dasharray="2 5" opacity=".55"/>';
+  }
+
+  rows.forEach((row, index) => {
+    const cx = margin.left + slot * index + slot / 2;
+    if (index % Math.max(1, Math.ceil(rows.length / 14)) === 0 || index === rows.length - 1) {
+      svg += '<text x="' + cx + '" y="' + (height - 20) +
+        '" text-anchor="middle" class="fin-axis">' + escapeSvg(row.label) + '</text>';
+    }
+  });
+
+  const series = [
+    {key:amountKey, label:'TTM ' + amountLabel, color:amountColor, axis:'amount', unit:'₺ milyon', percent:false},
+    {key:growthKey, label:'Yıllık büyüme', color:growthColor, axis:'growth', unit:'%', percent:true},
+  ];
+  series.forEach((definition, seriesIndex) => {
+    const scale = definition.axis === 'amount' ? yAmount : yGrowth;
+    let path = '', active = false;
+    rows.forEach((row, index) => {
+      const value = row[definition.key];
+      if (!Number.isFinite(value)) { active = false; return; }
+      const cx = margin.left + slot * index + slot / 2;
+      path += (active ? 'L' : 'M') + ' ' + cx + ' ' + scale(value) + ' ';
+      active = true;
+    });
+    svg += '<path d="' + path + '" fill="none" stroke="' + definition.color +
+      '" stroke-width="3"' + (seriesIndex ? ' stroke-dasharray="6 4"' : '') + '/>';
+    rows.forEach((row, index) => {
+      const value = row[definition.key];
+      if (!Number.isFinite(value)) return;
+      const cx = margin.left + slot * index + slot / 2;
+      const cy = scale(value);
+      const options = definition.percent ? {percent:true} : {};
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="3.5" fill="' + definition.color + '" ' +
+        tooltipAttributes(row, definition, value, definition.unit, options) + '><title>' +
+        escapeSvg(row.label) + ' • ' + escapeSvg(definition.label) + ': ' +
+        escapeSvg(definition.percent ? growthText(value) : amountText(value)) + ' ' +
+        escapeSvg(definition.unit) + '</title></circle>';
+      if (index % labelEvery === 0 || index === rows.length - 1) {
+        const direction = ((index + seriesIndex) % 2 === 0) ? -10 : 13;
+        const labelY = Math.max(margin.top + 9, Math.min(height - margin.bottom - 4, cy + direction));
+        const label = definition.percent ? growthText(value) : amountText(value);
+        svg += '<text x="' + cx + '" y="' + labelY + '" text-anchor="middle" fill="' +
+          definition.color + '" font-size="9" font-weight="700" pointer-events="none" ' +
+          'paint-order="stroke" stroke="#111c2e" stroke-width="3" stroke-linejoin="round">' +
+          escapeSvg(label) + '</text>';
+      }
+    });
+  });
+  svg += '</svg>';
+  return '<article class="financial-chart-card"><h3>' + escapeSvg(title) + '</h3><p>' +
+    escapeSvg(subtitle) + ' Tutar sol eksende (milyon TL); büyüme sağ eksende (%). Önceki yılın aynı dönemindeki TTM tutar pozitif değilse büyüme oranı gösterilmez.</p><div class="fin-svg-wrap">' +
+    svg + '</div></article>';
 }
 
 function drawFinancialChart(title, subtitle, rows, definitions, unit, options = {}) {
@@ -312,8 +445,11 @@ function renderFinancials() {
   const bar = (key,label,color) => ({key,label,color});
   const charts = [
     drawFinancialChart('Satış gelirleri', 'Çeyreklik', rows, [bar('sales','Satış','#ef8c2f')], '₺ milyon'),
+    drawTtmFinancialChart('TTM satış gelirleri', 'Son dört ardışık çeyreğin satış toplamı.', rows, 'salesTtm', 'salesTtmGrowth', 'satış', '#ef8c2f'),
     drawFinancialChart('Net faaliyet kârı*', 'Çeyreklik • görseldeki formül', rows, [bar('netOperatingProfit','Net faaliyet kârı','#75b7b2')], '₺ milyon'),
+    drawTtmFinancialChart('TTM net faaliyet kârı', 'Son dört ardışık çeyreğin net faaliyet kârı toplamı.', rows, 'netOperatingProfitTtm', 'netOperatingProfitTtmGrowth', 'net faaliyet kârı', '#75b7b2'),
     drawFinancialChart('Net kâr (ana ortaklık payı)', 'Çeyreklik', rows, [bar('netProfit','Ana ortaklık net kârı','#8e79ad')], '₺ milyon'),
+    drawTtmFinancialChart('TTM net kâr (ana ortaklık payı)', 'Son dört ardışık çeyreğin ana ortaklık net kârı toplamı.', rows, 'netProfitTtm', 'netProfitTtmGrowth', 'net kâr', '#8e79ad'),
     drawFinancialChart('Brüt kâr marjı', 'Çeyreklik marj ve basit 4Ç hareketli ortalama', rows, [
       bar('grossMargin','Brüt kâr marjı','#ef8c2f'),
       {key:'grossMarginSma4',label:'4Ç ortalaması',color:'#e9eef5',type:'line'},
