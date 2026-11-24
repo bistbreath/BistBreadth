@@ -162,8 +162,26 @@ def download_prices(symbols: list[str]) -> dict[str, pd.DataFrame]:
     return result
 
 
+
+def classify_price_stage(close: pd.Series) -> pd.Series:
+    """Classify weekly closes using price versus 30-week SMA; volume is not used."""
+    weekly = close.resample("W-FRI").last().dropna()
+    average = weekly.rolling(30, min_periods=30).mean()
+    slope = average / average.shift(4) - 1
+    prior_slope = average.shift(4) / average.shift(8) - 1
+    distance = weekly / average - 1
+    valid = average.notna() & slope.notna() & prior_slope.notna()
+    stage = pd.Series(float("nan"), index=weekly.index)
+    stage.loc[valid] = 5  # transition / no clear match
+    stage.loc[valid & (slope >= .01) & (weekly > average)] = 2
+    stage.loc[valid & (slope <= -.01) & (weekly < average)] = 4
+    stage.loc[valid & (slope.abs() < .01) & (distance.abs() <= .05) & (prior_slope <= -.01)] = 1
+    stage.loc[valid & (slope.abs() < .01) & (distance.abs() <= .05) & (prior_slope >= .01)] = 3
+    return stage
+
+
 def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], benchmark: pd.DataFrame | None) -> dict:
-    """Price-only market breadth and Weinstein-style stage estimates for current XUTUM members."""
+    """Price-only market breadth and historical Stage 2/4 breadth for current XUTUM members."""
     benchmark_close = pd.to_numeric(benchmark["close"], errors="coerce").dropna() if benchmark is not None and not benchmark.empty and "close" in benchmark else pd.Series(dtype=float)
     if benchmark_close.empty:
         raise ValueError("XU100 has no usable prices for market breadth")
@@ -187,6 +205,10 @@ def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], be
     highs = lows = both_extremes = high_low_eligible = 0
     stage_counts = {"stage1": 0, "stage2": 0, "stage3": 0, "stage4": 0, "transition": 0}
     stage_eligible = stage_insufficient = 0
+    dates = benchmark_close.index
+    stage2_daily = [0] * len(dates)
+    stage4_daily = [0] * len(dates)
+    eligible_daily = [0] * len(dates)
     for _, close in rows:
         if len(close) >= 252:
             window = close.iloc[-252:]
@@ -197,25 +219,34 @@ def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], be
             if is_high and is_low: both_extremes += 1
             elif is_high: highs += 1
             elif is_low: lows += 1
-        weekly = close.resample("W-FRI").last().dropna()
-        if len(weekly) < 38 or (as_of - weekly.index[-1]).days > 10:
+
+        stage_series = classify_price_stage(close)
+        current_stage = stage_series.dropna()
+        if current_stage.empty or (as_of - current_stage.index[-1]).days > 10:
             stage_insufficient += 1
             continue
-        average = weekly.rolling(30, min_periods=30).mean().dropna()
-        if len(average) < 9:
-            stage_insufficient += 1
-            continue
+        current_stage_value = int(current_stage.iloc[-1])
         stage_eligible += 1
-        price, ma = float(weekly.iloc[-1]), float(average.iloc[-1])
-        slope = float(average.iloc[-1] / average.iloc[-5] - 1)
-        prior_slope = float(average.iloc[-5] / average.iloc[-9] - 1)
-        distance = price / ma - 1
-        # Operational heuristics, not thresholds specified by Weinstein.
-        if slope >= .01 and price > ma: stage_counts["stage2"] += 1
-        elif slope <= -.01 and price < ma: stage_counts["stage4"] += 1
-        elif abs(slope) < .01 and abs(distance) <= .05 and prior_slope <= -.01: stage_counts["stage1"] += 1
-        elif abs(slope) < .01 and abs(distance) <= .05 and prior_slope >= .01: stage_counts["stage3"] += 1
-        else: stage_counts["transition"] += 1
+        stage_name = {1: "stage1", 2: "stage2", 3: "stage3", 4: "stage4"}.get(current_stage_value, "transition")
+        stage_counts[stage_name] += 1
+
+        daily_states = stage_series.reindex(dates, method="ffill")
+        for position, value in enumerate(daily_states):
+            if pd.isna(value):
+                continue
+            eligible_daily[position] += 1
+            if int(value) == 2: stage2_daily[position] += 1
+            elif int(value) == 4: stage4_daily[position] += 1
+
+    stage_history = []
+    for position, date in enumerate(dates):
+        eligible = eligible_daily[position]
+        stage_history.append({
+            "time": date.strftime("%Y-%m-%d"),
+            "stage2_pct": round(100 * stage2_daily[position] / eligible, 2) if eligible else None,
+            "stage4_pct": round(100 * stage4_daily[position] / eligible, 2) if eligible else None,
+            "eligible": eligible,
+        })
     return {
         "as_of": as_of.strftime("%Y-%m-%d"), "universe": "XUTUM", "universe_count": len(universe),
         "daily_coverage": len(latest), "advancing": advancing, "declining": declining, "unchanged": unchanged,
@@ -223,7 +254,8 @@ def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], be
         "high_low_eligible": high_low_eligible, "new_highs": highs, "new_lows": lows, "both_extremes": both_extremes,
         "high_low_pct": round(100 * highs / (highs + lows), 2) if highs + lows else None,
         "stage_counts": stage_counts, "stage_eligible": stage_eligible, "stage_insufficient": stage_insufficient,
-        "stage_method": "Fiyat bazlı haftalık 30HHO. 4 haftalık ortalama eğiminde ±%1 ve fiyat/ortalama mesafesinde ±%5 yaklaşık sınıflandırma eşikleridir; hacim kullanılmaz."
+        "stage_history": stage_history,
+        "stage_method": "Price-only weekly 30-week SMA. The ±1% four-week slope and ±5% price/SMA distance are approximate classification thresholds; volume is not used."
     }
 
 

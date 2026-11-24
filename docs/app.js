@@ -13,6 +13,10 @@ let selectedIndex;
 let tooltip;
 let selectedRange = 'all';
 let pollingIndexData = false;
+let stageHistoryChart;
+let stage2HistorySeries;
+let stage4HistorySeries;
+let stageHistoryRows = [];
 
 const fmt = n => Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const dateFmt = value => new Intl.DateTimeFormat('tr-TR', { dateStyle: 'medium' }).format(new Date(value + 'T00:00:00'));
@@ -160,8 +164,49 @@ function renderFollowThrough(report) {
   );
 }
 
+function renderStageHistory(history) {
+  if (!history?.length) return;
+  stageHistoryRows = history;
+  const container = document.getElementById('stage-history-chart');
+  const tooltip = document.getElementById('stage-history-tooltip');
+  if (!stageHistoryChart) {
+    stageHistoryChart = LightweightCharts.createChart(container, {
+      width: Math.max(1, Math.round(container.clientWidth)),
+      height: Math.max(1, Math.round(container.clientHeight)),
+      layout: { background: { color: '#111c2e' }, textColor: '#91a2b8' },
+      grid: { vertLines: { color: '#1d2a3d' }, horzLines: { color: '#1d2a3d' } },
+      rightPriceScale: { borderColor: '#28374c', scaleMargins: { top: 0.12, bottom: 0.12 } },
+      timeScale: { borderColor: '#28374c', timeVisible: false, rightOffset: 2 },
+      crosshair: { mode: 0 },
+    });
+    const priceFormat = { type: 'custom', minMove: 0.1, formatter: value => `${Number(value).toFixed(1)}%` };
+    stage2HistorySeries = stageHistoryChart.addLineSeries({ color: '#3979e8', lineWidth: 2, priceFormat, title: 'Stage 2' });
+    stage4HistorySeries = stageHistoryChart.addLineSeries({ color: '#e83eaa', lineWidth: 2, priceFormat, title: 'Stage 4' });
+    stageHistoryChart.subscribeCrosshairMove(param => {
+      if (!param.point || !param.time) { tooltip.hidden = true; return; }
+      const key = dateKey(param.time);
+      const row = stageHistoryRows.find(item => item.time === key);
+      if (!row || row.stage2_pct == null || row.stage4_pct == null) { tooltip.hidden = true; return; }
+      tooltip.innerHTML = `<strong>${dateFmt(key)}</strong><span class="stage2-text">Stage 2 <b>%${Number(row.stage2_pct).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b></span><span class="stage4-text">Stage 4 <b>%${Number(row.stage4_pct).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b></span>`;
+      tooltip.hidden = false;
+      const bounds = container.getBoundingClientRect();
+      const tipWidth = tooltip.offsetWidth || 180;
+      tooltip.style.left = `${Math.max(6, Math.min(bounds.width - tipWidth - 6, param.point.x + 12))}px`;
+      tooltip.style.top = `${Math.max(6, Math.min(bounds.height - 72, param.point.y + 12))}px`;
+    });
+    new ResizeObserver(entries => {
+      const rect = entries[0]?.contentRect;
+      if (rect?.width > 0 && rect?.height > 0) stageHistoryChart.resize(Math.round(rect.width), Math.round(rect.height));
+    }).observe(container);
+  }
+  stage2HistorySeries.setData(history.filter(item => item.stage2_pct != null).map(item => ({ time: item.time, value: item.stage2_pct })));
+  stage4HistorySeries.setData(history.filter(item => item.stage4_pct != null).map(item => ({ time: item.time, value: item.stage4_pct })));
+  stageHistoryChart.timeScale().fitContent();
+}
+
 function renderMarketBreadth(report) {
   if (!report) return;
+  renderStageHistory(report.stage_history);
   const pct = value => value == null ? '—' : `${Number(value).toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
   document.getElementById('breadth-date').textContent = `Kapanış verisi • ${dateFmt(report.as_of)}`;
   document.getElementById('breadth-coverage').textContent = `XUTUM • ${report.universe_count} hisse evreni`;

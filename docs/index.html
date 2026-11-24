@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BIST Eşit Ağırlık Grafikleri</title>
-<link rel="stylesheet" href="style.css?v=20261124-pricebreadth-1">
+<link rel="stylesheet" href="style.css?v=20261124-stage-history-1">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
@@ -23,8 +23,9 @@
   <div class="breadth-grid">
    <article class="breadth-metric"><div class="breadth-label">52 haftalık zirve / dip</div><strong id="high-low-ratio">—</strong><div class="breadth-bar"><i id="high-low-bar"></i></div><div class="breadth-pair"><span><b id="new-highs">—</b> yeni zirve</span><span><b id="new-lows">—</b> yeni dip</span></div><small id="high-low-coverage"></small></article>
    <article class="breadth-metric"><div class="breadth-label">Yükselen / düşen</div><strong id="advance-decline-ratio">—</strong><div class="breadth-bar"><i id="advance-decline-bar"></i></div><div class="breadth-pair"><span><b id="advancing">—</b> yükselen</span><span><b id="declining">—</b> düşen</span></div><small id="daily-coverage"></small></article>
-   <article class="breadth-metric stage-metric"><div class="breadth-label">Aşama analizi • 30 haftalık ortalama</div><div class="stage-bar" id="stage-bar"></div><div class="stage-grid" id="stage-counts"></div><small id="stage-method"></small></article>
+   <article class="breadth-metric stage-metric"><div class="breadth-label">Stage Analysis • 30 haftalık ortalama</div><div class="stage-bar" id="stage-bar"></div><div class="stage-grid" id="stage-counts"></div><small id="stage-method"></small></article>
   </div>
+  <section class="stage-history-card"><div class="stage-history-heading"><div><h3>Stage 2 / Stage 4 geçmişi</h3><p>Uygun fiyat geçmişi olan hisseler içindeki payları</p></div><div class="stage-history-legend"><span><i class="stage-dot stage2"></i>Stage 2</span><span><i class="stage-dot stage4"></i>Stage 4</span></div></div><div id="stage-history-chart" class="stage-history-chart"></div><div id="stage-history-tooltip" class="stage-history-tooltip" hidden></div><small class="stage-history-note">Günlük noktalar, o tarihte bilinen son haftalık kapanışın 30 haftalık ortalama sınıflandırmasını taşır. Yüzdeler aşama verisi hesaplanabilen hisseler üzerinden hesaplanır.</small></section>
  </section>
  <section id="panel" class="panel" style="display:none">
   <div class="chart-head"><div><h2 id="chart-title">Günlük mum grafiği</h2><p id="history-note"></p></div>
@@ -86,7 +87,7 @@
  <section class="method"><h3>Hesaplama yöntemi</h3><p>Güncel BIST bileşenleri eşit ağırlıkla değerlendirilir; her günün açılış, en yüksek, en düşük ve kapanış değerleri önceki kapanışa göre normalize edilir. Seri 1.000 başlangıç değeriyle oluşturulur. Geçmiş grafik, son bileşen listesini geçmişe uygular; tarihsel üyelik değişikliklerini yansıtmaz ve bu nedenle resmî endeks performansıyla karşılaştırılamaz.</p></section>
 </main>
 <footer><span>Araştırma amaçlıdır; yatırım tavsiyesi değildir.</span><span>Fiyat kaynağı: Yahoo Finance • Bileşen kaynağı: Borsa İstanbul</span></footer>
-<script src="app.js?v=20261124-pricebreadth-1"></script>
+<script src="app.js?v=20261124-stage-history-1"></script>
 <script src="financials.js?v=20261109-hover-2"></script>
 <script src="company-updates.js?v=20261109-1"></script>
 </body></html>
