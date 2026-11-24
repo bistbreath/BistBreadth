@@ -160,6 +160,28 @@ function renderFollowThrough(report) {
   );
 }
 
+function renderMarketBreadth(report) {
+  if (!report) return;
+  const pct = value => value == null ? '—' : `${Number(value).toLocaleString('tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+  document.getElementById('breadth-date').textContent = `Kapanış verisi • ${dateFmt(report.as_of)}`;
+  document.getElementById('breadth-coverage').textContent = `XUTUM • ${report.universe_count} hisse evreni`;
+  document.getElementById('high-low-ratio').textContent = pct(report.high_low_pct);
+  document.getElementById('new-highs').textContent = report.new_highs;
+  document.getElementById('new-lows').textContent = report.new_lows;
+  document.getElementById('high-low-coverage').textContent = `52 hafta fiyat geçmişi olan ${report.high_low_eligible} hisse; yeni zirve/dip olmayanlar yüzde paydasına girmez.`;
+  document.getElementById('high-low-bar').style.width = `${Math.max(0, Math.min(100, report.high_low_pct || 0))}%`;
+  document.getElementById('advance-decline-ratio').textContent = pct(report.advance_decline_pct);
+  document.getElementById('advancing').textContent = report.advancing;
+  document.getElementById('declining').textContent = report.declining;
+  document.getElementById('daily-coverage').textContent = `${report.daily_coverage} güncel fiyat; değişmeyen ${report.unchanged} hisse yüzdeye dahil değil.`;
+  document.getElementById('advance-decline-bar').style.width = `${Math.max(0, Math.min(100, report.advance_decline_pct || 0))}%`;
+  const counts = report.stage_counts || {}, total = report.stage_eligible || 0;
+  const stages = [['stage1','Aşama 1'],['stage2','Aşama 2'],['stage3','Aşama 3'],['stage4','Aşama 4'],['transition','Geçiş']];
+  document.getElementById('stage-bar').innerHTML = stages.map(([key]) => `<i class="${key === 'transition' ? 'stage-transition' : key}" style="width:${total ? counts[key] / total * 100 : 0}%"></i>`).join('');
+  document.getElementById('stage-counts').innerHTML = stages.map(([key,label]) => `<div class="stage-item"><i class="stage-dot ${key === 'transition' ? 'stage-transition' : key}"></i><span>${label}<b>${counts[key] || 0}</b></span></div>`).join('');
+  document.getElementById('stage-method').textContent = `${report.stage_method} Veri yetersiz: ${report.stage_insufficient}.`;
+}
+
 function renderIndex(code) {
   selectedIndex = data.indexes[code];
   if (!selectedIndex?.candles?.length) throw new Error(`${code} için henüz mum verisi bulunamadı.`);
@@ -222,6 +244,7 @@ async function refreshIndexData() {
     const latest = await response.json();
     if (!latest.updated_at || latest.updated_at === data.updated_at) return;
     data = latest;
+    renderMarketBreadth(data.market_breadth);
     const picker = document.getElementById('index-select');
     const available = Object.keys(data.indexes || {});
     [...picker.options].forEach(option => { option.disabled = !available.includes(option.value); });
@@ -248,6 +271,7 @@ fetch('./data/indices.json', { cache: 'no-store' })
   })
   .then(payload => {
     data = payload;
+    renderMarketBreadth(data.market_breadth);
     const picker = document.getElementById('index-select');
     const available = Object.keys(data.indexes || {});
     if (!available.length) throw new Error('Endeks verisi bulunamadı.');

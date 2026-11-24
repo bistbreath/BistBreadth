@@ -162,6 +162,71 @@ def download_prices(symbols: list[str]) -> dict[str, pd.DataFrame]:
     return result
 
 
+def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], benchmark: pd.DataFrame | None) -> dict:
+    """Price-only market breadth and Weinstein-style stage estimates for current XUTUM members."""
+    benchmark_close = pd.to_numeric(benchmark["close"], errors="coerce").dropna() if benchmark is not None and not benchmark.empty and "close" in benchmark else pd.Series(dtype=float)
+    if benchmark_close.empty:
+        raise ValueError("XU100 has no usable prices for market breadth")
+    as_of = benchmark_close.index.max()
+    rows = []
+    for symbol in sorted(universe):
+        frame = prices.get(symbol)
+        if frame is None or frame.empty or "close" not in frame:
+            continue
+        close = pd.to_numeric(frame["close"], errors="coerce").dropna()
+        close = close.loc[close.index <= as_of]
+        if not close.empty:
+            rows.append((symbol, close))
+    latest = [(symbol, close) for symbol, close in rows if close.index[-1] == as_of and len(close) >= 2]
+    advancing = declining = unchanged = 0
+    for _, close in latest:
+        delta = float(close.iloc[-1]) - float(close.iloc[-2])
+        if delta > 0: advancing += 1
+        elif delta < 0: declining += 1
+        else: unchanged += 1
+    highs = lows = both_extremes = high_low_eligible = 0
+    stage_counts = {"stage1": 0, "stage2": 0, "stage3": 0, "stage4": 0, "transition": 0}
+    stage_eligible = stage_insufficient = 0
+    for _, close in rows:
+        if len(close) >= 252:
+            window = close.iloc[-252:]
+            last = float(window.iloc[-1])
+            is_high = last >= float(window.max()) * (1 - 1e-10)
+            is_low = last <= float(window.min()) * (1 + 1e-10)
+            high_low_eligible += 1
+            if is_high and is_low: both_extremes += 1
+            elif is_high: highs += 1
+            elif is_low: lows += 1
+        weekly = close.resample("W-FRI").last().dropna()
+        if len(weekly) < 38 or (as_of - weekly.index[-1]).days > 10:
+            stage_insufficient += 1
+            continue
+        average = weekly.rolling(30, min_periods=30).mean().dropna()
+        if len(average) < 9:
+            stage_insufficient += 1
+            continue
+        stage_eligible += 1
+        price, ma = float(weekly.iloc[-1]), float(average.iloc[-1])
+        slope = float(average.iloc[-1] / average.iloc[-5] - 1)
+        prior_slope = float(average.iloc[-5] / average.iloc[-9] - 1)
+        distance = price / ma - 1
+        # Operational heuristics, not thresholds specified by Weinstein.
+        if slope >= .01 and price > ma: stage_counts["stage2"] += 1
+        elif slope <= -.01 and price < ma: stage_counts["stage4"] += 1
+        elif abs(slope) < .01 and abs(distance) <= .05 and prior_slope <= -.01: stage_counts["stage1"] += 1
+        elif abs(slope) < .01 and abs(distance) <= .05 and prior_slope >= .01: stage_counts["stage3"] += 1
+        else: stage_counts["transition"] += 1
+    return {
+        "as_of": as_of.strftime("%Y-%m-%d"), "universe": "XUTUM", "universe_count": len(universe),
+        "daily_coverage": len(latest), "advancing": advancing, "declining": declining, "unchanged": unchanged,
+        "advance_decline_pct": round(100 * advancing / (advancing + declining), 2) if advancing + declining else None,
+        "high_low_eligible": high_low_eligible, "new_highs": highs, "new_lows": lows, "both_extremes": both_extremes,
+        "high_low_pct": round(100 * highs / (highs + lows), 2) if highs + lows else None,
+        "stage_counts": stage_counts, "stage_eligible": stage_eligible, "stage_insufficient": stage_insufficient,
+        "stage_method": "Fiyat bazlı haftalık 30HHO. 4 haftalık ortalama eğiminde ±%1 ve fiyat/ortalama mesafesinde ±%5 yaklaşık sınıflandırma eşikleridir; hacim kullanılmaz."
+    }
+
+
 def build_rs_ratings(
     prices: dict[str, pd.DataFrame],
     universe: set[str],
@@ -454,6 +519,7 @@ def main() -> None:
     for code in ("XTUMY", "XUTUM"):
         history[code] = add_broad_universe_ipo_dates(history[code], prices)
     rs_ratings = build_rs_ratings(prices, current["XUTUM"], sectors, fetched_at)
+    market_breadth = build_market_breadth(prices, current["XUTUM"], prices.get("XU100"))
     payload = {
         "updated_at": fetched_at,
         "price_source": "Yahoo Finance (yfinance), auto-adjusted daily OHLC",
@@ -463,6 +529,7 @@ def main() -> None:
             "rebalanced synthetic OHLC, base 1000. XTUMY = BIST All Shares less BIST 100."
         ),
         "membership_cadence": "Historical membership archive is quarterly; broad-market IPO entries use first available quote date.",
+        "market_breadth": market_breadth,
         "indexes": {},
     }
     for code, config in INDEXES.items():
@@ -504,7 +571,7 @@ def main() -> None:
 
     if write_indexes and OUTPUT.exists():
         published = json.loads(OUTPUT.read_text(encoding="utf-8"))
-        compared_keys = ("indexes", "price_source", "membership_source", "method", "membership_cadence")
+        compared_keys = ("indexes", "price_source", "membership_source", "method", "membership_cadence", "market_breadth")
         if all(published.get(key) == payload.get(key) for key in compared_keys):
             print("Keeping published index data: prices and memberships are unchanged")
             write_indexes = False
