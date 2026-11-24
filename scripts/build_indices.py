@@ -255,7 +255,7 @@ def build_market_breadth(prices: dict[str, pd.DataFrame], universe: set[str], be
         "high_low_pct": round(100 * highs / (highs + lows), 2) if highs + lows else None,
         "stage_counts": stage_counts, "stage_eligible": stage_eligible, "stage_insufficient": stage_insufficient,
         "stage_history": stage_history,
-        "stage_method": "Price-only weekly 30-week SMA. The ±1% four-week slope and ±5% price/SMA distance are approximate classification thresholds; volume is not used."
+        "stage_method": "Fiyat bazlı haftalık 30 haftalık ortalama kullanılır. Dört haftalık eğimde ±%1 ve fiyat/ortalama mesafesinde ±%5 yaklaşık eşiklerdir; hacim kullanılmaz."
     }
 
 

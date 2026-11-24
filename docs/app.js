@@ -179,6 +179,7 @@ function renderStageHistory(history) {
       timeScale: { borderColor: '#28374c', timeVisible: false, rightOffset: 2 },
       crosshair: { mode: 0 },
     });
+    container.appendChild(tooltip);
     const priceFormat = { type: 'custom', minMove: 0.1, formatter: value => `${Number(value).toFixed(1)}%` };
     stage2HistorySeries = stageHistoryChart.addLineSeries({ color: '#3979e8', lineWidth: 2, priceFormat, title: 'Stage 2' });
     stage4HistorySeries = stageHistoryChart.addLineSeries({ color: '#e83eaa', lineWidth: 2, priceFormat, title: 'Stage 4' });
@@ -221,10 +222,11 @@ function renderMarketBreadth(report) {
   document.getElementById('daily-coverage').textContent = `${report.daily_coverage} güncel fiyat; değişmeyen ${report.unchanged} hisse yüzdeye dahil değil.`;
   document.getElementById('advance-decline-bar').style.width = `${Math.max(0, Math.min(100, report.advance_decline_pct || 0))}%`;
   const counts = report.stage_counts || {}, total = report.stage_eligible || 0;
-  const stages = [['stage1','Aşama 1'],['stage2','Aşama 2'],['stage3','Aşama 3'],['stage4','Aşama 4'],['transition','Geçiş']];
+  const stages = [['stage1','Stage 1'],['stage2','Stage 2'],['stage3','Stage 3'],['stage4','Stage 4'],['transition','Geçiş']];
   document.getElementById('stage-bar').innerHTML = stages.map(([key]) => `<i class="${key === 'transition' ? 'stage-transition' : key}" style="width:${total ? counts[key] / total * 100 : 0}%"></i>`).join('');
   document.getElementById('stage-counts').innerHTML = stages.map(([key,label]) => `<div class="stage-item"><i class="stage-dot ${key === 'transition' ? 'stage-transition' : key}"></i><span>${label}<b>${counts[key] || 0}</b></span></div>`).join('');
-  document.getElementById('stage-method').textContent = `${report.stage_method} Veri yetersiz: ${report.stage_insufficient}.`;
+  const stage1Note = counts.stage1 ? '' : ' Bugün Stage 1 kriterlerini karşılayan hisse yok.';
+  document.getElementById('stage-method').textContent = `Fiyat bazlı haftalık 30 haftalık ortalama kullanılır; hacim hesaba katılmaz. Geçiş, verisi yeterli olsa da fiyat ve ortalama koşulları Stage 1–4 tanımlarına net uymayan hisseleri gösterir. Stage 1 için 30 haftalık ortalamanın yataylaşması, fiyatın ortalama çevresinde kalması ve öncesinde düşüş trendi aranır.${stage1Note} Veri yetersiz: ${report.stage_insufficient}.`;
 }
 
 function renderIndex(code) {
